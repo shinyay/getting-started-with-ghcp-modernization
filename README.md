@@ -145,6 +145,48 @@ These 3 patterns represent the most common enterprise secret anti-patterns and a
 
 ---
 
+## 🎓 Workshop — Hands-On Labs
+
+The workshop provides **participant-driven** hands-on labs using **different apps and scenarios** from the demo — minimal overlap by design.
+
+### Two Formats
+
+| Format | Duration | Labs | Best For |
+|--------|----------|------|----------|
+| **Half-Day** | 3.5 hours | Labs 1-3 | Teams wanting an introduction with hands-on experience |
+| **Full-Day** | 6.5 hours | Labs 1-6 | Teams planning real modernization projects |
+
+👉 **Full agendas**: [workshop/agenda.md](workshop/agenda.md) · **Instructor guide**: [workshop/instructor-guide.md](workshop/instructor-guide.md)
+
+### Labs
+
+| Lab | Duration | Format | Topic | App |
+|-----|----------|--------|-------|-----|
+| [Lab 1](workshop/lab1-version-upgrade.md) | 50 min | Half+Full | Version upgrade: SB 2.7 + Java 11 → Java 21 + SB 3.x | BookStore |
+| [Lab 2](workshop/lab2-cli-assessment.md) | 45 min | Half+Full | CLI portfolio assessment across 4 apps | All 4 apps |
+| [Lab 3](workshop/lab3-custom-skills.md) | 30 min | Half+Full | Create a JUnit 4→5 custom skill | BookStore |
+| [Lab 4](workshop/lab4-predefined-task.md) | 50 min | Full only | Predefined task: file logging → console | NotesApp |
+| [Lab 5](workshop/lab5-cli-execute.md) | 50 min | Full only | CLI batch upgrade + plan execute | BookStore |
+| [Lab 6](workshop/lab6-bring-your-own.md) | 40 min | Full only | Apply to your own project | Participant's app |
+
+### Workshop Apps
+
+| App | Stack | Labs | Key Upgrade Targets |
+|-----|-------|------|-------------------|
+| **BookStore** | Spring Boot 2.7 + Java 11 + JUnit 4 | 1, 3, 5 | javax→jakarta, JUnit 4→5, version upgrade |
+| **NotesApp** | Spring Boot 3.2 + Java 17 + file logging | 4 | Logback FILE appender, FileWriter audit log |
+| **inventory-api** | Spring Boot 2.7 + Java 8 (stub) | 2, 5 | CLI portfolio variety |
+| **order-service** | Spring Boot 3.1 + Java 17 (stub) | 2, 5 | CLI portfolio variety |
+
+### Workshop Setup
+
+```bash
+bash workshop/setup.sh          # Verify prereqs + build all apps
+bash workshop/validate.sh lab1  # Check lab 1 completion (after doing the lab)
+```
+
+---
+
 ## 📚 Knowledge Base
 
 Comprehensive research on GitHub Copilot modernization, covering the entire platform:
@@ -191,6 +233,28 @@ getting-started-with-ghcp-modernization/
 │       ├── src/main/resources/            #     application.properties (🔑 secrets)
 │       ├── src/test/java/.../             #     Unit tests
 │       └── README.md                      #     App docs with secret locations
+│
+├── workshop/                              # Hands-on workshop (half-day + full-day)
+│   ├── agenda.md                          #   Half-day (3.5h) + full-day (6.5h) agendas
+│   ├── instructor-guide.md               #   Per-lab instructor notes
+│   ├── lab1-version-upgrade.md            #   Lab 1: BookStore upgrade (50 min)
+│   ├── lab2-cli-assessment.md             #   Lab 2: CLI portfolio assessment (45 min)
+│   ├── lab3-custom-skills.md              #   Lab 3: JUnit 4→5 custom skill (30 min)
+│   ├── lab4-predefined-task.md            #   Lab 4: Logging→Console (50 min, full-day)
+│   ├── lab5-cli-execute.md                #   Lab 5: CLI batch upgrade (50 min, full-day)
+│   ├── lab6-bring-your-own.md             #   Lab 6: BYO app clinic (40 min, full-day)
+│   ├── setup.sh                           #   Workshop environment setup
+│   ├── validate.sh                        #   Per-lab checkpoint validation
+│   └── templates/
+│       └── junit4-to-junit5-skill/
+│           └── SKILL.md                   #   Scaffolded skill template for Lab 3
+│
+├── workshop-apps/                         # Workshop-specific applications
+│   ├── bookstore-app/                     #   Spring Boot 2.7 + Java 11 + JUnit 4 (Labs 1,3,5)
+│   ├── notes-app/                         #   Spring Boot 3.2 + file logging (Lab 4)
+│   └── stub-repos/
+│       ├── inventory-api/                 #   SB 2.7 + Java 8 stub (Labs 2,5)
+│       └── order-service/                 #   SB 3.1 + Java 17 stub (Labs 2,5)
 │
 └── docs/                                  # Knowledge base — 8 deep-dive documents
     ├── 01-overview-and-architecture.md
