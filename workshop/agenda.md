@@ -4,28 +4,31 @@
 
 | Time | Duration | Block | Type | Description |
 |------|----------|-------|------|-------------|
-| 0:00–0:20 | 20 min | Introduction | Lecture | What is GitHub Copilot modernization? Assess→Plan→Execute. Two layers (IDE + CLI). Demo of the workflow concept (no live code). |
-| 0:20–1:10 | 50 min | **Lab 1: Version Upgrade** | 🔧 Hands-on | Upgrade BookStore from Spring Boot 2.7 + Java 11 to Java 21 + Spring Boot 3.x using `@modernize` in VS Code |
-| 1:10–1:25 | 15 min | Break | ☕ | |
-| 1:25–2:10 | 45 min | **Lab 2: CLI Assessment** | 🔧 Hands-on | Assess 4 workshop apps using the Modernize CLI. Review aggregated report. Create a modernization plan. |
-| 2:10–2:40 | 30 min | **Lab 3: Custom Skills** | 🔧 Guided | Create a JUnit 4→5 migration skill from a scaffolded template. Run the skill on BookStore. |
-| 2:40–2:50 | 10 min | Half-Day Wrap-Up | Discussion | Recap, Q&A, full-day preview for those continuing |
+| 0:00–0:30 | 30 min | Introduction | Lecture | What is GitHub Copilot modernization? Assess→Plan→Execute. Two layers (IDE + CLI). Quick walkthrough of the VS Code extension. |
+| 0:30–1:20 | 50 min | **Lab 1: Version Upgrade** | 🔧 Hands-on | Upgrade BookStore from Spring Boot 2.7 + Java 11 to Java 21 + Spring Boot 3.x using `@modernize` in VS Code |
+| 1:20–1:30 | 10 min | Debrief: Lab 1 | Discussion | What happened? What did the agent do well? Compare results across participants. |
+| 1:30–1:45 | 15 min | Break | ☕ | |
+| 1:45–2:30 | 45 min | **Lab 2: CLI Assessment** | 🔧 Hands-on | Assess 4 workshop apps using the Modernize CLI. Review aggregated report. Create a modernization plan. |
+| 2:30–3:00 | 30 min | **Lab 3: Custom Skills** | 🔧 Guided | Create a JUnit 4→5 migration skill from a scaffolded template. Run the skill on BookStore. |
+| 3:00–3:20 | 20 min | Debrief: Labs 2-3 | Discussion | Compare CLI reports. Discuss custom skill patterns relevant to participants' orgs. |
+| 3:20–3:30 | 10 min | Half-Day Wrap-Up | Discussion | Recap, Q&A, full-day preview for those continuing |
 
 ## Full-Day Workshop (6 hours 30 minutes)
 
 | Time | Duration | Block | Type | Description |
 |------|----------|-------|------|-------------|
-| 0:00–0:20 | 20 min | Introduction | Lecture | Same as half-day |
-| 0:20–1:10 | 50 min | **Lab 1: Version Upgrade** | 🔧 Hands-on | Same as half-day |
-| 1:10–1:25 | 15 min | Break | ☕ | |
-| 1:25–2:10 | 45 min | **Lab 2: CLI Assessment** | 🔧 Hands-on | Same as half-day |
-| 2:10–2:40 | 30 min | **Lab 3: Custom Skills** | 🔧 Guided | Same as half-day |
-| 2:40–3:25 | 45 min | Lunch | 🍽️ | |
-| 3:25–4:15 | 50 min | **Lab 4: Predefined Task** | 🔧 Hands-on | Migrate file-based logging to console in NotesApp |
-| 4:15–4:25 | 10 min | Break | ☕ | |
-| 4:25–5:15 | 50 min | **Lab 5: CLI Execute** | 🔧 Hands-on | Run upgrade via CLI, batch operations |
-| 5:15–5:55 | 40 min | **Lab 6: Bring Your Own** | 🔧 Open Lab | Apply modernization to participant's own project |
-| 5:55–6:30 | 35 min | Closing | Discussion | Lessons learned, enterprise adoption path, Q&A, resources |
+| 0:00–0:30 | 30 min | Introduction | Lecture | Same as half-day |
+| 0:30–1:20 | 50 min | **Lab 1: Version Upgrade** | 🔧 Hands-on | Same as half-day |
+| 1:20–1:30 | 10 min | Debrief: Lab 1 | Discussion | Same as half-day |
+| 1:30–1:45 | 15 min | Break | ☕ | |
+| 1:45–2:30 | 45 min | **Lab 2: CLI Assessment** | 🔧 Hands-on | Same as half-day |
+| 2:30–3:00 | 30 min | **Lab 3: Custom Skills** | 🔧 Guided | Same as half-day |
+| 3:00–3:45 | 45 min | Lunch | 🍽️ | |
+| 3:45–4:35 | 50 min | **Lab 4: Predefined Task** | 🔧 Hands-on | Migrate file-based logging to console in NotesApp |
+| 4:35–4:45 | 10 min | Break | ☕ | |
+| 4:45–5:35 | 50 min | **Lab 5: CLI Execute** | 🔧 Hands-on | Run upgrade via CLI, batch operations |
+| 5:35–6:15 | 40 min | **Lab 6: Bring Your Own** | 🔧 Open Lab | Apply modernization to participant's own project |
+| 6:15–6:30 | 15 min | Closing | Discussion | Lessons learned, enterprise adoption path, Q&A, resources |
 
 ## Key
 
