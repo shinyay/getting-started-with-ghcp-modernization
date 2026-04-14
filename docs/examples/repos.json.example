@@ -1,0 +1,14 @@
+[
+  {
+    "name": "PhotoAlbum-Java",
+    "url": "https://github.com/Azure-Samples/PhotoAlbum-Java.git"
+  },
+  {
+    "name": "PhotoAlbum-DotNet",
+    "url": "https://github.com/Azure-Samples/PhotoAlbum.git"
+  },
+  {
+    "name": "NewsFeedSite",
+    "url": "https://github.com/Azure-Samples/NewsFeedSite.git"
+  }
+]

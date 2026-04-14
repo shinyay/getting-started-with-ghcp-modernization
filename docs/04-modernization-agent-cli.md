@@ -238,6 +238,8 @@ File: `~/.modernize/config.json` (user) or `.github/modernize/config.json` (repo
 
 **Precedence**: Environment variables > User config > Repository config
 
+> **Tip:** Example configuration files are available at [`docs/examples/repos.json.example`](../docs/examples/repos.json.example) and [`docs/examples/config.json.example`](../docs/examples/config.json.example).
+
 ### Multi-Repository Configuration
 
 File: `.github/modernize/repos.json`
@@ -296,6 +298,53 @@ gh pr create \
     --title "Modernization: migrate the app to azure" \
     --body "Automated modernization by GitHub Copilot agent"
 ```
+
+## CI/CD Integration
+
+The Modernize CLI is designed for pipeline integration. Use `--no-tty` to disable interactive prompts in headless environments.
+
+### Batch Assessment in GitHub Actions
+
+```yaml
+name: Modernization Assessment
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly Monday 6 AM
+  workflow_dispatch:
+
+jobs:
+  assess:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Modernize CLI
+        run: curl -fsSL https://raw.githubusercontent.com/microsoft/modernize-cli/main/scripts/install.sh | bash
+      - name: Authenticate
+        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+      - name: Run Assessment
+        run: modernize assess --multi-repo --no-tty --output-path ./reports
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: modernization-assessment
+          path: ./reports/
+```
+
+### Cloud-Delegated Batch Upgrade
+
+```bash
+# Upgrade all repos via Cloud Coding Agents, wait for completion
+modernize upgrade "Java 21" --delegate cloud --wait --no-tty
+```
+
+### Key CI/CD Flags
+
+| Flag | Purpose |
+|------|---------|
+| `--no-tty` | Disable interactive prompts (headless mode) |
+| `--delegate cloud` | Execute via Cloud Coding Agents |
+| `--wait` | Block until delegated tasks complete |
+| `--force` | Force restart if a prior delegation is in progress |
 
 ## Feedback
 
