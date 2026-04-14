@@ -226,6 +226,8 @@ List available LLM models and their multipliers.
 | `MODERNIZE_MODEL` | LLM model | `claude-sonnet-4.6` |
 | `MODERNIZE_COLLECT_TELEMETRY` | Enable/disable telemetry | `true` |
 
+> **Note:** The CLI default model (`claude-sonnet-4.6`) differs from the IDE extension default (`Claude Sonnet 4.5`). Both are optimized for their respective workflows.
+
 ### User Configuration
 
 File: `~/.modernize/config.json` (user) or `.github/modernize/config.json` (repo)

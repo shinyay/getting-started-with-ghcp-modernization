@@ -130,6 +130,8 @@ GitHub Copilot modernization uses an **MCP (Model Context Protocol) server** for
 - Or use the language model picker in chat window for current session
 - **Recommendation**: Newer models outperform previous ones; Claude Sonnet models recommended for accuracy
 
+> **Note:** The IDE extension and the Modernize CLI use different default models. The IDE uses **Claude Sonnet 4.5** (configurable via Custom Agent settings). The CLI uses **claude-sonnet-4.6** (configurable via `--model` flag or `MODERNIZE_MODEL` env var).
+
 ## Limitations
 
 - Java backend apps only (no frontend/mobile)

@@ -42,6 +42,34 @@ Create `.github/modernize/repos.json`:
 ]
 ```
 
+### Prerequisites for Cloud Delegation
+
+Before using `--delegate cloud`, configure each target repository:
+
+#### For Java Applications
+Add MCP server configuration in the repository's **Cloud Coding Agent settings** (Settings → Copilot → Coding Agent):
+```json
+{
+  "mcpServers": {
+    "app-modernization": {
+      "type": "local",
+      "command": "npx",
+      "tools": ["*"],
+      "args": ["-y", "@microsoft/github-copilot-app-modernization-mcp-server"]
+    }
+  }
+}
+```
+
+#### For .NET Framework Applications
+1. Add `.github/workflows/copilot-setup-steps.yaml` configured for `windows-latest` runner
+2. Disable the integrated firewall in repository Copilot settings
+
+#### General Requirements
+- GitHub Actions permissions must allow workflow creation in each repository
+- Check GitHub Actions quota limits for your organization
+- Ensure you have admin access to each repository for Cloud Coding Agent delegation
+
 ### Execution Options
 
 #### Local Assessment (Sequential)
