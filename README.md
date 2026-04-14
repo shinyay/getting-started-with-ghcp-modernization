@@ -290,9 +290,9 @@ getting-started-with-ghcp-modernization/
 
 ---
 
-## Licence
+## License
 
-Released under the [MIT license](https://gist.githubusercontent.com/shinyay/56e54ee4c0e22db8211e05e70a63247e/raw/f3ac65a05ed8c8ea70b653875ccac0c6dbc10ba1/LICENSE)
+Released under the [MIT License](LICENSE).
 
 ## Author
 
