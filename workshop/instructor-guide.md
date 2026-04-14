@@ -7,7 +7,7 @@
 - Have fallback plans for each lab (pre-generated outputs)
 - Set up a shared chat/channel for participant questions
 
-## 2. Introduction Block (20 min) — What to Cover
+## 2. Introduction Block (30 min) — What to Cover
 
 - What is GitHub Copilot modernization (2 min pitch)
 - Assess → Plan → Execute workflow diagram

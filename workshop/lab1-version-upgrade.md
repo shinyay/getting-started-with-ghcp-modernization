@@ -161,6 +161,10 @@ mvn clean package
 
 You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Java 21 + Spring Boot 3.x — with AI assistance tracking every change in git.
 
+> **📝 Heads-up for Lab 3:** If the agent migrated your JUnit 4 tests to JUnit 5
+> during this lab (check with `grep -r "org.junit.jupiter" src/test/`), you'll need
+> to reset the test files before starting Lab 3: `git checkout main -- src/test/`
+
 ---
 
 ## Checkpoints Summary

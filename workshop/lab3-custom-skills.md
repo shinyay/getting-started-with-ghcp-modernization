@@ -33,6 +33,15 @@ Before you begin, confirm every item below:
 
 > **Note:** If you completed Lab 1, the BookStore may already have some Spring Boot 3 changes but could still have JUnit 4 tests. That's exactly the scenario this lab addresses.
 
+> **⚠️ Important:** If Lab 1 already migrated your tests to JUnit 5 (check with
+> `grep -r "org.junit.jupiter" src/test/`), you need to reset the test files to
+> JUnit 4 before starting this lab:
+> ```bash
+> git checkout main -- src/test/
+> ```
+> This resets only the test files to their original JUnit 4 state while keeping
+> any other Lab 1 changes (pom.xml, source code).
+
 ---
 
 ## Background

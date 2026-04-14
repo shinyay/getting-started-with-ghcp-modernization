@@ -140,6 +140,18 @@ modernize plan create "upgrade to .NET 8" \
 - `plan.md` in `.github/modernize/{plan-name}/` — strategy document
 - `tasks.json` in `.github/modernize/{plan-name}/` — executable task breakdown
 
+**Options**:
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--source <path>` | `.` | Path to application source code |
+| `--plan-name <name>` | `modernization-plan` | Name for the modernization plan |
+| `--language <lang>` | Auto-detected | Programming language (`java`, `dotnet`, or `python`) |
+| `--overwrite` | Disabled | Overwrite an existing plan with the same name |
+| `--model <model>` | `claude-sonnet-4.6` | LLM model to use |
+| `--issue-url <url>` | None | GitHub issue URL to update with plan summary |
+
+> **Note:** Python language support (`--language python`) is available for plan creation. Java and .NET are the primary supported languages for the full Assess → Plan → Execute workflow.
+
 ### `modernize plan execute`
 
 Execute a previously created modernization plan.
@@ -169,6 +181,16 @@ modernize plan execute --delegate cloud
 5. Scans for CVEs
 6. Creates commits with descriptive messages
 7. Generates summary
+
+**Options**:
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--source <path>` | `.` | Path to application source code |
+| `--plan-name <name>` | `modernization-plan` | Name of the plan to execute |
+| `--language <lang>` | Auto-detected | Programming language (`java` or `dotnet`) |
+| `--model <model>` | `claude-sonnet-4.6` | LLM model to use |
+| `--delegate <delegate>` | `local` | Execution mode: `local` or `cloud` (Cloud Coding Agent) |
+| `--force` | Disabled | Force execution even when a CCA job is in progress |
 
 ### `modernize upgrade`
 
