@@ -107,7 +107,11 @@ The entire modernization process follows a **three-stage workflow**:
 | **.NET** | MSBuild (.csproj, .sln) | ASP.NET Core, Blazor, Azure Functions, WPF, WinForms, .NET Framework |
 
 ### Java Version Support
-- JDK 8 → 11 → 17 → 21 → 25
+
+**Supported source versions:** JDK 8, 11, 17, 21, 25
+**Upgrade target:** up to JDK 21
+
+> **Note:** JDK 25 is recognized as a source version (the tool can analyze JDK 25 projects) but the maximum upgrade target is currently JDK 21. See the [official FAQ](https://learn.microsoft.com/en-us/azure/developer/java/migration/migrate-github-copilot-app-modernization-for-java-faq) for the latest supported versions.
 
 ### .NET Version Support
 - .NET Framework → .NET (modern)

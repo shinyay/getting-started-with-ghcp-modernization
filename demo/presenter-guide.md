@@ -88,7 +88,7 @@ This order is intentional: audiences need to *believe* the tool works (live demo
 ## 5. Common Audience Q&A
 
 **Q1: What frameworks and languages does this support?**
-A: Today the Modernize extension focuses on Java and Spring Boot, which is where most enterprise modernization demand is. The underlying Copilot agent platform is language-agnostic, so support for .NET, Node.js, and other stacks is on the roadmap.
+A: Today GitHub Copilot modernization supports **Java and .NET** — both Generally Available. Java support covers Spring Boot, Jakarta EE, and Maven/Gradle projects. .NET support covers ASP.NET Core, Blazor, WPF, WinForms, Azure Functions, and .NET Framework upgrades. The `@modernize-dotnet` agent works in Visual Studio, VS Code, Copilot CLI, and GitHub.com. Today's demo focuses on Java, but the workflow is the same for .NET.
 
 **Q2: Does Copilot store or train on my code?**
 A: No. Code sent to Copilot for Business/Enterprise is not retained or used to train models. Your prompts and code context are discarded after the response is generated; check the Copilot Trust Centre for the latest data-handling details.

@@ -124,10 +124,11 @@ Both produce the same quality of output. Choose the interface that fits your wor
 
 The CLI's real power is **batch upgrades** across multiple repositories.
 
-Create a `repos.json` file in the workshop root:
+Create a `repos.json` file in the CLI's expected location:
 
 ```bash
-cat > repos.json << 'EOF'
+mkdir -p .github/modernize
+cat > .github/modernize/repos.json << 'EOF'
 [
   {
     "name": "BookStore",
@@ -140,6 +141,8 @@ cat > repos.json << 'EOF'
 ]
 EOF
 ```
+
+> **Note:** The Modernize CLI looks for `repos.json` at `.github/modernize/repos.json`. This is the same location used in Lab 2.
 
 ### Step 9 — Reset BookStore for the Batch Run
 
@@ -180,7 +183,7 @@ cd ../../..
 ### Step 12 — Clean Up
 
 ```bash
-rm repos.json
+rm .github/modernize/repos.json
 ```
 
 ---

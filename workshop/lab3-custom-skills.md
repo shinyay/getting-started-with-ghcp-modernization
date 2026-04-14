@@ -102,12 +102,7 @@ The SKILL.md follows the Agent Skills specification. Here's the expected structu
 ```markdown
 ---
 name: junit4-to-junit5
-description: Migrate JUnit 4 tests to JUnit 5 (Jupiter) API
-version: 1.0.0
-triggers:
-  - junit 4 to junit 5
-  - migrate junit
-  - upgrade test framework
+description: Migrate JUnit 4 tests to JUnit 5 (Jupiter) — replaces @RunWith with @ExtendWith, org.junit.Test with org.junit.jupiter.api.Test, and Assert.* with Assertions.*.
 ---
 
 # JUnit 4 → JUnit 5 Migration Skill

@@ -93,9 +93,9 @@ echo ""
 
 # Step 4: Build Task Tracker app
 echo "Building Task Tracker app..."
-if [ -d "$DEMO_DIR/demo-apps/task-tracker-app" ]; then
+if [ -d "$PARENT_DIR/demo-apps/task-tracker-app" ]; then
   echo -n "Building task-tracker-app... "
-  if (cd "$DEMO_DIR/demo-apps/task-tracker-app" && mvn clean package -q 2>/dev/null); then
+  if (cd "$PARENT_DIR/demo-apps/task-tracker-app" && mvn clean package -q 2>/dev/null); then
     echo -e "${GREEN}✅${NC}"
     RESULTS["Task Tracker build"]="✅"
   else

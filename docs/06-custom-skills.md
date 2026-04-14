@@ -161,7 +161,7 @@ modernize plan create "migrate from rabbitmq to azure service bus"
 
 ### Verification
 
-Check `.github/modernization/{plan-name}/tasks.json` for skill references:
+Check `.github/modernize/{plan-name}/tasks.json` for skill references:
 ```json
 "skills": [
   {
