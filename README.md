@@ -1,6 +1,6 @@
 # Getting Started with GitHub Copilot Modernization
 
-> **A 60-minute demo and comprehensive knowledge base for AI-powered Java and .NET application modernization — from legacy assessment to Azure deployment.**
+> **A 60-minute demo and comprehensive knowledge base for AI-powered application modernization with GitHub Copilot — from legacy assessment to code transformation.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://gist.githubusercontent.com/shinyay/56e54ee4c0e22db8211e05e70a63247e/raw/f3ac65a05ed8c8ea70b653875ccac0c6dbc10ba1/LICENSE)
 
@@ -16,6 +16,9 @@ This repository provides everything needed to **demonstrate** GitHub Copilot mod
 
 > [!NOTE]
 > GitHub Copilot modernization **IDE experience is GA** for both Java and .NET. The **Modernization Agent (CLI)** is in **Public Preview** as of April 2026. This demo covers both.
+
+> [!IMPORTANT]
+> **Hands-on scope:** All demo scripts, workshop labs, and sample applications are **Java-focused** (Spring Boot + Maven). The knowledge base docs (see [`docs/`](docs/)) provide comprehensive coverage of both **Java and .NET** modernization, including .NET-specific predefined tasks, IDE setup, and upgrade workflows. For .NET hands-on guidance, refer to the [official .NET modernization documentation](https://learn.microsoft.com/en-us/dotnet/core/porting/github-copilot-app-modernization-overview).
 
 ---
 
@@ -148,6 +151,9 @@ These 3 patterns represent the most common enterprise secret anti-patterns and a
 ## 🎓 Workshop — Hands-On Labs
 
 The workshop provides **participant-driven** hands-on labs using **different apps and scenarios** from the demo — minimal overlap by design.
+
+> [!NOTE]
+> The workshop is currently **Java-only**. .NET modernization is covered in the knowledge base at [`docs/03-ide-experience-dotnet.md`](docs/03-ide-experience-dotnet.md).
 
 ### Two Formats
 

@@ -1,5 +1,8 @@
 # Workshop Agenda — GitHub Copilot Modernization
 
+> [!NOTE]
+> All labs use **Java applications** (Spring Boot + Maven). .NET modernization concepts are covered in the knowledge base docs — see [`docs/03-ide-experience-dotnet.md`](/docs/03-ide-experience-dotnet.md).
+
 ## Half-Day Workshop (3 hours 30 minutes)
 
 | Time | Duration | Block | Type | Description |

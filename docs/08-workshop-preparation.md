@@ -12,6 +12,9 @@ GitHub Copilot modernization is Microsoft's AI-powered solution for **upgrading 
 
 ---
 
+> [!NOTE]
+> The **demo scenarios** below include both Java and .NET suggestions, but the **implemented** demo scripts in `demo/` and workshop labs in `workshop/` are currently **Java-only**. .NET scenarios are described here for planning purposes — you would need to set up your own .NET sample application to deliver them live.
+
 ## Potential Demo Scenarios
 
 ### Demo 1: IDE Experience — Java Spring Boot Upgrade (Beginner)
@@ -31,7 +34,7 @@ GitHub Copilot modernization is Microsoft's AI-powered solution for **upgrading 
 - AI handles the edge cases
 - Every change is a reviewable git commit
 
-### Demo 2: IDE Experience — .NET Framework → .NET 10 Upgrade (Intermediate)
+### Demo 2: IDE Experience — .NET Framework → .NET 10 Upgrade (Intermediate) — *Not yet implemented in this repo*
 
 **Goal**: Upgrade a .NET Framework app to .NET 10 using Visual Studio
 

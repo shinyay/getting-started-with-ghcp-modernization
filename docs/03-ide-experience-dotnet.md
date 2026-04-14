@@ -4,6 +4,9 @@
 
 The IDE experience for .NET is delivered through **Visual Studio**, **Visual Studio Code**, **GitHub Copilot CLI**, and **GitHub.com**, providing upgrade and Azure migration capabilities with a structured three-stage workflow.
 
+> [!NOTE]
+> This document covers the .NET modernization capabilities based on the [official Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/core/porting/github-copilot-app-modernization-overview). The demo scripts and workshop labs in this repository are **Java-focused** — no .NET hands-on exercises are currently included. For .NET hands-on experience, use the official [PhotoAlbum .NET sample](https://github.com/Azure-Samples/PhotoAlbum).
+
 ## Agent Name
 
 The .NET modernization agent is identified as:
