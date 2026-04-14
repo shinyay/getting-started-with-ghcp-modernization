@@ -119,6 +119,20 @@ A: Three mechanisms: (1) the CLI assesses your entire portfolio from a `repos.js
 
 ---
 
+## 5b. Extended Demo Timing Variant (70 min — with .NET scenario)
+
+Insert **Act 3c** (10 min .NET walkthrough) between Act 3b and Act 4. Reduce buffer from 5 min to 0 min. Best for mixed Java/.NET audiences.
+
+| Time | Act | Duration | Notes |
+|------|-----|----------|-------|
+| 48:00–58:00 | **Act 3c: .NET Upgrade** | 10 min | Show DotnetSampleApp + `@modernize-dotnet` + comparison table |
+| 58:00–65:00 | Act 4: Closing | 7 min | Same as standard |
+| 65:00–70:00 | Buffer / Q&A | 5 min | |
+
+See [`demo/act3c-scenario3-dotnet-upgrade.md`](act3c-scenario3-dotnet-upgrade.md) for the full script.
+
+---
+
 ## 6. Recovery Strategies
 
 | Scenario | Trigger | Action | Recovery Line |

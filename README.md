@@ -18,7 +18,7 @@ This repository provides everything needed to **demonstrate** GitHub Copilot mod
 > GitHub Copilot modernization **IDE experience is GA** for both Java and .NET. The **Modernization Agent (CLI)** is in **Public Preview** as of April 2026. This demo covers both.
 
 > [!IMPORTANT]
-> **Hands-on scope:** All demo scripts, workshop labs, and sample applications are **Java-focused** (Spring Boot + Maven). The knowledge base docs (see [`docs/`](docs/)) provide comprehensive coverage of both **Java and .NET** modernization, including .NET-specific predefined tasks, IDE setup, and upgrade workflows. For .NET hands-on guidance, refer to the [official .NET modernization documentation](https://learn.microsoft.com/en-us/dotnet/core/porting/github-copilot-app-modernization-overview).
+> **Hands-on scope:** Demo scripts and workshop labs are primarily **Java-focused** (Spring Boot + Maven). A .NET upgrade lab (Lab 7) and sample app are available for full-day workshops. The knowledge base docs (see [`docs/`](docs/)) provide comprehensive coverage of both **Java and .NET** modernization. For additional .NET hands-on guidance, refer to the [official .NET modernization documentation](https://learn.microsoft.com/en-us/dotnet/core/porting/github-copilot-app-modernization-overview).
 
 ---
 
@@ -174,6 +174,7 @@ The workshop provides **participant-driven** hands-on labs using **different app
 | [Lab 4](workshop/lab4-predefined-task.md) | 50 min | Full only | Predefined task: file logging → console | NotesApp |
 | [Lab 5](workshop/lab5-cli-execute.md) | 50 min | Full only | CLI batch upgrade + plan execute | BookStore |
 | [Lab 6](workshop/lab6-bring-your-own.md) | 40 min | Full only | Apply to your own project | Participant's app |
+| [Lab 7](workshop/lab7-dotnet-upgrade.md) | 50 min | Full (optional) | .NET 6 → .NET 10 upgrade | DotnetSampleApp |
 
 ### Workshop Apps
 
@@ -183,6 +184,7 @@ The workshop provides **participant-driven** hands-on labs using **different app
 | **NotesApp** | Spring Boot 3.2 + Java 17 + file logging | 4 | Logback FILE appender, FileWriter audit log |
 | **inventory-api** | Spring Boot 2.7 + Java 8 (stub) | 2, 5 | CLI portfolio variety |
 | **order-service** | Spring Boot 3.1 + Java 17 (stub) | 2, 5 | CLI portfolio variety |
+| **DotnetSampleApp** | .NET 6.0 + hardcoded secrets | 7 | .NET 6→10 upgrade |
 
 ### Workshop Setup
 
@@ -258,6 +260,7 @@ getting-started-with-ghcp-modernization/
 ├── workshop-apps/                         # Workshop-specific applications
 │   ├── bookstore-app/                     #   Spring Boot 2.7 + Java 11 + JUnit 4 (Labs 1,3,5)
 │   ├── notes-app/                         #   Spring Boot 3.2 + file logging (Lab 4)
+│   ├── dotnet-sample-app/                 #   .NET 6.0 + hardcoded secrets (Lab 7)
 │   └── stub-repos/
 │       ├── inventory-api/                 #   SB 2.7 + Java 8 stub (Labs 2,5)
 │       └── order-service/                 #   SB 3.1 + Java 17 stub (Labs 2,5)

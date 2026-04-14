@@ -32,6 +32,8 @@
 | 4:45–5:35 | 50 min | **Lab 5: CLI Execute** | 🔧 Hands-on | Run upgrade via CLI, batch operations |
 | 5:35–6:15 | 40 min | **Lab 6: Bring Your Own** | 🔧 Open Lab | Apply modernization to participant's own project |
 | 6:15–6:30 | 15 min | Closing | Discussion | Lessons learned, enterprise adoption path, Q&A, resources |
+| | | | | |
+| *6:30–7:20* | *50 min* | ***Lab 7: .NET Upgrade** (optional)* | *🔧 Hands-on* | *Upgrade DotnetSampleApp from .NET 6 to .NET 10 using `@modernize-dotnet`* |
 
 ## Key
 
