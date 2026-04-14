@@ -20,7 +20,7 @@ check_fail() {
 }
 
 usage() {
-  echo "Usage: $0 lab1|lab2|lab3|lab4|lab5"
+  echo "Usage: $0 lab1|lab2|lab3|lab4|lab5|lab6|lab7"
   echo ""
   echo "Available labs:"
   echo "  lab1  — BookStore version upgrade (javax → jakarta)"
@@ -28,6 +28,8 @@ usage() {
   echo "  lab3  — Custom skill (JUnit 4 → JUnit 5)"
   echo "  lab4  — NotesApp predefined task (logging)"
   echo "  lab5  — CLI execute (full upgrade)"
+  echo "  lab6  — Bring Your Own App (manual validation)"
+  echo "  lab7  — .NET upgrade (manual validation)"
   exit 1
 }
 
@@ -156,6 +158,34 @@ case "$LAB" in
     else
       check_fail "bookstore-app build failed"
     fi
+    ;;
+
+  lab6)
+    echo ""
+    echo "Lab 6: Bring Your Own App"
+    echo "==========================================="
+    echo ""
+    echo "Lab 6 uses your own project — no automated validation available."
+    echo "Manual verification:"
+    echo "  1. Check that you're on a 'modernize-workshop' branch"
+    echo "  2. Run: git log --oneline | head -5 (should show modernization commits)"
+    echo "  3. Run: mvn clean test OR dotnet test (should pass)"
+    echo ""
+    ;;
+
+  lab7)
+    echo ""
+    echo "Lab 7: .NET Upgrade"
+    echo "==========================================="
+    echo ""
+    echo "Lab 7 uses the .NET DotnetSampleApp."
+    echo "Manual verification:"
+    echo "  1. Check: grep 'TargetFramework' workshop-apps/dotnet-sample-app/*.csproj"
+    echo "     (should show net10.0 or later)"
+    echo "  2. Run: cd workshop-apps/dotnet-sample-app && dotnet build"
+    echo "     (should succeed)"
+    echo "  3. Check: ls .github/upgrades/ (should contain upgrade artifacts)"
+    echo ""
     ;;
 
   *)

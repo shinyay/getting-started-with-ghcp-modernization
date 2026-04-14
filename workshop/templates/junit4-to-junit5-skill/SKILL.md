@@ -62,11 +62,11 @@ assertNotNull(result);
 assertTrue(condition);
 ```
 
-<!-- TODO: Add more patterns below if your organization has specific conventions -->
+<!-- TODO: Add additional patterns specific to your organization's codebase -->
 
 ### Pattern 4: Setup and Teardown
 
-<!-- TODO: Add your organization's pattern for @Before/@After migration -->
+<!-- TODO: Extend this pattern with any project-specific @Before/@After teardown logic -->
 
 **Before (JUnit 4):**
 ```java

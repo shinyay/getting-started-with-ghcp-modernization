@@ -126,12 +126,17 @@ git commit -m "feat: modernization from workshop lab 6"
 
 No problem — use the **NewsFeedSite** sample application. It's a rich modernization target.
 
-### Clone NewsFeedSite
+### Fork and Clone NewsFeedSite
+
+1. **Fork** the repo at https://github.com/Azure-Samples/NewsFeedSite (click the "Fork" button)
+2. Clone **your fork**:
 
 ```bash
-git clone https://github.com/Azure-Samples/NewsFeedSite.git
+git clone https://github.com/YOUR-USERNAME/NewsFeedSite.git
 cd NewsFeedSite
 ```
+
+> **Why fork?** You need write access to create branches. Cloning the original repo directly gives you read-only access.
 
 ### About NewsFeedSite
 
