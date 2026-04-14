@@ -143,6 +143,8 @@ modernize upgrade "Java 21" --delegate cloud --wait --no-tty
 
 ---
 
+> **Alternative tool:** For legacy bulk assessment, the [AppCAT CLI](https://learn.microsoft.com/en-us/azure/migrate/appcat/appcat-7-cli-guide) also supports multi-project scanning via the `-bulk` flag. The Modernize CLI is the recommended tool for new modernization workflows.
+
 ## Key Resources
 
 | Resource | URL |

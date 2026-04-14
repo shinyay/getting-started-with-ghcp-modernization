@@ -44,3 +44,7 @@ curl -X POST http://localhost:8081/api/tasks \
 
 curl http://localhost:8081/api/tasks
 ```
+
+## Demo Usage
+
+This app is used in the [Secrets Migration demo](../../demo/act3-scenario2-secrets.md) (Act 3b, 15 min).

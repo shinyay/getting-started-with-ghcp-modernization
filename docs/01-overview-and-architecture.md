@@ -164,7 +164,7 @@ Modernized Azure apps can integrate with:
 ## Licensing
 
 Available to **any GitHub Copilot plan**:
-- Copilot Free (VS 2026 v18.1+)
+- Copilot Free (available in Visual Studio 2026 and later)
 - Copilot Pro / Pro+
 - Copilot Business
 - Copilot Enterprise
