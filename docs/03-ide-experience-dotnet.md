@@ -1,5 +1,7 @@
 # IDE Experience — .NET Modernization
 
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+
 ## Overview
 
 The IDE experience for .NET is delivered through **Visual Studio**, **Visual Studio Code**, **GitHub Copilot CLI**, and **GitHub.com**, providing upgrade and Azure migration capabilities with a structured three-stage workflow.

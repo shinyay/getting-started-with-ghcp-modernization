@@ -1,5 +1,7 @@
 # IDE Experience — Java Modernization
 
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+
 ## Overview
 
 The IDE experience for Java is delivered through **VS Code** and **IntelliJ IDEA** extensions, providing an interactive, developer-centric modernization workflow using GitHub Copilot Agent Mode.

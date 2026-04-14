@@ -1,5 +1,7 @@
 # GitHub Copilot Modernization — Overview & Architecture
 
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+
 ## What Is It?
 
 GitHub Copilot modernization is an **agentic, end-to-end solution** that analyzes, upgrades, and migrates **Java** and **.NET** applications to Azure. It combines AI-powered intelligence with deterministic automation to modernize applications from assessment through deployment.

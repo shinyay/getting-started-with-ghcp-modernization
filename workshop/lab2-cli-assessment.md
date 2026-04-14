@@ -68,6 +68,12 @@ mkdir -p .github/modernize
 
 ### Step 3 — Create the repos.json manifest
 
+> **💡 Shortcut:** Instead of manually editing paths, run the helper script:
+> ```bash
+> bash workshop/generate-repos-json.sh
+> ```
+> This auto-generates `repos.json` with the correct absolute paths for your system. Then skip to Step 4.
+
 Create the file `.github/modernize/repos.json` that tells the CLI which applications to assess:
 
 ```bash

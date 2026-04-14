@@ -1,5 +1,7 @@
 # Key Concepts & Comparison Matrix
 
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+
 ## Concept Map
 
 ```

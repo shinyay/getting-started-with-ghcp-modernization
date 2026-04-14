@@ -1,5 +1,7 @@
 # Batch Operations — Enterprise-Scale Modernization
 
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+
 ## Overview
 
 Batch operations enable **enterprise-scale modernization** by processing multiple applications simultaneously. There are two batch capabilities:

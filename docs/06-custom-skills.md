@@ -1,5 +1,7 @@
 # Custom Skills — Reusable Migration Patterns
 
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+
 ## Overview
 
 Custom skills are the **organizational knowledge capture** mechanism of GitHub Copilot modernization. They enable teams to define organization-specific migration patterns, internal library usage, and coding standards as **reusable, shareable skills** that can be applied consistently across projects and teams.

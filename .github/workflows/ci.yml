@@ -1,0 +1,57 @@
+name: Repository Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-java-apps:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - app: demo-apps/task-tracker-app
+            goal: package
+          - app: workshop-apps/bookstore-app
+            goal: package
+          - app: workshop-apps/notes-app
+            goal: package
+          - app: workshop-apps/stub-repos/inventory-api
+            goal: compile
+          - app: workshop-apps/stub-repos/order-service
+            goal: compile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+      - name: Build ${{ matrix.app }}
+        run: |
+          cd ${{ matrix.app }}
+          mvn clean ${{ matrix.goal }} -q
+
+  validate-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax check shell scripts
+        run: |
+          bash -n demo/setup.sh
+          bash -n workshop/setup.sh
+          bash -n workshop/validate.sh
+          bash -n workshop/generate-repos-json.sh
+
+  validate-json:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JSON examples
+        run: |
+          for f in docs/examples/*.example; do
+            echo "Validating $f..."
+            python3 -m json.tool "$f" > /dev/null
+          done
+          echo "✅ All JSON examples valid"

@@ -1,5 +1,7 @@
 # Workshop Preparation — Key Takeaways & Demo Scenarios
 
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+
 ## Executive Summary for Workshop
 
 GitHub Copilot modernization is Microsoft's AI-powered solution for **upgrading and migrating Java and .NET applications to Azure**. It follows an **Assess → Plan → Execute** model, operates through both IDE (for developers) and CLI (for architects), and supports enterprise-scale batch operations.
