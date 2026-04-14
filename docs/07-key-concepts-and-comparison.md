@@ -133,6 +133,8 @@ GitHub Copilot Modernization
 | 9 | Monitoring | OpenTelemetry on Azure | log4net/serilog/Event Log → OpenTelemetry |
 | 10 | Caching | Azure Cache for Redis | In-memory/local Redis → Azure Cache for Redis |
 
+For the latest .NET predefined task list, see the [official .NET modernization documentation](https://learn.microsoft.com/en-us/dotnet/core/porting/github-copilot-app-modernization-overview#predefined-tasks-for-migration).
+
 ## Key Technologies Used
 
 | Technology | Role |

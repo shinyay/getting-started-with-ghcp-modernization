@@ -182,3 +182,24 @@ When starting an upgrade, Copilot collects:
 ## Telemetry
 
 Collects only: project types, upgrade intent, upgrade duration. No user-identifiable information. Can be disabled in Visual Studio privacy settings.
+
+## Cloud Coding Agent Setup for .NET Framework
+
+For .NET Framework applications using Cloud Coding Agents, configure a Windows runner:
+
+**File:** `.github/workflows/copilot-setup-steps.yaml`
+```yaml
+name: "Copilot Setup Step (Windows)"
+on:
+  workflow_dispatch:
+jobs:
+  copilot-setup-steps:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+```
+
+Also disable the integrated firewall in repository **Settings → Copilot → Coding Agent**.

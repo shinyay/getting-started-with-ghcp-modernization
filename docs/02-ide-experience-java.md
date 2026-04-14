@@ -53,6 +53,13 @@ When you invoke a task, the agent automatically:
 - **VS Code tip**: Set `chat.tools.autoApprove` to `true` and `chat.agent.maxRequests` to `128`
 - **IntelliJ tip**: Enable **Auto-approve** in Tools > GitHub Copilot, enable **Trust MCP Tool Annotations**, set **Max Requests** to `99`
 
+### IntelliJ IDEA Detailed Configuration
+
+1. Open **Tools** → **GitHub Copilot** → **Configuration**
+2. Enable **Auto-approve** to skip confirmation prompts
+3. Enable **Trust MCP Tool Annotations** for enhanced code transformation
+4. Set **Max Requests** to `99` to avoid mid-task interruptions
+
 ## Supported Java Upgrade Paths
 
 | From | To |
@@ -148,3 +155,4 @@ GitHub Copilot modernization uses an **MCP (Model Context Protocol) server** for
 2. Run all tests and complete QA checks per your change management process
 3. Enable "suggestions matching public code" in GitHub Copilot settings (prevents blocking of pom.xml changes)
 4. Use projects meeting the specified characteristics (Maven/Gradle, Git-based)
+5. For additional utilities (build validation, CVE scanning, test migration), see the [Java upgrade utilities documentation](https://learn.microsoft.com/en-us/java/upgrade/tools)

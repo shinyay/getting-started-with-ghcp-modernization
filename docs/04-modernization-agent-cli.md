@@ -95,6 +95,9 @@ modernize assess --multi-repo
 
 # Delegate to Cloud Coding Agents
 modernize assess --delegate cloud
+
+# Block until cloud assessment completes (useful in CI/CD)
+modernize assess --delegate cloud --wait
 ```
 
 **Options**:
