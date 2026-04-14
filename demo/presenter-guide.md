@@ -29,6 +29,21 @@
 | 52:00–55:00 | Act 4 — Recap & Call to Action | Narration | — | Recap Discover → Modernize → Scale; share resource links |
 | 55:00–60:00 | **Buffer** | — | — | Overflow, audience Q&A, or wrap-up |
 
+### Timing Variants
+
+**30-Minute Abbreviated Version:**
+
+| Time | Act | Content |
+|------|-----|---------|
+| 00:00–03:00 | Act 1 (shortened) | Quick problem hook — show 2 files |
+| 03:00–05:00 | Act 2 (skip) | Brief mention of CLI capabilities |
+| 05:00–22:00 | Act 3a | Version upgrade — LIVE (full 17 min) |
+| 22:00–28:00 | Act 4 (shortened) | Quick recap + call to action |
+| 28:00–30:00 | Buffer | Q&A |
+
+**90-Minute Extended Version (with .NET + deep Q&A):**
+Add Act 3c (.NET Upgrade, 10 min) between Acts 3b and 4. Expand Act 2 to 12 min (deeper CLI exploration). Expand Buffer to 15 min for extended Q&A.
+
 ---
 
 ## 2. Narrative Arc Summary

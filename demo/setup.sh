@@ -50,8 +50,39 @@ print_header
 
 # Step 1: Check prerequisites
 echo "Checking prerequisites..."
-check_command "java" "Java"
-check_command "mvn" "Maven"
+
+# Java version check (21+)
+if command -v java &> /dev/null; then
+  JAVA_VERSION=$(java -version 2>&1 | head -1 | sed 's/.*"\(.*\)".*/\1/' | cut -d. -f1)
+  if [ "$JAVA_VERSION" -ge 21 ] 2>/dev/null; then
+    echo -e "${GREEN}✅${NC} Java $JAVA_VERSION"
+    RESULTS["Java"]="✅"
+  else
+    echo -e "${RED}❌${NC} Java 21+ required (found: $JAVA_VERSION)"
+    RESULTS["Java"]="❌"
+  fi
+else
+  echo -e "${RED}❌${NC} Java not found"
+  RESULTS["Java"]="❌"
+fi
+
+# Maven version check (3.8+)
+if command -v mvn &> /dev/null; then
+  MVN_VERSION=$(mvn -version 2>&1 | head -1 | sed 's/.*Maven \([0-9]*\.[0-9]*\).*/\1/')
+  MVN_MAJOR=$(echo "$MVN_VERSION" | cut -d. -f1)
+  MVN_MINOR=$(echo "$MVN_VERSION" | cut -d. -f2)
+  if [ "$MVN_MAJOR" -ge 4 ] 2>/dev/null || ([ "$MVN_MAJOR" -eq 3 ] && [ "$MVN_MINOR" -ge 8 ]) 2>/dev/null; then
+    echo -e "${GREEN}✅${NC} Maven $MVN_VERSION"
+    RESULTS["Maven"]="✅"
+  else
+    echo -e "${RED}❌${NC} Maven 3.8+ required (found: $MVN_VERSION)"
+    RESULTS["Maven"]="❌"
+  fi
+else
+  echo -e "${RED}❌${NC} Maven not found"
+  RESULTS["Maven"]="❌"
+fi
+
 check_command "git" "Git"
 check_command "code" "VS Code CLI"
 echo ""

@@ -1,3 +1,4 @@
+<!-- Generated: April 2026 | If the actual modernization output differs significantly, regenerate using the current tool version. -->
 # Fallback: Scenario 1 — Version Upgrade Expected Diff
 
 > Use this if the live demo stalls. Walk through these changes to show what the upgrade produces.

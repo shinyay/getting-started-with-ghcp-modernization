@@ -1,3 +1,4 @@
+<!-- Generated: April 2026 | If the actual modernization output differs significantly, regenerate using the current tool version. -->
 # GitHub Copilot Modernization — Portfolio Assessment Report
 
 > **Generated**: 2026-04-12  
