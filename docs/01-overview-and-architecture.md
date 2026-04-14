@@ -30,6 +30,22 @@ GitHub Copilot modernization is delivered through **two complementary layers** t
 
 ### How They Work Together
 
+```mermaid
+graph TD
+    subgraph CLI["MODERNIZATION AGENT (CLI) — Architects & App Owners"]
+        A["Assess\n(multi-repo)"] --> B["Plan\n(standards, skills)"]
+        B --> C["Hand off to\ndevelopers"]
+    end
+    subgraph IDE["IDE EXPERIENCE — Developers"]
+        D["Transform\ncode"] --> E["Build &\nvalidate"]
+        E --> F["Containerize\n& deploy"]
+    end
+    C --> D
+```
+
+<details>
+<summary>ASCII version (for terminals)</summary>
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │            MODERNIZATION AGENT (CLI)                         │
@@ -51,6 +67,8 @@ GitHub Copilot modernization is delivered through **two complementary layers** t
 │  └──────────────┘  └──────────────┘  └─────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+</details>
 
 ## Core Workflow: Assess → Plan → Execute
 
