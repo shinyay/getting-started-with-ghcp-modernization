@@ -293,6 +293,12 @@ getting-started-with-ghcp-modernization/
 
 ---
 
+## 💬 Feedback
+
+- **This repository**: [GitHub Issues](https://github.com/shinyay/getting-started-with-ghcp-modernization/issues)
+- **Modernization Agent (CLI)**: [github-copilot-appmod issues](https://github.com/microsoft/github-copilot-appmod/issues/new?template=feedback-template.yml) or [feedback form](https://aka.ms/ghcp-appmod/feedback)
+- **.NET modernization**: [modernize-dotnet issues](https://github.com/dotnet/modernize-dotnet/issues)
+
 ## License
 
 Released under the [MIT License](LICENSE).
