@@ -386,6 +386,105 @@ See [`docs/examples/repos.json.full-format.example`](./examples/repos.json.full-
 
 > **Tip:** When using `--source path/to/repos.json`, you **cannot** mix it with other `--source` arguments in the same command. Pick one mode per run.
 
+## Cloud Delegation Constraints
+
+`--delegate cloud` hands the actual work to **GitHub's Cloud Coding Agent (CCA)** — your laptop is freed up immediately, and the CLI either exits (without `--wait`) or polls until completion. Before reaching for it, know the limits:
+
+| Constraint | Detail |
+|---|---|
+| **Repository host** | **`github.com` only.** GitHub Enterprise Server, GitLab, Bitbucket, Azure DevOps, and **local-only paths** are **not supported** for cloud delegation. Use `--delegate local` for those. |
+| **Repository visibility** | The cloud agent needs read/write access through your GitHub identity. Private repos require `gh auth` to be authenticated as a user with the right permissions on each target repo. |
+| **Concurrency** | Only one CCA job per repo at a time. A second `--delegate cloud` run aborts unless you pass `--force` (assess) / `--force` (plan execute). |
+| **Cost / quota** | Cloud runs consume your GitHub Copilot model quota (multipliers from `modernize help models` apply). Long-running upgrades may incur substantial usage — start with `--model claude-haiku-4.5` (0.33×) or a 0× model when validating pipelines. |
+| **Artifacts** | Reports/plans are written to the source repo via a PR/branch (depending on the run). Local working tree is not modified. |
+| **`--wait`** | Optional. Without it, the CLI returns the job ID and exits; you can re-attach later. With it, the CLI blocks until completion. |
+| **Logs** | View progress at <https://github.com/{owner}/{repo}/actions> (look for the *Copilot Modernization* runs). |
+
+> **Decision rule of thumb:** Use `--delegate local` for first-touch demos, GitHub-Enterprise / GitLab / ADO repos, and anything with a hard offline requirement. Use `--delegate cloud --wait` for nightly portfolio assessments in CI. Use `--delegate cloud` (no wait) when you trigger a long-running job from a webhook and want to free the runner.
+
+## Output Artifacts
+
+Both `assess` and `plan create` emit files in deterministic locations. Knowing the layout makes scripting (CI, validators, dashboards) easy.
+
+### `modernize assess` output tree
+
+`assess` writes to **two** places — an aggregate report at the CWD and per-app raw analysis inside each source folder:
+
+```text
+# Aggregate report — relative to the directory where you ran the command
+.github/modernize/assessment/
+└── reports-{yyyyMMddHHmmss}/
+    ├── index.{md,html}            # Consolidated dashboard
+    ├── aggregate-report.json      # Machine-readable summary across all apps
+    └── repos/
+        └── {app-name}/
+            ├── report.{md,html}   # Per-app report
+            └── report.json
+
+# Per-app raw analysis — relative to each --source path
+{source}/.github/modernize/
+├── .gitignore                     # Auto-created, contains: *
+└── assessment/
+    ├── reports/
+    │   └── report-{yyyyMMddHHmmss}/
+    │       ├── summary.md
+    │       └── report.json
+    └── engines/appcat/result/
+        ├── analysis.log
+        ├── report.json
+        ├── result.json
+        └── shim.log
+```
+
+### `modernize plan create` output tree
+
+```text
+{source}/.github/modernize/
+├── .gitignore                     # Auto-created, contains: *
+└── {plan-name}/                   # Default plan-name: "modernization-plan"
+    ├── plan.md                    # Strategy, success criteria, rationale
+    └── tasks.json                 # Structured, executable task list
+```
+
+### `tasks.json` schema (observed in v0.0.293)
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "tasks": [
+    {
+      "type": "upgrade",
+      "id": "001-upgrade-java-21-springboot-35",
+      "description": "Upgrade BookStore application to Java 21 and Spring Boot 3.5",
+      "reason": "...",
+      "requirements": "...",
+      "environmentConfiguration": null,
+      "status": null,
+      "taskSummary": null,
+      "skills": [
+        { "name": "create-java-upgrade-plan", "location": "builtin" }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      },
+      "successCriteriaStatus": {
+        "passBuild": null,
+        "generateNewUnitTests": null,
+        "passUnitTests": null
+      }
+    }
+  ]
+}
+```
+
+You can hand-edit `tasks.json` between `plan create` and `plan execute` to reorder, drop, or extend tasks — the executor reads the file fresh on each run.
+
+### Git hygiene
+
+The CLI auto-creates `.gitignore` files inside every `.github/modernize/` it touches (content: `*`), and this repo's root `.gitignore` excludes `.github/modernize/` outright. **CLI artifacts never enter your commits unless you opt in** by adding a path explicitly.
+
 ## Global Options
 
 | Option | Description |
@@ -451,7 +550,12 @@ jobs:
       - name: Authenticate
         run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
       - name: Run Assessment
-        run: modernize assess --multi-repo --no-tty --output-path ./reports
+        run: |
+          modernize assess \
+            --source ./repo-a --source ./repo-b \
+            --format markdown \
+            --no-tty \
+            --output-path ./reports
       - name: Upload Report
         uses: actions/upload-artifact@v4
         with:
