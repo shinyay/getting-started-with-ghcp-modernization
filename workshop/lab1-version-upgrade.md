@@ -128,10 +128,12 @@ The agent will now make changes. Watch for:
 After the assessment phase completes, verify that plan files were generated:
 
 ```bash
-ls .github/
+ls .github/java-upgrade/
 ```
 
-✅ **Expected:** You should see modernization plan files (e.g., `modernize/` directory or plan artifacts).
+✅ **Expected:** A timestamped working directory such as `20260421-bks-001/` containing `plan.md` (and later `progress.md`).
+
+> 📝 The directory name follows the pattern `{yyyyMMdd}-bks-{NNN}`, where `bks` is the BookStore app slug and `NNN` is a zero-padded sequence number assigned by the agent.
 
 ### Step 10 — Verify with Checkpoint 2
 
@@ -173,7 +175,7 @@ You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Ja
 
 | # | Check | Command | Expected |
 |---|-------|---------|----------|
-| 1 | Plan files generated | `ls .github/` | Modernization plan artifacts exist |
+| 1 | Plan files generated | `ls .github/java-upgrade/` | Timestamped dir (e.g. `20260421-bks-001/`) with `plan.md` |
 | 2a | Jakarta imports present | `grep -r "jakarta.persistence" src/main/` | One or more matches |
 | 2b | Javax imports removed | `grep -r "javax.persistence" src/main/` | No output |
 | 3 | Build passes | `mvn clean package` | `BUILD SUCCESS`, exit code 0 |
