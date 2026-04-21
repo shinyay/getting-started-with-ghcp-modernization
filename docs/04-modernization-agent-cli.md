@@ -96,42 +96,67 @@ modernize <command> [options]
 
 Analyze applications and generate assessment reports.
 
+> **Supported languages:** Java, .NET, **and JavaScript/TypeScript** (per `modernize assess --help` in v0.0.293). JavaScript/TypeScript support is newer than the rest of the workflow — coverage of upgrade rules is more limited and the `--language` flag below does not yet accept it.
+
 ```bash
-# Basic assessment
+# Basic assessment (uses current directory, writes HTML report)
 modernize assess
+
+# Markdown output (use this when scripting / piping into validators)
+modernize assess --format markdown
 
 # Custom output path
 modernize assess --output-path ./reports/assessment
 
-# Assess and update GitHub issue
+# Assess and update a GitHub issue
 modernize assess --issue-url https://github.com/org/repo/issues/123
 
 # Specific project
 modernize assess --source /path/to/project
 
-# Multi-repo assessment
-modernize assess --multi-repo
+# Multi-repo assessment — repeat --source per project
+modernize assess \
+    --source ./workshop-apps/bookstore-app \
+    --source ./workshop-apps/notes-app \
+    --source ./workshop-apps/inventory-service
+
+# Multi-repo assessment via JSON config (cannot mix with --source paths)
+modernize assess --source ./.github/modernize/repos.json
 
 # Delegate to Cloud Coding Agents
 modernize assess --delegate cloud
 
 # Block until cloud assessment completes (useful in CI/CD)
 modernize assess --delegate cloud --wait
+
+# Verbose mode for troubleshooting (shows every rule + token usage)
+modernize assess --verbose
 ```
+
+> **⚠️ `--multi-repo` is deprecated.** Earlier releases used `modernize assess --multi-repo` to scan all subdirectories of the current folder. As of v0.0.293, prefer **`--source` (repeatable)** for explicit lists, or **`--source path/to/repos.json`** for portfolio-scale runs. The `--multi-repo` flag still parses today but emits a deprecation notice and may be removed in a future release.
 
 **Options**:
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--source <path>` | `.` | Path to source project |
-| `--output-path <path>` | `.github/modernize/assessment/` | Custom output path |
-| `--issue-url <url>` | None | GitHub issue URL to update |
-| `--multi-repo` | Disabled | Scan subdirectories for multiple repos |
-| `--model <model>` | `claude-sonnet-4.6` | LLM model to use |
-| `--delegate <delegate>` | `local` | `local` or `cloud` |
-| `--wait` | Disabled | Wait for cloud delegation to complete |
-| `--force` | Disabled | Force restart delegation |
+| `--source <path \| URL \| repos.json>` | `.` | Source to assess. Repeatable. Accepts a local path, a Git URL, OR a single JSON config file (cannot mix with other source types). |
+| `--output-path <path>` | `.github/modernize/assessment/` | Output folder (CWD-relative). |
+| `--format <format>` | `html` | `html` or `markdown`. **Default is HTML** — pass `markdown` when you need `.md` files (e.g. `validate.sh`, GitHub issue bodies). |
+| `--issue-url <url>` | None | GitHub issue URL to update. |
+| `--assess-config <path>` | None | YAML overrides for assessment parameters. See [aka.ms/ghcp-modernization-agent/assess-config](https://aka.ms/ghcp-modernization-agent/assess-config). |
+| `--model <model>` | `claude-sonnet-4.6` | LLM model. Run `modernize help models` for the full list. |
+| `--delegate <delegate>` | `local` | `local` or `cloud`. Cloud requires `github.com` repos. |
+| `--wait` | Disabled | Block until cloud delegation completes (only with `--delegate cloud`). |
+| `--force` | Disabled | Force restart delegation, ignoring an in-flight cloud job. |
+| `--verbose` | Disabled | Emit per-rule progress, token counts, and timings. |
+| `--no-tty` | Disabled | Plain-text output (CI/CD). Per-command flag — not global. |
+| `--multi-repo` | *deprecated* | Replaced by repeatable `--source`. |
 
-**Output**: JSON, MD, and HTML reports + summary + optional GitHub issue update
+**Output**: Writes to TWO locations (see [Output Artifacts](#output-artifacts) for the full tree):
+
+- **Aggregate report** (CWD-relative): `.github/modernize/assessment/reports-{yyyyMMddHHmmss}/index.{md,html}`
+- **Per-app raw analysis** (source-relative): `<source>/.github/modernize/assessment/...`
+
+When `--issue-url` is set, the aggregate summary is also posted as an issue comment.
 
 ### `modernize plan create`
 
