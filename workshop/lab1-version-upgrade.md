@@ -208,11 +208,11 @@ The `javax` → `jakarta` rename is one of the most impactful changes in the Spr
 
 ## Stretch Goal
 
-If you finish early, explore the git history the agent created:
+If you finish early, explore the changes the agent introduced (still uncommitted in your working tree):
 
 ```bash
-# See all commits the agent made
-git log --oneline
+# List every file the agent touched
+git status
 
 # See the full diff compared to main
 git diff main
@@ -222,6 +222,7 @@ git diff main --stat
 ```
 
 Try answering these questions:
-- How many commits did the agent create?
 - How many files were changed in total?
-- Can you identify which commit handled the `javax` → `jakarta` migration?
+- What is the net change in lines (insertions vs. deletions)?
+- Can you identify the diff hunks that performed the `javax` → `jakarta` migration?
+- Which test-framework changes were required to move from JUnit 4 to JUnit 5?
