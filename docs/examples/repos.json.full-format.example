@@ -1,0 +1,52 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/modernize-cli/main/schemas/repos.schema.json",
+  "_comment": "Full-format repos.json example. Use with: modernize assess --source ./repos.json (or modernize upgrade ... --source ./repos.json). Cannot be combined with other --source arguments in the same command.",
+
+  "repos": [
+    {
+      "name": "bookstore-app",
+      "path": "./workshop-apps/bookstore-app",
+      "branch": "main",
+      "description": "Spring Boot 2.7 storefront — Java 11 → 21 demo"
+    },
+    {
+      "name": "notes-app",
+      "path": "./workshop-apps/notes-app",
+      "branch": "main",
+      "description": "Servlet/JSP legacy app — modernize to Spring Boot"
+    },
+    {
+      "name": "PhotoAlbum-Java",
+      "url": "https://github.com/Azure-Samples/PhotoAlbum-Java.git",
+      "branch": "main",
+      "description": "Azure-Samples reference Java app"
+    },
+    {
+      "name": "PhotoAlbum-DotNet",
+      "url": "https://github.com/Azure-Samples/PhotoAlbum.git",
+      "branch": "main",
+      "description": "Azure-Samples reference .NET app"
+    }
+  ],
+
+  "apps": [
+    {
+      "name": "shop-platform",
+      "description": "Customer-facing storefront and content services",
+      "repos": ["bookstore-app", "notes-app"]
+    },
+    {
+      "name": "media-platform",
+      "description": "Photo and gallery services across Java + .NET",
+      "repos": ["PhotoAlbum-Java", "PhotoAlbum-DotNet"]
+    }
+  ],
+
+  "output": {
+    "_comment": "Optional. Defaults to 'local'. Use 'git' to push the consolidated report to a separate repository — handy when your assessed repos are private but reports need a wider audience.",
+    "type": "git",
+    "repository": "https://github.com/your-org/modernization-reports",
+    "branch": "main",
+    "path": "reports/"
+  }
+}
