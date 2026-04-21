@@ -241,7 +241,7 @@ Answer these questions by reading the report:
 Now use the CLI to create a detailed modernization plan for the BookStore app. Pin the plan name so the next step (and the validator) knows where to look:
 
 ```bash
-modernize plan create "upgrade to Java 21 and Spring Boot 3.5" \
+timeout 600 modernize plan create "upgrade to Java 21 and Spring Boot 3.5" \
     --source ./workshop-apps/bookstore-app \
     --plan-name bookstore-java21 \
     --language java \
@@ -249,6 +249,14 @@ modernize plan create "upgrade to Java 21 and Spring Boot 3.5" \
 ```
 
 > ⚠️ **Output path is source-relative, not CWD-relative.** Because we passed `--source ./workshop-apps/bookstore-app`, the plan lands inside that folder, **not** in the repo-root `.github/modernize/`. This is intentional (the plan ships with the app), but it surprises everyone the first time.
+
+> **🐛 Known issue (v0.0.293) — the command may hang after writing files.** `plan create --no-tty` writes `plan.md`, `tasks.json`, and (optionally) `clarifications.json` in ~3–6 minutes, then can keep printing `[!] Still waiting for Copilot response (Ns elapsed)…` indefinitely. The `timeout 600` wrapper above bounds this at 10 minutes — exit code 124 means "the timeout fired, **check the output path before assuming failure**":
+>
+> ```bash
+> ls workshop-apps/bookstore-app/.github/modernize/bookstore-java21/
+> ```
+>
+> If you see `plan.md`, `tasks.json` (and possibly `clarifications.json`), the plan was generated successfully — proceed to Step 14. If you ran without `timeout`, just press **Ctrl+C** as soon as you see the `Modernization plan created at …` message; the files are already flushed to disk.
 
 ### Step 14 — Review the generated plan (Checkpoint 3)
 
@@ -259,7 +267,7 @@ ls workshop-apps/bookstore-app/.github/modernize/bookstore-java21/
 cat workshop-apps/bookstore-app/.github/modernize/bookstore-java21/plan.md
 ```
 
-✅ **Expected:** A `plan.md` file describing the upgrade steps, affected files, and success criteria.
+✅ **Expected:** A `plan.md` file describing the upgrade steps, affected files, and success criteria. You may also see `clarifications.json` — open questions the planner could not resolve from the source alone (for example, "should JUnit 4 → JUnit 5 also be migrated?"). Fill in the `"answer"` fields to refine the plan on a re-run with `--overwrite`.
 
 Also check for the structured task list:
 
@@ -317,6 +325,7 @@ The **Plan** command then drills into a single application, producing a step-by-
 | **Assessment takes very long** | Default model `claude-sonnet-4.6` is thorough. Switch to `--model claude-haiku-4.5` (0.33×) for dry runs, or pre-flight on one app with `--source ./workshop-apps/bookstore-app`. |
 | **Validator (`workshop/validate.sh lab2`) finds no reports** | You probably ran without `--format markdown` (so the CLI emitted HTML). Re-run Step 5 with `--format markdown`. |
 | **Plan command's output is "missing"** | It's not — `modernize plan create --source <path>` writes inside that path's `.github/modernize/{plan-name}/`, not the repo root. Look in `workshop-apps/bookstore-app/.github/modernize/`. |
+| **`plan create --no-tty` hangs forever after writing files** | Known v0.0.293 issue. The plan files are already on disk; press **Ctrl+C** as soon as `Modernization plan created at …` appears. Better: wrap with `timeout 600 modernize plan create …`. Verify with `ls workshop-apps/bookstore-app/.github/modernize/bookstore-java21/`. |
 | **`--delegate cloud` fails with "host not supported"** | Cloud delegation works only for `github.com` repos. Use `--delegate local` for GHES, GitLab, ADO, or local-only paths. |
 
 ---

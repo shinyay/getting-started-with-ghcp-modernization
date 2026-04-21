@@ -188,6 +188,7 @@ modernize plan create "upgrade to .NET 8" \
 **Output**:
 - `plan.md` — strategy document
 - `tasks.json` — executable task breakdown
+- `clarifications.json` *(optional)* — open questions the planner could not answer from the source alone; you fill in the `"answer"` fields and re-run with `--overwrite` to refine the plan
 
 **⚠️ Output location depends on `--source`:**
 - When `--source` is the **current directory** (the default `.`), output goes to `./.github/modernize/{plan-name}/`.
@@ -206,6 +207,16 @@ This is intentional (the plan ships with the app it modernizes), but it surprise
 | `--issue-url <url>` | None | GitHub issue URL to update with plan summary |
 
 > **Note:** Earlier revisions of this doc claimed `--language python` was accepted. That is **not true** in v0.0.293 — the CLI rejects it. Track Python language support upstream at [microsoft/modernize-cli](https://github.com/microsoft/modernize-cli/issues).
+
+> **🐛 Known issue (v0.0.293) — `plan create --no-tty` hangs after writing files.**
+> During the 2026-04-22 dry-run we observed `modernize plan create … --no-tty` write all output files (`plan.md`, `tasks.json`, `clarifications.json`) within ~6 minutes, then hang indefinitely waiting for a Copilot SDK stop event. The CLI keeps printing `[!] Still waiting for Copilot response (Ns elapsed)…` forever (we saw 16 minutes+).
+>
+> **Workarounds:**
+> 1. Once the message `Modernization plan created at .github/modernize/{plan-name}/` appears, you can safely **press Ctrl+C** — the plan files are already on disk and survive the SIGINT.
+> 2. Or wrap the call with a hard timeout: `timeout 600 modernize plan create … --no-tty` (treat exit code 124 as "plan likely written, verify the output path").
+> 3. Always verify `ls <source>/.github/modernize/{plan-name}/` after Ctrl+C / timeout — the three files (`plan.md`, `tasks.json`, optionally `clarifications.json`) are the source of truth.
+
+> **Tip:** When the plan generator has open questions about your project (e.g. "should JUnit 4 → JUnit 5 also be migrated?") it writes them to `clarifications.json` alongside `plan.md`. Answer them in-place by filling the empty `"answer"` fields, then re-run the command with `--overwrite` to fold the answers into a refined plan.
 
 ### `modernize plan execute`
 
