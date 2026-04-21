@@ -41,11 +41,27 @@ Before you begin, confirm every item below:
   ✅ Expected: `Logged in to github.com`
 
 - [ ] All 4 workshop applications build successfully:
+
+  **Bash / zsh:**
   ```bash
   cd workshop-apps/bookstore-app && mvn clean package -q && echo "✅ BookStore OK"
   cd ../notes-app && mvn clean package -q && echo "✅ NotesApp OK"
   cd ../stub-repos/inventory-api && mvn clean package -q && echo "✅ InventoryAPI OK"
   cd ../order-service && mvn clean package -q && echo "✅ OrderService OK"
+  ```
+
+  **Fish shell** (Bash's `&&` chaining does not work in Fish):
+  ```fish
+  for app in workshop-apps/bookstore-app workshop-apps/notes-app workshop-apps/stub-repos/inventory-api workshop-apps/stub-repos/order-service
+      echo "=== $app ==="
+      pushd $app > /dev/null
+      if mvn clean package -q
+          echo "✅ OK"
+      else
+          echo "❌ FAILED"
+      end
+      popd > /dev/null
+  end
   ```
 
 > **Tip:** If any app fails to build, fix it before proceeding — the CLI needs parseable projects.
@@ -87,33 +103,35 @@ If you prefer to write the file by hand, create `.github/modernize/repos.json` f
 
 ```bash
 cat > .github/modernize/repos.json << 'EOF'
-[
-  {
-    "name": "BookStore",
-    "url": "file:///absolute/path/to/workshop-apps/bookstore-app"
-  },
-  {
-    "name": "NotesApp",
-    "url": "file:///absolute/path/to/workshop-apps/notes-app"
-  },
-  {
-    "name": "InventoryAPI",
-    "url": "file:///absolute/path/to/workshop-apps/stub-repos/inventory-api"
-  },
-  {
-    "name": "OrderService",
-    "url": "file:///absolute/path/to/workshop-apps/stub-repos/order-service"
-  }
-]
+{
+  "repos": [
+    {
+      "name": "bookstore-app",
+      "path": "/absolute/path/to/workshop-apps/bookstore-app"
+    },
+    {
+      "name": "notes-app",
+      "path": "/absolute/path/to/workshop-apps/notes-app"
+    },
+    {
+      "name": "inventory-api",
+      "path": "/absolute/path/to/workshop-apps/stub-repos/inventory-api"
+    },
+    {
+      "name": "order-service",
+      "path": "/absolute/path/to/workshop-apps/stub-repos/order-service"
+    }
+  ]
+}
 EOF
 ```
 
-> ⚠️ **IMPORTANT:** Replace `/absolute/path/to/` with `$(pwd)` (your repo root). The helper script in Step 3's shortcut does this automatically. Example expanded path:
+> ⚠️ **IMPORTANT:** Replace `/absolute/path/to/` with `$(pwd)` (your repo root). The helper script in Step 3's shortcut does this automatically. Example expanded value:
 > ```
-> file:///home/yourusername/work/github/getting-started-with-ghcp-modernization/workshop-apps/bookstore-app
+> /home/yourusername/work/github/getting-started-with-ghcp-modernization/workshop-apps/bookstore-app
 > ```
 >
-> *Tip:* In v0.0.293 you can also use the simpler `"path": "./workshop-apps/bookstore-app"` field instead of `"url": "file://..."` — see [`docs/examples/repos.json.full-format.example`](../docs/examples/repos.json.full-format.example).
+> *Why `path` and not `url: file://...`?* The CLI treats `url` as a Git remote and runs `git clone` on it — which fails on plain subdirectories that are not independent git repos. The `path` field (Full-format manifest) tells the CLI to use the directory in place. See [`docs/examples/repos.json.full-format.example`](../docs/examples/repos.json.full-format.example) for the full schema.
 
 ### Step 4 — Verify the manifest
 
@@ -136,20 +154,37 @@ modernize assess \
     --no-tty
 ```
 
-You'll see progress output similar to:
+You'll see the CLI render a live progress dashboard, similar to:
 
 ```
-Assessing BookStore...          [1/4]
-Assessing NotesApp...           [2/4]
-Assessing InventoryAPI...       [3/4]
-Assessing OrderService...       [4/4]
+GitHub Copilot modernization v0.0.293
+Model: Claude Sonnet 4.6 (1x)
 
-Assessment complete. Report generated.
+[+] SUCCESS: 4/4 repo(s) ready for assessment.
+[>] Assessment Dashboard
+
+    Progress: 0% (0/4)
+    SUCCESS: 0  FAILED: 0  RUNNING: 1  PENDING: 3
+
+    TASK       NAME          STATUS     TIME
+    ---------- ------------- ---------- -----
+    [Task 1/4] bookstore-app RUNNING... 0m 0s
+    [Task 2/4] notes-app     PENDING    -
+    [Task 3/4] inventory-api PENDING    -
+    [Task 4/4] order-service PENDING    -
+
+…  (the dashboard refreshes; rule processing logs scroll above it)  …
+
+[+] SUCCESS: Assessment report has been created.
+    See more details in:
+    .../.github/modernize/assessment/reports-{yyyyMMddHHmmss}/index.md
 ```
 
-> ⏱ This may take 2–5 minutes depending on project sizes (longer with the default `claude-sonnet-4.6` model). Add `--model claude-haiku-4.5` to speed up dry runs at lower cost (0.33× multiplier).
+> ⏱ This may take 2–5 minutes depending on project sizes (longer with the default `claude-sonnet-4.6` model). Add `--model claude-haiku-4.5` to speed up dry runs at lower cost (0.33× multiplier). For the highest-quality output during a workshop dry-run, use `--model claude-opus-4.6` (3×) — verified at 4 apps in **3 minutes** during the 2026-04-22 dry-run.
 >
 > 💡 **Why not `--multi-repo`?** That flag is **deprecated** as of modernize v0.0.293. The current idiom is repeatable `--source` (or a single `--source repos.json`). See [`docs/04-modernization-agent-cli.md`](../docs/04-modernization-agent-cli.md#modernize-assess).
+>
+> 💡 **Model IDs marked "Internal only".** `modernize help models` lists `claude-opus-4.6-1m` (1M context, 6×) as `(Internal only)`. In practice, v0.0.293 does **not** gate the flag client-side — passing `--model claude-opus-4.6-1m` may succeed if your account is permitted, but treat it as undocumented and prefer `claude-opus-4.6` for reproducible workshops.
 
 ### Step 6 — Verify the report was generated (Checkpoint 1)
 
