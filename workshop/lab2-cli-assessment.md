@@ -216,7 +216,7 @@ The **Recommendations** section prioritizes actions:
 Confirm the report covers every application:
 
 ```bash
-grep -E "BookStore|NotesApp|InventoryAPI|OrderService" .github/modernize/assessment/*.md
+grep -E "BookStore|NotesApp|InventoryAPI|OrderService" .github/modernize/assessment/reports-*/index.md
 ```
 
 ✅ **Expected:** All 4 application names appear in the output.
@@ -233,30 +233,36 @@ Answer these questions by reading the report:
 
 ### Step 13 — Create a plan for one application
 
-Now use the CLI to create a detailed modernization plan for the BookStore app:
+Now use the CLI to create a detailed modernization plan for the BookStore app. Pin the plan name so the next step (and the validator) knows where to look:
 
 ```bash
-modernize plan create "upgrade to Java 21" --source ../getting-started-with-ghcp-modernization/workshop-apps/bookstore-app
+modernize plan create "upgrade to Java 21 and Spring Boot 3.5" \
+    --source ./workshop-apps/bookstore-app \
+    --plan-name bookstore-java21 \
+    --language java \
+    --no-tty
 ```
 
-> ⚠️ Adjust the `--source` path to match your actual directory layout.
+> ⚠️ **Output path is source-relative, not CWD-relative.** Because we passed `--source ./workshop-apps/bookstore-app`, the plan lands inside that folder, **not** in the repo-root `.github/modernize/`. This is intentional (the plan ships with the app), but it surprises everyone the first time.
 
 ### Step 14 — Review the generated plan (Checkpoint 3)
 
-Examine the plan output:
+Examine the plan output (note the source-relative path):
 
 ```bash
-ls .github/modernize/*/plan.md
-cat .github/modernize/*/plan.md
+ls workshop-apps/bookstore-app/.github/modernize/bookstore-java21/
+cat workshop-apps/bookstore-app/.github/modernize/bookstore-java21/plan.md
 ```
 
-✅ **Expected:** A `plan.md` file exists describing the upgrade steps, affected files, and estimated effort.
+✅ **Expected:** A `plan.md` file describing the upgrade steps, affected files, and success criteria.
 
 Also check for the structured task list:
 
 ```bash
-ls .github/modernize/*/tasks.json
+cat workshop-apps/bookstore-app/.github/modernize/bookstore-java21/tasks.json | python3 -m json.tool | head -40
 ```
+
+✅ **Expected:** Valid JSON with a `tasks[]` array. Each task has `id`, `description`, `requirements`, `skills`, and `successCriteria`. See [`docs/04-modernization-agent-cli.md`](../docs/04-modernization-agent-cli.md#output-artifacts) for the full schema.
 
 ### Step 15 — Compare plan vs. assessment
 
@@ -272,9 +278,9 @@ Notice how the **plan** is specific to one app and actionable, while the **asses
 
 | # | Check | Command | Expected |
 |---|-------|---------|----------|
-| 1 | Report generated | `ls .github/modernize/assessment/*.md` | One or more `.md` files |
-| 2 | All apps in report | `grep -c -E "BookStore\|NotesApp\|InventoryAPI\|OrderService" .github/modernize/assessment/*.md` | Matches for all 4 names |
-| 3 | Plan created | `ls .github/modernize/*/plan.md` | At least one `plan.md` |
+| 1 | Report generated | `ls -d .github/modernize/assessment/reports-*/` | One timestamped `reports-{yyyyMMddHHmmss}/` directory |
+| 2 | All apps in report | `grep -c -E "BookStore\|NotesApp\|InventoryAPI\|OrderService" .github/modernize/assessment/reports-*/index.md` | Matches for all 4 names |
+| 3 | Plan created | `ls workshop-apps/bookstore-app/.github/modernize/bookstore-java21/plan.md` | File exists |
 
 ---
 
@@ -320,7 +326,7 @@ Explore the TUI and see how it presents the same information you reviewed in the
 You can also try assessing a single app directly:
 
 ```bash
-modernize assess --source ../getting-started-with-ghcp-modernization/workshop-apps/bookstore-app
+modernize assess --source ./workshop-apps/bookstore-app --format markdown --no-tty
 ```
 
 Compare the single-app assessment with the portfolio assessment — what additional context does the portfolio view provide?
