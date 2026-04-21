@@ -182,6 +182,8 @@ You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Ja
 | 2b | Javax imports removed | `grep -r "javax.persistence" src/main/` | No output |
 | 3 | Build passes | `mvn clean package` | `BUILD SUCCESS`, exit code 0 |
 
+> ⚡ **One-shot validation:** From the repository root, run `bash workshop/validate.sh lab1` to execute all three checkpoints in a single command. Expected: `3/3 passed`.
+
 ---
 
 ## What Just Happened?
