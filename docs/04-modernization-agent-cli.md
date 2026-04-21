@@ -186,20 +186,26 @@ modernize plan create "upgrade to .NET 8" \
 - Deployment: `deploy to azure app service`, `set up CI/CD pipeline for azure`
 
 **Output**:
-- `plan.md` in `.github/modernize/{plan-name}/` — strategy document
-- `tasks.json` in `.github/modernize/{plan-name}/` — executable task breakdown
+- `plan.md` — strategy document
+- `tasks.json` — executable task breakdown
+
+**⚠️ Output location depends on `--source`:**
+- When `--source` is the **current directory** (the default `.`), output goes to `./.github/modernize/{plan-name}/`.
+- When `--source` is a **subdirectory** (e.g. `--source workshop-apps/bookstore-app`), output goes to **`<source>/.github/modernize/{plan-name}/`** — i.e. *inside* the source folder, **not** the current directory.
+
+This is intentional (the plan ships with the app it modernizes), but it surprises first-time users. See [Output Artifacts](#output-artifacts) for the full directory tree.
 
 **Options**:
 | Option | Default | Description |
 |--------|---------|-------------|
 | `--source <path>` | `.` | Path to application source code |
 | `--plan-name <name>` | `modernization-plan` | Name for the modernization plan |
-| `--language <lang>` | Auto-detected | Programming language (`java`, `dotnet`, or `python`) |
+| `--language <lang>` | Auto-detected | Programming language. **Only `java` or `dotnet`** are accepted by the CLI in v0.0.293 (the older docs that mention `python` predate the current build). |
 | `--overwrite` | Disabled | Overwrite an existing plan with the same name |
 | `--model <model>` | `claude-sonnet-4.6` | LLM model to use |
 | `--issue-url <url>` | None | GitHub issue URL to update with plan summary |
 
-> **Note:** Python language support (`--language python`) is available for plan creation. Java and .NET are the primary supported languages for the full Assess → Plan → Execute workflow.
+> **Note:** Earlier revisions of this doc claimed `--language python` was accepted. That is **not true** in v0.0.293 — the CLI rejects it. Track Python language support upstream at [microsoft/modernize-cli](https://github.com/microsoft/modernize-cli/issues).
 
 ### `modernize plan execute`
 
