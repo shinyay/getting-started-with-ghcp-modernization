@@ -14,7 +14,7 @@ By the end of this lab you will be able to:
 
 - **Understand the Assess → Plan → Execute workflow** that the Copilot modernization agent follows when upgrading a project.
 - **Use `@modernize-java-upgrade` in VS Code** to invoke the agent, review its generated plan, and approve execution — all from the Copilot Chat panel.
-- **Review git-traced changes** to see exactly what the agent modified, commit-by-commit, giving you full auditability.
+- **Review the agent's changes in your working tree** to see exactly what was modified, then commit them yourself for full auditability.
 
 ---
 
@@ -121,7 +121,9 @@ The agent will now make changes. Watch for:
 - `pom.xml` updates (Java version, Spring Boot parent, dependencies)
 - Source file modifications (`javax.persistence` → `jakarta.persistence`)
 - Test file updates (if included in the plan)
-- Each change is committed to git automatically
+
+> ⚠️ **All edits land in your working tree but are NOT auto-committed.**
+> Review the changes with `git status` / `git diff` and commit them yourself once you're satisfied (e.g. `git add -A && git commit -m "chore: upgrade to Java 21 + Spring Boot 3"`).
 
 ### Step 9 — Verify with Checkpoint 1
 
@@ -163,7 +165,7 @@ mvn clean package
 
 ### Step 12 — Celebrate 🎉
 
-You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Java 21 + Spring Boot 3.x — with AI assistance tracking every change in git.
+You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Java 21 + Spring Boot 3.x — with AI assistance staging every change in your working tree for review.
 
 > **📝 Heads-up for Lab 3:** If the agent migrated your JUnit 4 tests to JUnit 5
 > during this lab (check with `grep -r "org.junit.jupiter" src/test/`), you'll need
@@ -186,7 +188,7 @@ You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Ja
 
 The Copilot modernization agent used **OpenRewrite recipes** combined with **AI-driven code analysis** to perform the upgrade. OpenRewrite handles well-known mechanical transformations — such as the `javax.*` → `jakarta.*` namespace migration required by Jakarta EE 9+ — while the AI layer coordinates the overall plan, resolves ambiguities, and handles project-specific edge cases.
 
-Every change the agent made was recorded as a **separate git commit**, giving you a full audit trail. This means you can review each transformation individually with `git log`, revert specific changes if needed, and understand exactly what was modified and why.
+Every change the agent made appears in your **working tree** as an uncommitted edit, giving you a chance to review the full diff before recording it. Use `git diff` and `git status` to inspect each transformation, then commit when satisfied — this keeps you in control of the audit trail rather than letting the agent author commits on your behalf.
 
 The `javax` → `jakarta` rename is one of the most impactful changes in the Spring Boot 2 → 3 migration. It affects persistence annotations, validation constraints, servlet APIs, and more. Doing this manually across a large codebase is tedious and error-prone — exactly the kind of task AI excels at.
 
