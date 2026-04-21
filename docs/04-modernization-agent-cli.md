@@ -234,6 +234,20 @@ modernize upgrade "Java 17" --source /path/to/project
 modernize upgrade "Java 17" --delegate cloud
 ```
 
+### `modernize update`
+
+Self-update the CLI to the latest released version.
+
+```bash
+# Check for and apply updates in one step
+modernize update
+```
+
+- Takes no flags (run `modernize update --help` to confirm).
+- Prints "already up to date" when current.
+- Use this in lieu of `brew upgrade modernize` / re-running the install script when you need a quick refresh on a developer workstation.
+- For CI, **pin a specific version instead** (see [CLI Cookbook → Recipe 13](./examples/cli-cookbook.md#13-self-update-vs-pinning-in-ci)).
+
 ### `modernize help models`
 
 List available LLM models and their multipliers.
