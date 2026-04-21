@@ -1,12 +1,14 @@
 # Modernization Agent — CLI Experience
 
-> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/) and verified against the live CLI: **April 2026***
+>
+> **Tested CLI version**: `modernize v0.0.293+` (run `modernize --version` to check yours; upgrade with `modernize update`)
 
 ## Overview
 
-The Modernization Agent is delivered through the **Modernize CLI**, a command-line tool that orchestrates end-to-end application modernization. It combines **deterministic automation** with **AI-powered intelligence** to enable both interactive and automated modernization workflows.
+The Modernization Agent is delivered through the **Modernize CLI** (officially the *GitHub Copilot Modernization Agent*), a command-line tool that orchestrates end-to-end application modernization. It combines **deterministic automation** with **AI-powered intelligence** to enable both interactive and automated modernization workflows.
 
-**Status**: Public Preview
+**Status**: Public Preview · **Source**: [`microsoft/modernize-cli`](https://github.com/microsoft/modernize-cli)
 
 ## Installation
 
