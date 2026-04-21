@@ -122,10 +122,13 @@ cat .github/modernize/repos.json | python3 -m json.tool
 
 ### Step 5 — Run the multi-repo assessment
 
-Execute the assessment across all 4 applications:
+Execute the assessment across all 4 applications. Pass the manifest via `--source` and force Markdown output so the validator (and the next steps) can grep the reports:
 
 ```bash
-modernize assess --multi-repo
+modernize assess \
+    --source ./.github/modernize/repos.json \
+    --format markdown \
+    --no-tty
 ```
 
 You'll see progress output similar to:
@@ -139,29 +142,44 @@ Assessing OrderService...       [4/4]
 Assessment complete. Report generated.
 ```
 
-> ⏱ This may take 2–5 minutes depending on project sizes. Be patient.
+> ⏱ This may take 2–5 minutes depending on project sizes (longer with the default `claude-sonnet-4.6` model). Add `--model claude-haiku-4.5` to speed up dry runs at lower cost (0.33× multiplier).
+>
+> 💡 **Why not `--multi-repo`?** That flag is **deprecated** as of modernize v0.0.293. The current idiom is repeatable `--source` (or a single `--source repos.json`). See [`docs/04-modernization-agent-cli.md`](../docs/04-modernization-agent-cli.md#modernize-assess).
 
 ### Step 6 — Verify the report was generated (Checkpoint 1)
 
+The CLI writes a **timestamped** subfolder under `.github/modernize/assessment/`. Find it:
+
 ```bash
-ls .github/modernize/assessment/*.md
+ls -d .github/modernize/assessment/reports-*/
 ```
 
-✅ **Expected:** One or more Markdown report files in the assessment directory.
+✅ **Expected:** One directory matching `reports-{yyyyMMddHHmmss}/`.
+
+Inspect the contents:
+
+```bash
+ls .github/modernize/assessment/reports-*/
+```
+
+✅ **Expected:** `index.md` (consolidated report), `aggregate-report.json` (machine-readable summary), and a `repos/` folder with one `report.md` per app.
+
+> 🔍 **Why is the path not just `assessment/*.md`?** The CLI scopes every run into its own `reports-{timestamp}/` directory so reruns don't clobber prior results. The validator (`workshop/validate.sh lab2`) globs `assessment/reports-*/index.md` for this reason.
+>
+> 💡 The default output format is **HTML** — without `--format markdown` in Step 5 you'd see `index.html` and `report.html` instead.
 
 ### Step 7 — Open the assessment report
 
-Open the generated report:
+Open the consolidated dashboard:
 
 ```bash
-# Find and open the report
-cat .github/modernize/assessment/*.md
+cat .github/modernize/assessment/reports-*/index.md
 ```
 
 Or open it in VS Code for better readability:
 
 ```bash
-code .github/modernize/assessment/
+code .github/modernize/assessment/reports-*/
 ```
 
 ### Step 8 — Walk through the Dashboard section
