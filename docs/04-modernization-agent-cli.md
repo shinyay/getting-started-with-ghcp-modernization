@@ -311,9 +311,11 @@ File: `~/.modernize/config.json` (user) or `.github/modernize/config.json` (repo
 
 > **Tip:** Example configuration files are available at [`docs/examples/repos.json.example`](../docs/examples/repos.json.example) and [`docs/examples/config.json.example`](../docs/examples/config.json.example).
 
-### Multi-Repository Configuration
+### Multi-Repository Configuration (`repos.json`)
 
-File: `.github/modernize/repos.json`
+A `repos.json` file lets you describe a portfolio once and reuse it across `assess` and `upgrade` runs. Two shapes are supported.
+
+**Simple format** — a flat array of repos:
 
 ```json
 [
@@ -327,6 +329,62 @@ File: `.github/modernize/repos.json`
   }
 ]
 ```
+
+See [`docs/examples/repos.json.example`](./examples/repos.json.example) for a runnable workshop sample.
+
+**Full format** — supports per-repo `branch`/`path`, app grouping, and output destinations:
+
+```json
+{
+  "repos": [
+    {
+      "name": "bookstore-app",
+      "path": "./workshop-apps/bookstore-app",
+      "branch": "main",
+      "description": "Spring Boot 2.7 → 3 demo"
+    },
+    {
+      "name": "PhotoAlbum-Java",
+      "url": "https://github.com/Azure-Samples/PhotoAlbum-Java.git",
+      "branch": "main"
+    }
+  ],
+  "apps": [
+    {
+      "name": "shop-platform",
+      "description": "Customer-facing storefront",
+      "repos": ["bookstore-app"]
+    },
+    {
+      "name": "media-platform",
+      "description": "Photo & gallery services",
+      "repos": ["PhotoAlbum-Java"]
+    }
+  ],
+  "output": {
+    "type": "git",
+    "repository": "https://github.com/your-org/modernization-reports",
+    "branch": "main",
+    "path": "reports/"
+  }
+}
+```
+
+| Key | Where | Purpose |
+|-----|-------|---------|
+| `repos[].name` | required | Display name in reports |
+| `repos[].url` | one of url/path | Git URL (HTTPS or SSH) |
+| `repos[].path` | one of url/path | Local path (alternative to `url`) |
+| `repos[].branch` | optional | Branch to assess (default: repo's default branch) |
+| `repos[].description` | optional | Free-text label |
+| `apps[]` | optional | Logical grouping; produces grouped sections in the consolidated report |
+| `apps[].repos` | required (when `apps[]` set) | List of `repos[].name` values |
+| `output.type` | optional | `local` (default) or `git` to push reports to another repo |
+| `output.repository` / `output.branch` / `output.path` | required when `output.type=git` | Destination for the consolidated report |
+
+See [`docs/examples/repos.json.full-format.example`](./examples/repos.json.full-format.example) for a copy-paste starting point.
+
+> **Tip:** When using `--source path/to/repos.json`, you **cannot** mix it with other `--source` arguments in the same command. Pick one mode per run.
 
 ## Global Options
 
