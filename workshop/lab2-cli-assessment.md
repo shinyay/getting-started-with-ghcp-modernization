@@ -263,6 +263,10 @@ The **Recommendations** section prioritizes actions:
 - Suggested migration waves (group apps that can be upgraded together)
 - Security-related upgrades flagged as urgent
 
+> ⚠️ **Java 25 vs Java 21 — what the report says vs what we will do.** The assessment dashboard will likely recommend "Upgrade to Java 25" / "Upgrade to Spring Boot 4.0" because those are the latest LTS versions the planner is aware of. **In Step 13 we deliberately target Java 21 / Spring Boot 3.5 instead** — these are the current GA versions most enterprises are standardizing on, and the CLI's internal analyzer (see `aggregate-report.json` → `capabilities: ["openjdk21"]`) is calibrated to Java 21 today. Treat the dashboard's "Java 25" as an aspirational target; pick the version that matches your runtime fleet.
+
+> 🐛 **Application Matrix `Repo` column may be empty for some rows.** v0.0.293 only fills `Repo` when the source path differs from the application identity, so you'll see it populated for `bookstore` (where path = `bookstore-app`) but blank for `notes-app`, `inventory-api`, `order-service`. The data is correct — this is purely a display quirk.
+
 ### Step 11 — Verify all 4 apps appear (Checkpoint 2)
 
 Confirm the report covers every application:
@@ -373,7 +377,7 @@ The **Plan** command then drills into a single application, producing a step-by-
 | **`modernize: command not found`** | The CLI is not installed or not on your PATH. Install via Homebrew (`brew tap microsoft/modernize https://github.com/microsoft/modernize-cli && brew install modernize`), the install script (`curl -fsSL https://raw.githubusercontent.com/microsoft/modernize-cli/main/scripts/install.sh \| bash`), or `winget install GitHub.Copilot.modernization.agent` on Windows. There is **no npm package** — ignore any old guidance suggesting `npx @github/modernize`. See [`docs/04-modernization-agent-cli.md`](../docs/04-modernization-agent-cli.md#installation). |
 | **Authentication error** | Run `gh auth login` and complete the browser flow. If `--delegate cloud` errors with permissions, ensure your token has `repo` and `read:org` scopes. |
 | **`repos.json` not detected** | Verify the file is at exactly `.github/modernize/repos.json` (case-sensitive). Run `cat .github/modernize/repos.json \| python3 -m json.tool` to confirm valid JSON. |
-| **Assessment fails on one repo** | Check that the failing app has a `pom.xml` or `build.gradle` at its root. Verify the path in `repos.json` is correct: `ls "$(jq -r '.[0].url' .github/modernize/repos.json \| sed 's#file://##')"`. |
+| **Assessment fails on one repo** | Check that the failing app has a `pom.xml` or `build.gradle` at its root. Verify the path in `repos.json` is correct: `jq -r '.repos[0].path' .github/modernize/repos.json \| xargs ls`. (If you see `url: file://…` entries, you are on the deprecated Simple-format manifest — regenerate with `bash workshop/generate-repos-json.sh`.) |
 | **"No applications found"** | The `repos.json` may have a syntax error. Validate: `python3 -m json.tool .github/modernize/repos.json`. |
 | **Assessment takes very long** | Default model `claude-sonnet-4.6` is thorough. Switch to `--model claude-haiku-4.5` (0.33×) for dry runs, or pre-flight on one app with `--source ./workshop-apps/bookstore-app`. |
 | **Validator (`workshop/validate.sh lab2`) finds no reports** | You probably ran without `--format markdown` (so the CLI emitted HTML). Re-run Step 5 with `--format markdown`. |

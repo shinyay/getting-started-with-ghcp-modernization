@@ -158,6 +158,8 @@ modernize assess --verbose
 
 When `--issue-url` is set, the aggregate summary is also posted as an issue comment.
 
+> **🔧 Internal target capability vs surfaced recommendation.** The assessment engine reports its internal capabilities under `aggregate-report.json → metadata.capabilities` (e.g. `["openjdk21"]` in v0.0.293) — that is the **JDK level the analyzer was actually calibrated against**. The narrative text in `index.md` may still recommend a *newer* LTS like "Upgrade to Java 25" because the planner extrapolates to the latest known LTS. When choosing a target for `plan create`, prefer the version that matches your fleet's current support contract (typically Java 21 today); the analyzer's findings remain valid.
+
 ### `modernize plan create`
 
 Create a modernization plan from natural language prompt.
@@ -326,7 +328,9 @@ File: `~/.modernize/config.json` (user) or `.github/modernize/config.json` (repo
 
 A `repos.json` file lets you describe a portfolio once and reuse it across `assess` and `upgrade` runs. Two shapes are supported.
 
-**Simple format** — a flat array of repos:
+> 📚 **Authoritative reference:** [`aka.ms/ghcp-modernization-agent/repos-config`](https://aka.ms/ghcp-modernization-agent/repos-config) (Microsoft's Batch Assessment guide). The shapes below mirror that schema.
+
+**Simple format** — a flat array of repos (URLs only; CLI will `git clone`):
 
 ```json
 [
@@ -396,6 +400,10 @@ See [`docs/examples/repos.json.example`](./examples/repos.json.example) for a ru
 See [`docs/examples/repos.json.full-format.example`](./examples/repos.json.full-format.example) for a copy-paste starting point.
 
 > **Tip:** When using `--source path/to/repos.json`, you **cannot** mix it with other `--source` arguments in the same command. Pick one mode per run.
+
+> **⚠️ Local directories: use `path:` (Full format), not `url: file://…`.** The CLI treats every `url` value as a Git remote and runs `git clone` on it — `file://` URLs that point at non-bare working trees fail with `git clone failed (exit 128)`. Always use the **Full-format `path:` field** for local sources. The shipped helper `workshop/generate-repos-json.sh` does this for you.
+
+> **🐛 Application Matrix `Repo` column.** In v0.0.293, the rendered Application Matrix only fills the `Repo` column when the source path's basename differs from the application identity. Rows where they match (e.g. `notes-app` at `workshop-apps/notes-app/`) appear with a blank `Repo` cell. The underlying `aggregate-report.json` is correct; this is a display-only quirk.
 
 ## Cloud Delegation Constraints
 
