@@ -298,12 +298,15 @@ The **Plan** command then drills into a single application, producing a step-by-
 
 | Symptom | Solution |
 |---------|----------|
-| **`modernize: command not found`** | The CLI is not installed or not on your PATH. Check installation docs, or try `npx @github/modernize` if installed via npm. |
-| **Authentication error** | Run `gh auth login` and complete the browser-based authentication flow. Then retry. |
-| **`repos.json` not detected** | Verify the file is at exactly `.github/modernize/repos.json` (case-sensitive). Run `cat .github/modernize/repos.json` to confirm. |
-| **Assessment fails on one repo** | Check that the failing app has a `pom.xml` or `build.gradle` at its root. Verify the path in `repos.json` is correct and the directory exists: `ls <path>`. |
-| **"No applications found"** | The `repos.json` file may have a syntax error. Validate with `python3 -m json.tool .github/modernize/repos.json`. |
-| **Assessment takes very long** | Large projects take longer. Wait at least 5 minutes before assuming it's stuck. Check CPU usage with `top`. |
+| **`modernize: command not found`** | The CLI is not installed or not on your PATH. Install via Homebrew (`brew tap microsoft/modernize https://github.com/microsoft/modernize-cli && brew install modernize`), the install script (`curl -fsSL https://raw.githubusercontent.com/microsoft/modernize-cli/main/scripts/install.sh \| bash`), or `winget install GitHub.Copilot.modernization.agent` on Windows. There is **no npm package** — ignore any old guidance suggesting `npx @github/modernize`. See [`docs/04-modernization-agent-cli.md`](../docs/04-modernization-agent-cli.md#installation). |
+| **Authentication error** | Run `gh auth login` and complete the browser flow. If `--delegate cloud` errors with permissions, ensure your token has `repo` and `read:org` scopes. |
+| **`repos.json` not detected** | Verify the file is at exactly `.github/modernize/repos.json` (case-sensitive). Run `cat .github/modernize/repos.json \| python3 -m json.tool` to confirm valid JSON. |
+| **Assessment fails on one repo** | Check that the failing app has a `pom.xml` or `build.gradle` at its root. Verify the path in `repos.json` is correct: `ls "$(jq -r '.[0].url' .github/modernize/repos.json \| sed 's#file://##')"`. |
+| **"No applications found"** | The `repos.json` may have a syntax error. Validate: `python3 -m json.tool .github/modernize/repos.json`. |
+| **Assessment takes very long** | Default model `claude-sonnet-4.6` is thorough. Switch to `--model claude-haiku-4.5` (0.33×) for dry runs, or pre-flight on one app with `--source ./workshop-apps/bookstore-app`. |
+| **Validator (`workshop/validate.sh lab2`) finds no reports** | You probably ran without `--format markdown` (so the CLI emitted HTML). Re-run Step 5 with `--format markdown`. |
+| **Plan command's output is "missing"** | It's not — `modernize plan create --source <path>` writes inside that path's `.github/modernize/{plan-name}/`, not the repo root. Look in `workshop-apps/bookstore-app/.github/modernize/`. |
+| **`--delegate cloud` fails with "host not supported"** | Cloud delegation works only for `github.com` repos. Use `--delegate local` for GHES, GitLab, ADO, or local-only paths. |
 
 ---
 
