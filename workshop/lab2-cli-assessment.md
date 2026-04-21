@@ -1,5 +1,10 @@
 # Lab 2: CLI Portfolio Assessment — Assess Multiple Applications
 
+> 📚 **Reference docs for this lab:**
+> - **[CLI deep reference](../docs/04-modernization-agent-cli.md)** — every flag, every output path, verified against `modernize v0.0.293+`.
+> - **[CLI cookbook](../docs/examples/cli-cookbook.md)** — 15 copy-paste recipes (portfolio assess, cloud delegation, GH Actions schedules, etc.).
+> - **[`repos.json` examples](../docs/examples/)** — simple and full-format starting points.
+
 | Detail | Value |
 |--------|-------|
 | **Duration** | 45 minutes |
@@ -281,6 +286,12 @@ Notice how the **plan** is specific to one app and actionable, while the **asses
 | 1 | Report generated | `ls -d .github/modernize/assessment/reports-*/` | One timestamped `reports-{yyyyMMddHHmmss}/` directory |
 | 2 | All apps in report | `grep -c -E "BookStore\|NotesApp\|InventoryAPI\|OrderService" .github/modernize/assessment/reports-*/index.md` | Matches for all 4 names |
 | 3 | Plan created | `ls workshop-apps/bookstore-app/.github/modernize/bookstore-java21/plan.md` | File exists |
+
+> ✅ **One-shot validation:** Run all three checks at once from the repo root:
+> ```bash
+> bash workshop/validate.sh lab2
+> ```
+> Expected: `3/3 checks passed`. If any check fails, re-read the corresponding step and the [Troubleshooting](#troubleshooting) section. (The validator is updated to look for `assessment/reports-*/index.md` and the source-relative plan path used in this lab.)
 
 ---
 
