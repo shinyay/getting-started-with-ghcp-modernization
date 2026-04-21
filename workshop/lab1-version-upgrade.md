@@ -73,10 +73,12 @@ git checkout -b upgrade-lab1
 ### Step 4 — Invoke the modernization agent
 
 1. Open the **Copilot Chat** panel in VS Code (click the Copilot icon in the sidebar, or press `Ctrl+Shift+I`).
-2. Type the following prompt and press Enter:
+2. Open the **Agent dropdown** at the top of the chat panel and select **`@modernize-java-upgrade`**.
+   > 💡 The agent appears in the dropdown only when the **Migrate Java to Azure** extension (`vscjava.migrate-java-to-azure`) is installed and activated.
+3. Type the following prompt (no `@` prefix is needed once the agent is selected from the dropdown) and press Enter:
 
 ```
-@modernize-java-upgrade upgrade to Java 21 and Spring Boot 3
+upgrade to Java 21 and Spring Boot 3
 ```
 
 ### Step 5 — Watch the assessment phase
@@ -194,8 +196,8 @@ The `javax` → `jakarta` rename is one of the most impactful changes in the Spr
 |---------|----------|
 | **Agent stops and asks for confirmation** | This is expected at key decision points. Type `continue` to proceed, or enable **auto-approve** mode in Copilot settings if you prefer uninterrupted execution. |
 | **Build fails after upgrade** | The agent should attempt to fix build errors automatically. If it doesn't, read the error message carefully — it usually indicates a missing dependency or an import that wasn't migrated. Report the error in Copilot Chat and ask the agent to fix it. |
-| **Agent seems stuck (no output for 2+ minutes)** | Wait a full 2 minutes. If still unresponsive, cancel the current operation (`Ctrl+C` in the chat or close the panel) and re-invoke with `@modernize-java-upgrade upgrade to Java 21 and Spring Boot 3`. |
-| **`javax.persistence` still found after upgrade** | The agent may have missed some files. Run `grep -rn "javax.persistence" src/` to find them, then ask Copilot: `@modernize-java-upgrade migrate remaining javax imports to jakarta`. |
+| **Agent seems stuck (no output for 2+ minutes)** | Wait a full 2 minutes. If still unresponsive, cancel the current operation (`Ctrl+C` in the chat or close the panel) and re-invoke by re-selecting `@modernize-java-upgrade` from the Agent dropdown and typing `upgrade to Java 21 and Spring Boot 3`. |
+| **`javax.persistence` still found after upgrade** | The agent may have missed some files. Run `grep -rn "javax.persistence" src/` to find them, then with `@modernize-java-upgrade` selected, ask Copilot: `migrate remaining javax imports to jakarta`. |
 | **Branch already exists** | Delete and recreate: `git branch -D upgrade-lab1 && git checkout -b upgrade-lab1` |
 
 ---
