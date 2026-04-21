@@ -49,32 +49,36 @@ Before you begin, confirm every item below:
 
 ## Step-by-Step Instructions
 
-### Step 1 — Create a portfolio workspace
+### Step 1 — Move to the repo root
 
-Create a fresh workspace directory for this lab. The CLI expects a specific directory structure:
+This lab runs from the **repo root** so that the helper script (`workshop/generate-repos-json.sh`) and the validator (`workshop/validate.sh lab2`) both find their inputs in the expected locations:
 
 ```bash
-mkdir -p ~/workshop-portfolio
-cd ~/workshop-portfolio
+cd /path/to/getting-started-with-ghcp-modernization
+pwd     # confirm you are at the repo root
 ```
 
-### Step 2 — Initialize the configuration directory
+> 📁 **Why repo root?** `generate-repos-json.sh` writes `.github/modernize/repos.json` relative to the **repo root**, and `validate.sh lab2` looks for assessment artifacts under the repo root's `.github/modernize/`. Working anywhere else means manually fixing paths.
+>
+> Earlier revisions of this lab created a separate `~/workshop-portfolio` directory — **don't**. The current helper script and validator assume repo root.
 
-Create the directory structure the CLI uses for configuration:
+### Step 2 — Create the configuration directory (if missing)
 
 ```bash
 mkdir -p .github/modernize
 ```
 
+> The repo's root `.gitignore` already excludes `.github/modernize/`, so anything you generate here stays out of commits.
+
 ### Step 3 — Create the repos.json manifest
 
-> **💡 Shortcut:** Instead of manually editing paths, run the helper script:
+> **💡 Shortcut:** Skip the manual edit and run the helper script:
 > ```bash
 > bash workshop/generate-repos-json.sh
 > ```
-> This auto-generates `repos.json` with the correct absolute paths for your system. Then skip to Step 4.
+> This auto-generates `.github/modernize/repos.json` with the correct absolute paths for your machine. Then jump to **Step 4**.
 
-Create the file `.github/modernize/repos.json` that tells the CLI which applications to assess:
+If you prefer to write the file by hand, create `.github/modernize/repos.json` from the repo root:
 
 ```bash
 cat > .github/modernize/repos.json << 'EOF'
@@ -99,15 +103,12 @@ cat > .github/modernize/repos.json << 'EOF'
 EOF
 ```
 
-> ⚠️ **IMPORTANT:** Replace `/absolute/path/to/` with the actual absolute path to your workshop directory. For example, if you cloned the repo to `~/work/github/getting-started-with-ghcp-modernization`, then the BookStore URL would be:
+> ⚠️ **IMPORTANT:** Replace `/absolute/path/to/` with `$(pwd)` (your repo root). The helper script in Step 3's shortcut does this automatically. Example expanded path:
 > ```
 > file:///home/yourusername/work/github/getting-started-with-ghcp-modernization/workshop-apps/bookstore-app
 > ```
 >
-> Alternatively, you can use relative paths from the workspace root:
-> ```json
-> {"name": "BookStore", "url": "../getting-started-with-ghcp-modernization/workshop-apps/bookstore-app"}
-> ```
+> *Tip:* In v0.0.293 you can also use the simpler `"path": "./workshop-apps/bookstore-app"` field instead of `"url": "file://..."` — see [`docs/examples/repos.json.full-format.example`](../docs/examples/repos.json.full-format.example).
 
 ### Step 4 — Verify the manifest
 
