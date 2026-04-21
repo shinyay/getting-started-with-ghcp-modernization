@@ -25,13 +25,29 @@ The Modernization Agent is delivered through the **Modernize CLI** (officially t
 
 ### Installation Commands
 
-#### Linux/macOS
+#### Linux/macOS — Homebrew (recommended)
+
+```bash
+# Tap the Microsoft cask and install
+brew tap microsoft/modernize https://github.com/microsoft/modernize-cli
+brew install modernize
+
+# Upgrade later with either of:
+brew upgrade modernize
+modernize update
+```
+
+> **Why Homebrew?** Works on macOS (Apple Silicon + Intel) and Linux (via Linuxbrew/WSL). Pins to a tracked release, supports clean uninstall (`brew uninstall modernize`), and avoids piping a remote shell script into `bash`.
+
+#### Linux/macOS — install script (alternative)
+
 ```bash
 # One-liner install
 curl -fsSL https://raw.githubusercontent.com/microsoft/modernize-cli/main/scripts/install.sh | bash
 ```
 
 #### Windows
+
 ```powershell
 # Option 1: Winget (recommended)
 winget install GitHub.Copilot.modernization.agent
@@ -46,6 +62,7 @@ iex (irm 'https://raw.githubusercontent.com/microsoft/modernize-cli/main/scripts
 #### Verify
 ```bash
 modernize --version
+# expected: 0.0.293+<git-sha> or later
 ```
 
 ### Authentication
