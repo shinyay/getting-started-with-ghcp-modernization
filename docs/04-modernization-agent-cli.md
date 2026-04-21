@@ -579,6 +579,106 @@ modernize upgrade "Java 21" --delegate cloud --wait --no-tty
 | `--wait` | Block until delegated tasks complete |
 | `--force` | Force restart if a prior delegation is in progress |
 
+## Interactive (TUI) Walkthrough
+
+When you run `modernize` with no subcommand, the CLI launches a terminal UI. The flow mirrors `assess → plan create → plan execute` but with menus and arrow-key navigation:
+
+```text
+┌─────────── GitHub Copilot Modernization Agent ───────────┐
+│                                                          │
+│   What do you want to do?                                │
+│                                                          │
+│   ❯ 1. Assess applications                               │
+│     2. Create a modernization plan                       │
+│     3. Execute a modernization plan                      │
+│     4. End-to-end upgrade                                │
+│     5. Settings                                          │
+│     q. Quit                                              │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+```
+
+Selecting **1. Assess applications** drops you into:
+
+```text
+┌────────────────── Assess: select sources ────────────────┐
+│                                                          │
+│  Source(s):                                              │
+│  [x] ./workshop-apps/bookstore-app  (Java, Maven)        │
+│  [ ] ./workshop-apps/notes-app      (Java, Gradle)       │
+│  [ ] Add a Git URL...                                    │
+│  [ ] Load from repos.json...                             │
+│                                                          │
+│  Output format:  ( ) html  (•) markdown                  │
+│  Model: claude-sonnet-4.6   [press M to change]          │
+│  Delegate: local            [press D to change]          │
+│                                                          │
+│  [Enter] Run    [Esc] Back                               │
+└──────────────────────────────────────────────────────────┘
+```
+
+Key bindings inside any TUI screen:
+
+| Key | Action |
+|-----|--------|
+| `↑ / ↓` | Move highlight |
+| `Space` | Toggle a checkbox |
+| `Enter` | Confirm / drill into selection |
+| `M` | Switch model (re-uses `modernize help models` list) |
+| `D` | Toggle local ↔ cloud delegation |
+| `?` | Inline help |
+| `Esc` | Back |
+| `q` | Quit |
+
+Run with `--no-tty` (or `MODERNIZE_NO_TTY=true`) to suppress the TUI and force pure stdout — required in SSH-without-PTY, GitHub Actions, and most container shells.
+
+## CLI vs IDE Agent — when to use which
+
+The Modernization Agent ships in two surfaces. Both call the same backend skills, but the ergonomics differ.
+
+| Concern | **CLI (`modernize`)** | **IDE Agent (`@modernize-*` in VS Code Chat)** |
+|---|---|---|
+| Best for | Headless, scripted, batch, CI | One-off interactive upgrades, code review |
+| Multi-repo | Native (`--source` repeatable, `repos.json`) | One workspace at a time |
+| Audit trail | Stdout + `tasks.json` + report files | Chat history + workspace edits |
+| Pre-commit review | `git diff` after run | Live diffs in editor before accept |
+| Cloud delegation | `--delegate cloud` | "Run on Cloud" button |
+| Human-in-the-loop | Pause between `plan create` and `plan execute` | Accept/reject each chunk in chat |
+| Telemetry redaction | `MODERNIZE_LOG_LEVEL=warning` + `sed` | Limited; respect VS Code settings |
+| **Workshop mapping** | **Lab 2** ([`lab2-cli-assessment.md`](../workshop/lab2-cli-assessment.md)) | **Lab 1** ([`lab1-version-upgrade.md`](../workshop/lab1-version-upgrade.md)) |
+
+**Rule of thumb**
+
+- *Single repo, single dev, want to feel the changes?* → IDE Agent (Lab 1).
+- *5+ repos, weekly cadence, want a Slack-postable report?* → CLI + GitHub Actions (Lab 2 + Cookbook recipe 11).
+- *Both?* — that's exactly the workshop arc: Lab 1 to learn the shape, Lab 2 to scale it.
+
+## CLI Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| `modernize: command not found` after install | Shell PATH not refreshed | Open a new terminal, or `hash -r`; for Linuxbrew run `eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"`. |
+| `gh: not authenticated` during a CLI run | `gh auth login` not completed (or token expired) | `gh auth status`; re-run `gh auth login -s repo,read:org` if scopes are missing. |
+| Default run produces only HTML, validators expect `*.md` | `--format` defaults to `html` | Pass `--format markdown` explicitly. The CLI does *not* auto-emit both. |
+| `validate.sh lab2` fails to find reports under `.github/modernize/assessment/` | Reports actually land in `.github/modernize/assessment/reports-{ts}/index.md` | Use a glob like `assessment/reports-*/index.md` (this repo's `validate.sh` was updated for this layout). |
+| `modernize plan create --source workshop-apps/bookstore-app` doesn't show plan in repo root | Plan output is **source-relative** | Look in `workshop-apps/bookstore-app/.github/modernize/{plan-name}/`. |
+| `--delegate cloud` errors with "host not supported" | URL is not `github.com` (GHES, GitLab, ADO, local path) | Use `--delegate local`, or push the repo to `github.com` first. |
+| `--language python` error | Python isn't accepted in v0.0.293 | Drop the flag (auto-detect) or stick to `java`/`dotnet`. |
+| Repeated rate-limit / quota errors during `--delegate cloud` | Model multiplier × portfolio size exceeds Copilot quota | Switch to `--model claude-haiku-4.5` (0.33×) or a 0× model for dry runs; pre-flight with `modernize help models`. |
+| `.github/modernize/` artifacts polluting `git status` | This repo's `.gitignore` already excludes them | Confirm with `git check-ignore -v .github/modernize/...`; the CLI also auto-creates per-folder `.gitignore` with `*`. |
+| Want to silence anonymous telemetry | `MODERNIZE_COLLECT_TELEMETRY=true` is the default | `export MODERNIZE_COLLECT_TELEMETRY=false`. |
+| Stale plan blocks a re-run | `--plan-name` collides with prior run | Pass `--overwrite`, or delete `<source>/.github/modernize/{plan-name}/`. |
+
+> Still stuck? File via `modernize` → [GitHub Issues](https://github.com/microsoft/github-copilot-appmod/issues/new?template=feedback-template.yml).
+
+## Related Reading
+
+- **Cookbook** — practical recipes: [`docs/examples/cli-cookbook.md`](./examples/cli-cookbook.md)
+- **Batch operations** — multi-repo patterns: [`docs/05-batch-operations.md`](./05-batch-operations.md)
+- **Custom skills** — author your own upgrade rules: [`docs/06-custom-skills.md`](./06-custom-skills.md)
+- **Lab 1 (IDE)** — first contact with the agent: [`workshop/lab1-version-upgrade.md`](../workshop/lab1-version-upgrade.md)
+- **Lab 2 (CLI)** — portfolio-scale assessment + plan: [`workshop/lab2-cli-assessment.md`](../workshop/lab2-cli-assessment.md)
+
 ## Feedback
 
 - [GitHub Issues](https://github.com/microsoft/github-copilot-appmod/issues/new?template=feedback-template.yml)
