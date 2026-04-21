@@ -68,25 +68,28 @@ case "$LAB" in
     ;;
 
   lab2)
-    # Check 1: Assessment files exist
-    if ls "$REPO_ROOT/.github/modernize/assessment/"*.md 2>/dev/null | grep -q .; then
+    # Check 1: Assessment files exist (timestamped reports-{yyyyMMddHHmmss}/index.md)
+    if ls "$REPO_ROOT/.github/modernize/assessment/reports-"*/index.md 2>/dev/null | grep -q .; then
       check_pass "Assessment markdown files exist"
     else
-      check_fail "No assessment files found in .github/modernize/assessment/"
+      check_fail "No assessment reports found in .github/modernize/assessment/reports-*/index.md (did you pass --format markdown to 'modernize assess'?)"
     fi
 
     # Check 2: Assessment mentions BookStore or NotesApp
-    if grep -l "BookStore\|NotesApp" "$REPO_ROOT/.github/modernize/assessment/"*.md 2>/dev/null | grep -q .; then
+    if grep -l "BookStore\|NotesApp\|bookstore\|notes-app" "$REPO_ROOT/.github/modernize/assessment/reports-"*/index.md 2>/dev/null | grep -q .; then
       check_pass "Assessment references BookStore or NotesApp"
     else
       check_fail "Assessment does not reference BookStore or NotesApp"
     fi
 
-    # Check 3: Plan file exists
-    if ls "$REPO_ROOT/.github/modernize/"*/plan.md 2>/dev/null | grep -q .; then
+    # Check 3: Plan file exists — modernize plan create writes inside the --source path
+    # Lab 2 uses --source ./workshop-apps/bookstore-app --plan-name bookstore-java21.
+    # Fall back to the repo-root location for older/alternate layouts.
+    if ls "$REPO_ROOT/workshop-apps/bookstore-app/.github/modernize/"*/plan.md 2>/dev/null | grep -q . \
+       || ls "$REPO_ROOT/.github/modernize/"*/plan.md 2>/dev/null | grep -q .; then
       check_pass "Modernization plan file exists"
     else
-      check_fail "No plan.md found in .github/modernize/*/"
+      check_fail "No plan.md found in workshop-apps/bookstore-app/.github/modernize/*/ or .github/modernize/*/"
     fi
     ;;
 
