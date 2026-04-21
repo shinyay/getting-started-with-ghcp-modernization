@@ -222,6 +222,18 @@ Or open it in VS Code for better readability:
 code .github/modernize/assessment/reports-*/
 ```
 
+If you want to inspect the machine-readable summary (`aggregate-report.json`), use a BOM-aware reader — the CLI writes JSON with a UTF-8 BOM that `python3 -m json.tool` rejects:
+
+```bash
+# jq handles BOM transparently
+jq . .github/modernize/assessment/reports-*/aggregate-report.json | head -60
+
+# Or Python with utf-8-sig
+cat .github/modernize/assessment/reports-*/aggregate-report.json \
+  | python3 -c 'import sys,json; print(json.dumps(json.loads(sys.stdin.buffer.read().decode("utf-8-sig")), indent=2))' \
+  | head -60
+```
+
 ### Step 8 — Walk through the Dashboard section
 
 The report starts with a **Dashboard** that summarizes:
@@ -304,10 +316,16 @@ cat workshop-apps/bookstore-app/.github/modernize/bookstore-java21/plan.md
 
 ✅ **Expected:** A `plan.md` file describing the upgrade steps, affected files, and success criteria. You may also see `clarifications.json` — open questions the planner could not resolve from the source alone (for example, "should JUnit 4 → JUnit 5 also be migrated?"). Fill in the `"answer"` fields to refine the plan on a re-run with `--overwrite`.
 
-Also check for the structured task list:
+Also check for the structured task list. Note that the CLI writes its JSON files with a UTF-8 BOM (Byte Order Mark), so `python3 -m json.tool` rejects them with `Unexpected UTF-8 BOM (decode using utf-8-sig)`. Use one of the BOM-aware alternatives below:
 
 ```bash
-cat workshop-apps/bookstore-app/.github/modernize/bookstore-java21/tasks.json | python3 -m json.tool | head -40
+# Option A — Python with utf-8-sig decoding
+cat workshop-apps/bookstore-app/.github/modernize/bookstore-java21/tasks.json \
+  | python3 -c 'import sys,json; print(json.dumps(json.loads(sys.stdin.buffer.read().decode("utf-8-sig")), indent=2))' \
+  | head -40
+
+# Option B — jq (handles BOM transparently)
+jq . workshop-apps/bookstore-app/.github/modernize/bookstore-java21/tasks.json | head -40
 ```
 
 ✅ **Expected:** Valid JSON with a `tasks[]` array. Each task has `id`, `description`, `requirements`, `skills`, and `successCriteria`. See [`docs/04-modernization-agent-cli.md`](../docs/04-modernization-agent-cli.md#output-artifacts) for the full schema.
@@ -361,6 +379,7 @@ The **Plan** command then drills into a single application, producing a step-by-
 | **Validator (`workshop/validate.sh lab2`) finds no reports** | You probably ran without `--format markdown` (so the CLI emitted HTML). Re-run Step 5 with `--format markdown`. |
 | **Plan command's output is "missing"** | It's not — `modernize plan create --source <path>` writes inside that path's `.github/modernize/{plan-name}/`, not the repo root. Look in `workshop-apps/bookstore-app/.github/modernize/`. |
 | **`plan create --no-tty` hangs forever after writing files** | Known v0.0.293 issue. The plan files are already on disk; press **Ctrl+C** as soon as `Modernization plan created at …` appears. Better: wrap with `timeout 600 modernize plan create …`. Verify with `ls workshop-apps/bookstore-app/.github/modernize/bookstore-java21/`. |
+| **`python3 -m json.tool` errors with `Unexpected UTF-8 BOM`** | The CLI emits `aggregate-report.json`, `tasks.json`, and `clarifications.json` with a UTF-8 BOM. Use `jq` (BOM-tolerant) or pipe through `python3 -c 'import sys,json; print(json.dumps(json.loads(sys.stdin.buffer.read().decode("utf-8-sig")), indent=2))'`. |
 | **`--delegate cloud` fails with "host not supported"** | Cloud delegation works only for `github.com` repos. Use `--delegate local` for GHES, GitLab, ADO, or local-only paths. |
 
 ---

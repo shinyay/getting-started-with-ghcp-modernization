@@ -454,8 +454,29 @@ Both `assess` and `plan create` emit files in deterministic locations. Knowing t
 ├── .gitignore                     # Auto-created, contains: *
 └── {plan-name}/                   # Default plan-name: "modernization-plan"
     ├── plan.md                    # Strategy, success criteria, rationale
-    └── tasks.json                 # Structured, executable task list
+    ├── tasks.json                 # Structured, executable task list
+    └── clarifications.json        # Open questions raised by the planner (optional)
 ```
+
+> **🐛 UTF-8 BOM in JSON files (v0.0.293).** All JSON files emitted by `assess` and `plan create` (`aggregate-report.json`, `report.json`, `tasks.json`, `clarifications.json`) start with a UTF-8 BOM (`\ufeff`). Strict JSON parsers reject this:
+>
+> ```bash
+> $ cat aggregate-report.json | python3 -m json.tool
+> Unexpected UTF-8 BOM (decode using utf-8-sig): line 1 column 1 (char 0)
+> ```
+>
+> **Workarounds:**
+>
+> ```bash
+> # Option 1: jq (BOM-tolerant)
+> jq . aggregate-report.json
+>
+> # Option 2: Python with utf-8-sig codec
+> python3 -c 'import sys,json; print(json.dumps(json.loads(open(sys.argv[1],"rb").read().decode("utf-8-sig")), indent=2))' aggregate-report.json
+>
+> # Option 3: strip BOM then pipe
+> sed '1s/^\xEF\xBB\xBF//' aggregate-report.json | python3 -m json.tool
+> ```
 
 ### `tasks.json` schema (observed in v0.0.293)
 
