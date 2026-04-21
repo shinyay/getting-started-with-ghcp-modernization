@@ -1,4 +1,4 @@
-# Lab 1: Version Upgrade — Spring Boot 2.7 + Java 11 → Java 21 + Spring Boot 3.x
+# Lab 1: Version Upgrade — Spring Boot 2.7 + Java 11 → Java 21 + Spring Boot 3.5.x
 
 | Detail | Value |
 |--------|-------|
@@ -165,7 +165,7 @@ mvn clean package
 
 ### Step 12 — Celebrate 🎉
 
-You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Java 21 + Spring Boot 3.x — with AI assistance staging every change in your working tree for review.
+You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Java 21 + Spring Boot 3.5.x (latest 3.x line) — with AI assistance staging every change in your working tree for review.
 
 > **📝 Heads-up for Lab 3:** If the agent migrated your JUnit 4 tests to JUnit 5
 > during this lab (check with `grep -r "org.junit.jupiter" src/test/`), you'll need
