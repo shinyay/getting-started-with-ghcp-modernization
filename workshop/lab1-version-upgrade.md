@@ -192,6 +192,8 @@ Every change the agent made appears in your **working tree** as an uncommitted e
 
 The `javax` → `jakarta` rename is one of the most impactful changes in the Spring Boot 2 → 3 migration. It affects persistence annotations, validation constraints, servlet APIs, and more. Doing this manually across a large codebase is tedious and error-prone — exactly the kind of task AI excels at.
 
+> 💡 **Bonus catch:** The agent also proactively replaces `@MockBean` with `@MockitoBean` in your Spring Boot tests. `@MockBean` was deprecated in Spring Boot 3.4, and the new agent migrates it for you in the same pass — a small but valuable touch you'd otherwise discover only after seeing build warnings.
+
 ---
 
 ## Troubleshooting
