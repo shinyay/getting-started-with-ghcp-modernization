@@ -1,6 +1,14 @@
 ---
 name: junit4-to-junit5
 description: Migrate JUnit 4 tests to JUnit 5 (Jupiter) — replaces @RunWith with @ExtendWith, org.junit.Test with org.junit.jupiter.api.Test, and Assert.* with Assertions.*.
+language: java
+applicable_to:
+  - "**/pom.xml"
+  - "**/build.gradle"
+  - "**/build.gradle.kts"
+  - "**/src/test/java/**/*.java"
+requires:
+  - "org.junit.Test"
 ---
 
 # JUnit 4 → JUnit 5 Migration Skill
