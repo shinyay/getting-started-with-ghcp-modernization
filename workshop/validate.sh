@@ -94,11 +94,11 @@ case "$LAB" in
     ;;
 
   lab3)
-    # Check 1: Custom skill file exists
-    if test -f "$REPO_ROOT/workshop-apps/bookstore-app/.github/skills/junit4-to-junit5/SKILL.md"; then
+    # Check 1: Custom skill file exists at repo root
+    if test -f "$REPO_ROOT/.github/skills/junit4-to-junit5/SKILL.md"; then
       check_pass "Custom skill SKILL.md exists"
     else
-      check_fail "Custom skill SKILL.md not found"
+      check_fail "Custom skill SKILL.md not found at .github/skills/junit4-to-junit5/SKILL.md"
     fi
 
     # Check 2: JUnit 5 imports present in tests
