@@ -5,6 +5,7 @@
 | **Duration** | 50 minutes |
 | **Application** | NotesApp (`workshop-apps/notes-app/`) |
 | **Stack** | Spring Boot 3.2.5, Java 17, file-based logging |
+| **Verified With** | GitHub Copilot app modernization extension v0.0.293+ (VS Code Insiders) |
 
 ---
 
@@ -13,20 +14,23 @@
 By the end of this lab you will be able to:
 
 1. Understand **predefined tasks** as codified best practices for cloud migration.
-2. Apply the **"Logging to local file"** predefined task to eliminate file-based logging.
-3. Verify that logging output is redirected to the console (stdout), making the application cloud-ready for Azure Monitor.
+2. Locate the task **"Migrate file logging to console logging"** in the v0.0.293+ Tasks panel (nested under Java > Migration Tasks > Storage Tasks).
+3. Run the task and observe the agent's full pipeline — plan → migrate → multi-stage validation → auto-commit.
+4. Verify that logging output is redirected to the console (stdout), making the application cloud-ready for Azure Monitor.
 
 ---
 
 ## Pre-Lab Checklist
 
-- [ ] NotesApp folder (`workshop-apps/notes-app/`) is open in VS Code.
+- [ ] **Open `workshop-apps/notes-app/` as the workspace folder in VS Code Insiders** (not the repo root). The extension only enumerates predefined tasks for the folder it has open.
 - [ ] The build passes:
 
-```bash
-cd workshop-apps/notes-app
-mvn clean package
-```
+  ```bash
+  cd workshop-apps/notes-app
+  mvn clean package
+  ```
+
+- [ ] When the predefined task starts, VS Code will prompt you to start two MCP servers — **CopilotMod** and **Foundry MCP**. Click **Allow / Start** for both. Without these the task cannot run.
 
 > If the build fails at this stage, resolve the issue before continuing.
 
@@ -91,7 +95,7 @@ cd workshop-apps/notes-app
 mvn spring-boot:run
 ```
 
-Wait until you see `Started NotesAppApplication` in the console.
+Wait until you see `Started NotesApplication` in the console (port `8083`).
 
 ### Step 4 — Create a Test Note
 
@@ -108,6 +112,7 @@ You should receive a JSON response confirming the note was created.
 ### Step 5 — Verify File Logging Exists
 
 ```bash
+ls -la logs/
 cat logs/notes-app.log
 cat logs/audit.log
 ```
@@ -118,44 +123,74 @@ Both files should contain entries. This confirms the file-based logging is activ
 
 Return to the terminal running the app and press **Ctrl+C** to stop it.
 
-### Step 7 — Create a Working Branch
+> ℹ️ **No manual `git checkout -b` is needed.** The predefined-task agent will automatically create its own working branch in the next step (see Step 8).
+
+### Step 7 — Open the Predefined Tasks Panel
+
+In VS Code Insiders:
+
+1. Open the **GitHub Copilot app modernization** extension sidebar (the rocket-ship icon).
+2. Expand the **TASKS** view.
+3. The tasks are grouped by **language**: `Common Tasks`, **`Java`**, `Python`, `.NET`, `TypeScript`, `My Skills`.
+4. Expand **`Java`** → **`Migration Tasks`** → **`Storage Tasks`**.
+5. The task you want is **"Migrate file logging to console logging"**.
+
+> 📝 **Heads up — task naming.** The official Microsoft Learn catalog still lists this task under its old name **"Logging to local file"**. The extension UI renamed it to "Migrate file logging to console logging" in v0.0.293+. They are the same task (internal `kbId: log-to-console`).
+
+### Step 8 — Run the Predefined Task
+
+Click **Run** on **"Migrate file logging to console logging"**.
+
+Alternatively, from Copilot Chat, you can invoke the same task directly:
+
+```
+#appmod-run-task kbId=log-to-console
+```
+
+When the task starts:
+
+1. VS Code will prompt to start the **CopilotMod** and **Foundry MCP** servers — click **Allow / Start** for both.
+2. The agent reports progress as **`Phase X / 8`**:
+   1. Initialization
+   2. Create `progress.md`
+   3. Pre-condition checks (build green, clean tree)
+   4. Plan generation
+   5. Version control (creates branch `appmod/java-log-to-console-<TIMESTAMP>`)
+   6. Code migration
+   7. Validation pipeline (see Step 9)
+   8. Final summary
+
+> ℹ️ **Branch is automatic.** The agent commits its work onto a branch named `appmod/java-log-to-console-<TIMESTAMP>` — your current branch is left untouched.
+
+### Step 9 — Observe the Validation Pipeline & Auto-Commits
+
+After the code migration phase the agent runs a **5-stage validation pipeline**:
+
+| Stage | What it Checks |
+|-------|----------------|
+| **Build** | `mvn clean package` succeeds |
+| **CVE** | No new vulnerable dependencies introduced |
+| **Consistency** | Diff against the baseline revision is internally coherent |
+| **Tests** | Existing tests still pass |
+| **Completeness** | A second pass that re-scans for *any remaining* anti-patterns |
+
+If the **Completeness** stage finds leftovers (e.g. unused `LOG_DIR` properties), the agent **performs a second edit and a second commit** — so expect **two or more commits** on the `appmod/...` branch:
+
+| Commit | Typical Message |
+|--------|-----------------|
+| 1 | `Code migration: migrate file-based logging to console for Azure Monitor` |
+| 2 | `Completeness fixes: remove FILE appender definition and unused LOG_DIR/LOG_FILE properties from logback-spring.xml` |
+
+You **do not** need to approve every change; the agent commits automatically. Your job is to read the diff afterwards.
+
+> 📝 **Artifacts.** The agent writes its plan, progress, and final summary to `.github/modernize/code-migration/log-to-console-<TIMESTAMP>/{plan,progress,summary}.md`. This directory is `.gitignore`d — open it in VS Code to inspect what the agent decided.
+
+### Step 10 — Restart and Verify
+
+Stop any leftover app process (it should already be stopped from Step 6), move the old logs aside so you can prove no new ones are created, then restart:
 
 ```bash
-git checkout -b fix-logging
-```
-
-### Step 8 — Open the Predefined Tasks Panel
-
-In VS Code:
-
-1. Open the **GitHub Copilot Modernization** extension sidebar.
-2. Navigate to **TASKS**.
-3. Find the task named **"Logging to local file"**.
-
-### Step 9 — Run the Predefined Task
-
-Click **Run** on the "Logging to local file" task.
-
-Alternatively, use Copilot Chat:
-
-```
-@modernize migrate file-based logging to console logging
-```
-
-### Step 10 — Watch the Changes
-
-Observe the agent working. It should:
-
-- **Update `logback-spring.xml`** — remove the `RollingFileAppender`, keep or add a `ConsoleAppender`.
-- **Update `NoteService.java`** — replace the `writeAuditLog()` method's `FileWriter`/`Files.write()` calls with proper SLF4J logger calls.
-
-Review each change before accepting.
-
-### Step 11 — Rebuild and Verify
-
-Restart the application:
-
-```bash
+mv logs logs.before-fix     # keep old logs for comparison
 mvn spring-boot:run
 ```
 
@@ -169,36 +204,53 @@ curl -X POST http://localhost:8083/api/notes \
 
 Verify:
 
-- ✅ Logs appear in the **console** (stdout).
-- ✅ No new files are created in the `logs/` directory.
+- ✅ Audit lines appear on the **console** in the form
+  `AUDIT | CREATE | Note ID: 1 | Title: After Fix`.
+- ✅ `ls logs` returns *No such file or directory* — the `logs/` directory is **not recreated**.
 
-### Step 12 — Stop the App and Commit
+Press **Ctrl+C** to stop the app, then clean up the comparison folder:
 
 ```bash
-# Stop the app (Ctrl+C), then:
-git add -A
-git commit -m "fix: migrate file-based logging to console for Azure Monitor"
+rm -rf logs.before-fix
 ```
+
+### Step 11 — Review What the Agent Committed
+
+```bash
+git log --oneline appmod/java-log-to-console-* --not main
+```
+
+You should see the commits the agent created (typically two — one for the migration, one for completeness fixes). Inspect them:
+
+```bash
+git --no-pager show <sha>
+```
+
+> ℹ️ **No manual `git commit` is needed for this lab.** The predefined-task agent already committed the work for you. If you want the changes on `main`, fast-forward merge or cherry-pick the `appmod/...` branch.
 
 ---
 
 ## Checkpoint 1 — No RollingFileAppender
 
 ```bash
-grep "RollingFileAppender" src/main/resources/logback-spring.xml
+grep "RollingFileAppender" src/main/resources/logback-spring.xml \
+  && echo "FAIL: RollingFileAppender still present" \
+  || echo "PASS: RollingFileAppender removed"
 ```
 
-**Expected:** No output (no matches found).
+**Expected:** `PASS: RollingFileAppender removed`.
 
 ---
 
 ## Checkpoint 2 — No Direct File Writing
 
 ```bash
-grep -r "FileWriter\|Files.write" src/main/java/
+grep -rE "FileWriter|Files\.write" src/main/java/ \
+  && echo "FAIL: direct file writes still present" \
+  || echo "PASS: no direct file writes"
 ```
 
-**Expected:** No output (no matches found).
+**Expected:** `PASS: no direct file writes`.
 
 ---
 
@@ -210,23 +262,28 @@ mvn clean package
 
 **Expected:** `BUILD SUCCESS` with exit code 0.
 
+> 💡 **Shell note.** The Checkpoint commands above use `&& / ||` so they work the same in `bash`, `zsh`, and `fish`. (Avoid `$?` — that variable does not exist in `fish`; use `$status` there.)
+
 ---
 
 ## What Just Happened?
 
 You used a **predefined task** — a codified best practice from Microsoft's Azure migration playbook. Instead of manually finding and fixing every file-logging instance, the task:
 
-1. Identified all file-based logging patterns.
-2. Replaced them with console/SLF4J equivalents.
-3. Ensured the configuration is cloud-ready.
+1. Created its own working branch (`appmod/java-log-to-console-<TIMESTAMP>`).
+2. Generated a plan, then identified all file-based logging patterns.
+3. Replaced them with SLF4J / console equivalents.
+4. Ran a 5-stage validation pipeline and made a follow-up commit when the **Completeness** check found leftovers.
+5. Wrote audit artifacts to `.github/modernize/code-migration/log-to-console-<TIMESTAMP>/`.
 
 There are **13 predefined tasks** available for Java applications, covering:
 
-- 📨 Messaging (e.g., switch to Azure Service Bus)
-- 🔑 Identity (e.g., migrate to passwordless authentication)
-- 💾 Storage (e.g., move to Azure Blob Storage)
-- 🔒 Security (e.g., enable managed identity)
-- 📊 Monitoring (e.g., integrate with Azure Monitor)
+- 📨 Messaging (Spring RabbitMQ / ActiveMQ / AWS SQS → Azure Service Bus)
+- 🔑 Identity (Managed Identities for DB & credentials, Microsoft Entra ID)
+- 💾 Storage (AWS S3 → Blob, local file I/O → File share, **file logging → console**)
+- 🔒 Secrets (AWS Secrets Manager → Key Vault, generic Key Vault migration)
+- 📨 Email (Java Mail → Azure Communication Service)
+- 🛢️ SQL (Oracle SQL dialect → PostgreSQL)
 
 ---
 
@@ -234,12 +291,15 @@ There are **13 predefined tasks** available for Java applications, covering:
 
 | Problem | Solution |
 |---------|----------|
-| **Predefined task not visible** | Ensure the `notes-app` directory is the folder open in VS Code (not a parent directory). Verify the GitHub Copilot Modernization extension is installed and loaded. |
+| **TASKS panel is empty / task not visible** | Open `workshop-apps/notes-app/` as the workspace folder (not the repo root). The extension enumerates tasks per workspace folder. Then expand `Java > Migration Tasks > Storage Tasks`. |
+| **Task is named "Logging to local file" in docs but I can't find it** | The UI renamed it to **"Migrate file logging to console logging"** in v0.0.293+. Same task, same `kbId`. |
+| **MCP servers prompt does not appear / task hangs at Phase 1** | Reload the VS Code window and re-run the task. When prompted, click **Allow / Start** for both `CopilotMod` and `Foundry MCP`. |
 | **App won't start after changes** | Check that `logback-spring.xml` is valid XML (no unclosed tags). Ensure there are no broken class references. |
 | **Tests fail after migration** | Tests may still reference file operations (`logs/audit.log`). The agent should have updated them — if not, manually remove file-based assertions from test classes. |
+| **`logs/` keeps reappearing** | You probably restarted from a stale build. Run `mvn clean package` first, then `mvn spring-boot:run`. |
 
 ---
 
 ## Stretch Goal
 
-Browse the other predefined tasks in the **TASKS** panel. Explore what's available — you may find tasks relevant to your own projects. Consider which ones you might apply in Lab 6.
+Browse the other predefined tasks in the **TASKS** panel under `Java > Migration Tasks` (Security / Database / Message Queue / Compute / Storage / Build Tools / Authentication / Cache / Configuration / Email / Event Streaming). Explore what's available — you may find tasks relevant to your own projects. Consider which ones you might apply in Lab 6.
