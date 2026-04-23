@@ -6,12 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,15 +63,6 @@ public class NoteService {
     }
 
     private void writeAuditLog(String action, Note note) {
-        try {
-            // ⚠️ CLOUD ANTI-PATTERN: Writing directly to filesystem
-            Path logDir = Paths.get("logs");
-            Files.createDirectories(logDir);
-            Path auditFile = logDir.resolve("audit.log");
-            String entry = LocalDateTime.now() + " | " + action + " | Note ID: " + note.getId() + " | Title: " + note.getTitle() + "\n";
-            Files.write(auditFile, entry.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-        } catch (IOException e) {
-            logger.error("Failed to write audit log", e);
-        }
+        logger.info("AUDIT | {} | Note ID: {} | Title: {}", action, note.getId(), note.getTitle());
     }
 }
