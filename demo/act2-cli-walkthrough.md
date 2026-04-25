@@ -85,7 +85,7 @@ Open the CLI assessment report and show the **Dashboard** section:
 |-----|---------|--------|
 | PhotoAlbum-Java | Java 8, Spring Boot 2.7 | Java 21, Spring Boot 3.x |
 | TaskTracker | Java 17, Spring Boot 3.2 | Already current (secrets only) |
-| NewsFeedSite | Java 8, Servlet/Jetty | Java 21, Spring Boot 3.x |
+| NewsFeedSite | Java 17, Servlet/Jetty (multi-module) | Java 21, Spring Boot 3.x |
 
 ---
 
@@ -113,7 +113,7 @@ Open the CLI assessment report and show the **Dashboard** section:
 
 | App | Why last | Effort | Key changes |
 |-----|----------|--------|------------|
-| **NewsFeedSite** | Non-standard architecture (Jetty + Servlets) | Large | Java 8→21, Jetty→Spring Boot, RabbitMQ→Service Bus |
+| **NewsFeedSite** | Non-standard architecture (Jetty + Servlets, multi-module) | Large | Java 17→21, Jetty→Spring Boot, RabbitMQ→Service Bus |
 
 > "Save this for last — it needs architectural changes beyond a simple upgrade. The patterns learned from Wave 1 and 2 can be captured as custom skills to accelerate this."
 

@@ -1,0 +1,20 @@
+本日の成果サマリー
+
+Lab 4 dry-run 完了 — 12 findings を整理し、main に 2 commit 反映:
+
+ - 9eb48f0 test(notes-app): predefined task 実行結果
+ - eea2064 docs(lab4): v0.0.293+ extension UI/挙動に整合
+
+次回 (Lab 5) スタート時のメモ
+
+ - 現在地: main (= origin/main = eea2064)、clean tree
+ - Lab 5 doc: workshop/lab5-*.md (要確認)
+ - 同じパターンでブランチ作成 → dry-run → findings 収集 → doc 更新 commit の流れ
+ - セッション state は ~/.copilot/session-state/baaa1718-.../ に保存済 (checkpoint 7 件 + plan.md + files/)
+
+それではまた次回！
+
+  ╭─╮╭─╮   Changes   +1380 -297
+  ╰─╯╰─╯   Requests  1567.5 Premium (67h 10m 46s)
+  █ ▘▝ █   Tokens    ↑ 65.7m • ↓ 296.9k • 58.7m (cached)
+   ▔▔▔▔    Resume    copilot --resume=baaa1718-a43a-47ce-950d-b783ef295fe9

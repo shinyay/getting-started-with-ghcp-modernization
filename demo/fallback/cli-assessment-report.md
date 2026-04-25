@@ -33,9 +33,9 @@
 
 | Technology | Apps | Versions Found |
 |-----------|------|----------------|
-| **Java** | 3 | Java 8 (2 apps), Java 17 (1 app) |
+| **Java** | 3 | Java 8 (1 app), Java 17 (2 apps) |
 | **Spring Boot** | 2 | 2.7.18 (1 app), 3.2.5 (1 app) |
-| **Servlet/Jetty** | 1 | Jetty 9.4, javax.servlet 3.1 |
+| **Servlet/Jetty** | 1 | Jetty 9.4, javax.servlet 4 |
 | **Build Tool** | 3 | Maven (all) |
 | **Database** | 2 | Oracle 21c XE (1 app), H2 (1 app) |
 | **Message Broker** | 1 | RabbitMQ 3 (1 app) |
@@ -69,7 +69,7 @@
 |------------|---------|--------|-------------|
 | PhotoAlbum-Java | Java 8, Spring Boot 2.7.18 | Java 21, Spring Boot 3.3+ | javax→jakarta, Oracle JDBC update, config migration |
 | TaskTracker | Java 17, Spring Boot 3.2.5 | *(current)* | Secrets externalization only |
-| NewsFeedSite | Java 8, Servlet/Jetty 9.4 | Java 21, Spring Boot 3.3+ | Architecture migration (Servlet→Spring Boot), RabbitMQ→Service Bus |
+| NewsFeedSite | Java 17, Servlet/Jetty (multi-module: client + service) | Java 21, Spring Boot 3.3+ | Architecture migration (Servlet→Spring Boot), RabbitMQ→Service Bus |
 
 ---
 
@@ -95,7 +95,7 @@
 
 | Application | Effort | Key Changes | Risk |
 |------------|--------|-------------|------|
-| **NewsFeedSite** | Large | Java 8→21, Jetty→Spring Boot, RabbitMQ→Service Bus | Higher — architectural changes |
+| **NewsFeedSite** | Large | Java 17→21, Jetty→Spring Boot, RabbitMQ→Service Bus | Higher — architectural changes |
 
 > **Rationale**: Requires architectural migration beyond framework upgrade. Leverage patterns and custom skills from Wave 1 and 2 to accelerate. Consider using Cloud Coding Agents for parallel processing.
 
