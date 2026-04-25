@@ -10,7 +10,7 @@
 | **Duration** | 50 minutes |
 | **Application** | BookStore (`workshop-apps/bookstore-app/`) |
 | **Stack** | Spring Boot 2.7, Java 11 → target: **Java 21 + Spring Boot LATEST GA** |
-| **Verified With** | `modernize` CLI v0.0.293+ (with Copilot CLI 1.0.10) |
+| **Verified With** | `modernize` CLI v0.0.293+ (with Copilot CLI 1.0.36), 2026-04-25 |
 
 ---
 

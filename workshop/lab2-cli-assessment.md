@@ -302,7 +302,7 @@ timeout 600 modernize plan create "upgrade to Java 21 and Spring Boot 3.5" \
 
 > ⚠️ **Output path is source-relative, not CWD-relative.** Because we passed `--source ./workshop-apps/bookstore-app`, the plan lands inside that folder, **not** in the repo-root `.github/modernize/`. This is intentional (the plan ships with the app), but it surprises everyone the first time.
 
-> **🐛 Known issue (v0.0.293) — the command may hang after writing files.** `plan create --no-tty` writes `plan.md`, `tasks.json`, and (optionally) `clarifications.json` in ~3–6 minutes, then can keep printing `[!] Still waiting for Copilot response (Ns elapsed)…` indefinitely. The `timeout 600` wrapper above bounds this at 10 minutes — exit code 124 means "the timeout fired, **check the output path before assuming failure**":
+> **🐛 Known issue (v0.0.293) — historical hang FIXED.** Earlier preview builds of `plan create --no-tty` could keep printing `[!] Still waiting for Copilot response (Ns elapsed)…` indefinitely after writing files. **Re-verified 2026-04-25 on v0.0.293**: the command now exits cleanly within ~30-60 seconds for small projects. Keep the `timeout 600` wrapper above as a defensive bound — exit code 124 means "the timeout fired, **check the output path before assuming failure**":
 >
 > ```bash
 > ls workshop-apps/bookstore-app/.github/modernize/bookstore-java21/
@@ -333,7 +333,17 @@ cat workshop-apps/bookstore-app/.github/modernize/bookstore-java21/tasks.json \
 jq . workshop-apps/bookstore-app/.github/modernize/bookstore-java21/tasks.json | head -40
 ```
 
-✅ **Expected:** Valid JSON with a `tasks[]` array. Each task has `id`, `description`, `requirements`, `skills`, and `successCriteria`. See [`docs/04-modernization-agent-cli.md`](../docs/04-modernization-agent-cli.md#output-artifacts) for the full schema.
+✅ **Expected:** Valid JSON with a `tasks[]` array. Each task has the following fields (verified 2026-04-25 on v0.0.293):
+> - `type` — task category (e.g. `upgrade`, `transform`, `migration`)
+> - `id` — short identifier (e.g. `001-upgrade-java21-springboot3`)
+> - `description` — full prose description
+> - `reason` — why the agent included this task (optional, may be `null`)
+> - `requirements` — what the task must accomplish
+> - `environmentConfiguration` — runtime/env hints (often `null`)
+> - `skills` — array of `{name, location}` (location is `builtin` or `local`)
+> - `successCriteria` — `{passBuild, generateNewUnitTests, passUnitTests}`
+>
+> The file also has top-level `metadata` with `planName`, `projectName`, `language`, `createdAt`, `version`. See [`docs/04-modernization-agent-cli.md`](../docs/04-modernization-agent-cli.md#output-artifacts) for the formal schema reference.
 
 ### Step 15 — Compare plan vs. assessment
 
