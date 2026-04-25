@@ -405,6 +405,48 @@ See [`docs/examples/repos.json.full-format.example`](./examples/repos.json.full-
 
 > **🐛 Application Matrix `Repo` column.** In v0.0.293, the rendered Application Matrix only fills the `Repo` column when the source path's basename differs from the application identity. Rows where they match (e.g. `notes-app` at `workshop-apps/notes-app/`) appear with a blank `Repo` cell. The underlying `aggregate-report.json` is correct; this is a display-only quirk.
 
+### Multi-Repository Runtime Behavior (Phase B / Batch Mode)
+
+When you pass `--source repos.json` to `modernize upgrade`, the CLI runs
+in **Multi-repository mode** with two distinct planning layers:
+
+1. **Top-level batch plan** (single shared task). The CLI invokes
+   `create-java-upgrade-plan` once at the repo root and writes a
+   single generic task to
+   `<repo>/.github/modernize/upgrade-to-lts-<TIMESTAMP>/plan.md`:
+   ```
+   001-upgrade-java-21    skill: java-version-upgrade (builtin)
+   ```
+   The Spring Boot hops are **not** part of this top-level plan.
+
+2. **Per-repo execution** (dynamic milestones). For each repo in
+   `repos.json`, the CLI launches the upgrade agent which generates its
+   own session-specific milestone plan based on that repo's actual state:
+   - Repos that already build on the target Java version skip Spring Boot
+     bumps entirely (minimum-change strategy).
+   - Repos that require Jakarta migration get the full SB hop chain
+     (e.g. 2.7 → 3.3 → 3.4 → 3.5).
+
+   This is why the same prompt can produce a single-commit upgrade for
+   one repo and a four-commit upgrade for another in the same run. To
+   force a uniform floor, pin it in the prompt:
+   `modernize upgrade "Java 21, Spring Boot 3.5" --source repos.json`.
+
+**Runtime UI** (verified against v0.0.293):
+
+| Element | What you see |
+|---|---|
+| Header | `Mode: Multi-repository (N repositories)` |
+| Notice | `Copilot Usage: Batch upgrade processes each repository individually...` |
+| Progress | **Upgrade Dashboard** table refreshing between repos: `PENDING` → `RUNNING...` → `SUCCESS` / `FAILED` (TASK / NAME / STATUS / TIME columns) |
+| Order | **Sequential** — exactly one repo `RUNNING...` at a time, never two |
+| End | **Aggregated Upgrade Report** listing each repo with Success / Failed and a per-repo one-line summary |
+
+For Cloud delegation (`--delegate cloud`), repos are dispatched as
+parallel CCA jobs instead — see § Cloud Delegation Constraints.
+
+For a step-by-step walkthrough see [`workshop/lab5-cli-execute.md`](../workshop/lab5-cli-execute.md) Phase B.
+
 ## Cloud Delegation Constraints
 
 `--delegate cloud` hands the actual work to **GitHub's Cloud Coding Agent (CCA)** — your laptop is freed up immediately, and the CLI either exits (without `--wait`) or polls until completion. Before reaching for it, know the limits:

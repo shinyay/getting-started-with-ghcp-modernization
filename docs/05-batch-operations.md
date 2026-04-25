@@ -185,10 +185,42 @@ modernize upgrade "Java 21" --delegate cloud
 
 ### Upgrade Workflow
 
-1. **Language detection**: Auto-detects from first repository
-2. **Plan creation**: Creates upgrade plan based on prompt (or uses latest LTS)
-3. **Execution**: Applies upgrade to each repository
-4. **Validation**: Builds and validates changes per repository
+For a single-repo invocation (`--source ./path/to/app`), the agent:
+
+1. **Plan creation**: `create-java-upgrade-plan` builds a milestone plan
+   (Java + Spring Boot hops) tailored to the source's current versions.
+2. **Per-milestone execution**: applies an OpenRewrite recipe when one
+   exists (`UpgradeToJava21`, `UpgradeSpringBoot_3_3`, …) and falls
+   back to manual edits otherwise. Each milestone is committed.
+3. **Validation per milestone**: build + unit tests + CVE check +
+   behavioral consistency review.
+4. **Summary**: writes `modernization-summary.md` and force-adds it
+   (the artifact dir is gitignored).
+
+For a multi-repo invocation (`--source repos.json`), the workflow is a
+**two-layer plan** with a **minimum-change strategy**:
+
+1. **Top-level plan** (single shared task). The CLI writes a generic
+   `001-upgrade-java-21` task to the repo root and dispatches each
+   repo sequentially through the **Upgrade Dashboard**.
+2. **Per-repo dynamic milestones**. The execution agent inspects each
+   repo's actual state and only adds the Spring Boot hops that the
+   build actually requires. Example: bookstore-app (Java 11 + SB 2.7.18)
+   gets a single `pom.xml` Java bump because SB 2.7.18 still builds on
+   Java 21; inventory-api (Java 8 + `javax.persistence`) gets the full
+   SB 2.7 → 3.5 hop chain because Jakarta migration is forced.
+3. **Per-repo validation** as in single-repo mode.
+4. **Per-repo summary** + commits land on the current branch (use a
+   throwaway branch).
+5. **Aggregated Upgrade Report** at the end lists each repo's outcome.
+
+To force a uniform floor across all repos, pin it in the prompt:
+`modernize upgrade "Java 21, Spring Boot 3.5" --source repos.json`.
+
+See [`docs/04-modernization-agent-cli.md` § Multi-Repository Runtime Behavior](04-modernization-agent-cli.md#multi-repository-runtime-behavior-phase-b--batch-mode)
+for the full runtime UI reference, and
+[`workshop/lab5-cli-execute.md`](../workshop/lab5-cli-execute.md) Phase B
+for a hands-on walkthrough.
 
 ### Review Results
 
