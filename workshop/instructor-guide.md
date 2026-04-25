@@ -59,7 +59,23 @@
 - **When to intervene**: if participant is stuck for >5 min on the same error, if assessment produces no useful output, if participant has no project (offer NewsFeedSite)
 - **Managing expectations**: "Not every app will migrate cleanly in 40 minutes — the goal is to experience the workflow and understand what's possible"
 
-## 4. Handling Common Situations
+### Lab 7: .NET Upgrade (50 min, optional)
+
+- **What to say before**: "Same Assess→Plan→Execute workflow you saw in Lab 1, applied to a .NET 6 → .NET 10 upgrade. Useful contrast for polyglot teams."
+- **What to watch for**: missing `dotnet` SDK (NET 10 SDK preview required), the .NET extension creating its own `dotnet-version-upgrade-N` branch, IDE artifacts landing in `.github/upgrades/{scenarioId}/` (not `.github/modernize/`)
+- **Common mistakes**: confusing the Java IDE artifact path with the .NET one, expecting the CLI and IDE surfaces to share the same workflow
+- **Fast participants**: try the same upgrade via the CLI (`modernize plan execute`) and compare commit history; cross-reference with Lab 1 to see Java/.NET differences
+
+## 4. Tooling versions to call out
+
+When introducing each lab, briefly mention the pinned tooling baseline so participants can interpret deviations correctly:
+
+- **VS Code extension**: `GitHub Copilot app modernization` v0.0.293+ (Insiders for predefined tasks)
+- **modernize CLI**: v0.0.293+
+- **Underlying model**: `claude-sonnet-4.6`
+- Each lab's front-matter `Verified With` row pins the exact date the lab was last validated. Tell participants: *"Your output may differ — both because AI is non-deterministic AND because tool versions move. The Verified-With date tells you when the lab was last known-good."*
+
+## 5. Handling Common Situations
 
 - **Fast participants**: Direct them to stretch goals in each lab
 - **Slow participants**: Skip stretch goals, focus on checkpoint 3 (build passes)
@@ -67,7 +83,7 @@
 - **Network issues**: Have fallback assets from `demo/fallback/` available
 - **Copilot rate limiting**: Reduce `chat.agent.maxRequests`, wait 1-2 minutes between labs
 
-## 5. Closing Discussion Points (Full-Day)
+## 6. Closing Discussion Points (Full-Day)
 
 - What surprised you about the modernization agent?
 - Where did it work well vs. where did it need help?
