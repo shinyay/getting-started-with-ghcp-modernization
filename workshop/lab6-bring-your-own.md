@@ -83,6 +83,12 @@ Based on the assessment, pick **one** action to start with:
 @modernize upgrade to Java 21
 ```
 
+> 💡 If your app is **not yet on Spring Boot** (e.g. plain Servlet/Jetty)
+> and you also want the framework introduced, name it explicitly:
+> `@modernize upgrade to Java 21 and Spring Boot 3`. A bare `Java 21`
+> prompt only bumps the JDK and dependencies needed for the build to
+> pass — it will not adopt Spring Boot on its own.
+
 **Option B — Predefined Task** (if a specific migration is relevant):
 
 1. Open the **TASKS** panel in the modernization extension.
@@ -142,25 +148,49 @@ cd NewsFeedSite
 
 | Attribute | Value |
 |-----------|-------|
-| **Java version** | 8 |
-| **Framework** | Servlet / Jetty |
+| **Java version** | 17 (target: 21) |
+| **Project layout** | Multi-module Maven (`client` + `service`) |
+| **Framework** | Servlet / Jetty (no Spring Boot — the upgrade introduces it) |
 | **Messaging** | RabbitMQ |
+| **WebSocket** | `javax.websocket` (migrated to `jakarta.websocket`) |
 | **Build tool** | Maven |
+| **Source files** | ~4 `.java` files — small enough to fit in 40 minutes |
 
-This application has multiple modernization opportunities: Java upgrade, framework migration, messaging modernization, and more.
+This application has multiple modernization opportunities packed into one
+prompt: Java 17 → 21 bump, **Servlet → Spring Boot framework migration**,
+JUnit 4 → 5 testing migration, `javax.*` → `jakarta.*` namespace shift,
+JSP → static HTML, and Jetty → embedded Tomcat — the agent attempts all
+of them as side-effects of the explicit Spring Boot 3 target.
 
 ### Suggested Workflow
 
 1. Open `NewsFeedSite` in VS Code.
 2. Create a branch: `git checkout -b modernize-workshop`
 3. Run the assessment: `@modernize assess this application`
-4. Try the upgrade:
+4. Try the upgrade — note the **explicit** Spring Boot 3 target is
+   required because Java 21 alone won't trigger the framework migration:
 
 ```
 @modernize upgrade to Java 21 and Spring Boot 3
 ```
 
-5. Review changes and run `mvn clean package`.
+5. Review changes and run the build with **Java 21 on your `PATH`**:
+
+```bash
+mvn clean package
+```
+
+> 💡 **Java toolchain.** After the upgrade, `pom.xml` requires Java 21.
+> If `java -version` still shows an older JDK, switch with `sdk use java
+> 21.0.x-open` (SDKMAN!) or set `JAVA_HOME` to a JDK 21 install before
+> running `mvn`.
+
+> 💡 **Single-task vs milestone plan.** Because the prompt names both
+> the JDK and the Spring Boot target explicitly, the agent collapses
+> the work into a **single task** (one commit). Compare with Lab 5
+> Phase A, where the prompt `"Java 21"` alone produced 3 Spring Boot
+> milestone hops. Be explicit when you want fewer commits; be vague
+> when you want a stepwise audit trail.
 
 ---
 
@@ -186,6 +216,8 @@ Raise your hand if you encounter any of these situations:
 | **Agent can't analyze the project** | The project structure may be non-standard (e.g., multi-module with unusual layout). Try pointing the agent at a specific submodule. |
 | **Partial migration** | This is expected for complex applications. The agent handles the bulk of the work; some edge cases require manual finishing. |
 | **Agent suggests changes you disagree with** | Reject them. You know your codebase best. The agent's suggestions are recommendations, not mandates. |
+| **`mvn` says "release version 21 not supported"** | Your local JDK is older than the upgraded `pom.xml` requires. Switch JDKs (`sdk use java 21.0.x-open` with SDKMAN!) or set `JAVA_HOME` before running `mvn`. |
+| **CLI users only: orphan `.github/modernize/upgrade-to-lts-*/` appears in the wrong repo** | If you ran `modernize upgrade --source /path/to/your/app` from a different directory, the plan dir is created in the **CWD** repo as well as the source. `cd` into the source first, or delete the orphan after the run. The IDE flow (`@modernize`) does not have this issue. |
 
 ---
 
