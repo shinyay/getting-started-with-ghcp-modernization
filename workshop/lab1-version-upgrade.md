@@ -138,9 +138,11 @@ After the assessment phase completes, verify that plan files were generated:
 ls .github/java-upgrade/
 ```
 
-✅ **Expected:** A timestamped working directory such as `20260421-bks-001/` containing `plan.md` (and later `progress.md`).
+✅ **Expected:** A timestamped working directory such as `20260424065029/` containing `plan.md` (and later `progress.md`).
 
-> 📝 The directory name follows the pattern `{yyyyMMdd}-bks-{NNN}`, where `bks` is the BookStore app slug and `NNN` is a zero-padded sequence number assigned by the agent.
+> 📝 The directory name is a 14-digit timestamp `{yyyyMMddHHmmss}` assigned by the agent at run start. Each invocation creates a fresh subdirectory under `.github/java-upgrade/`.
+>
+> 📂 **Path note**: This is the *IDE chat-handler* path (`@modernize-java-upgrade`). The CLI in [Lab 5](lab5-cli-execute.md) writes to a different location (`.github/modernize/{plan-name}/`). The IDE predefined-tasks panel in [Lab 4](lab4-predefined-task.md) writes to a third location (`.github/modernize/code-migration/{task}-{TIMESTAMP}/`). All three coexist; see [`docs/07 § Artifact Output Locations`](../docs/07-key-concepts-and-comparison.md#artifact-output-locations).
 
 ### Step 10 — Verify with Checkpoint 2
 

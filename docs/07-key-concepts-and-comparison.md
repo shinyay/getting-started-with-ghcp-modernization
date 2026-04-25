@@ -98,6 +98,30 @@ GitHub Copilot Modernization
     └── repos.json           # Multi-repo configuration
 ```
 
+### IDE Java chat-handler (`@modernize-java-upgrade`)
+```
+.github/
+└── java-upgrade/
+    └── {yyyyMMddHHmmss}/    # One subdirectory per chat-handler invocation
+        ├── plan.md
+        └── progress.md
+```
+> The IDE chat handler uses a third path distinct from both the CLI's
+> `.github/modernize/` and the .NET IDE's `.github/upgrades/`. The
+> chat handler also auto-manages an inner `.gitignore` (so its outputs
+> are not committed to history). See [Lab 1 Step 9](../workshop/lab1-version-upgrade.md#step-9--verify-with-checkpoint-1).
+
+### IDE Java predefined-tasks panel
+Predefined tasks (Lab 4) write under `.github/modernize/`, but with a per-task subdirectory and timestamp:
+```
+.github/
+└── modernize/
+    └── code-migration/
+        └── {task-name}-{yyyyMMddHHmmss}/
+            ├── plan.md
+            └── progress.md
+```
+
 ## Predefined Tasks Catalog — Complete Reference
 
 > **ℹ️ "Predefined task" is IDE nomenclature.** The names below are what
