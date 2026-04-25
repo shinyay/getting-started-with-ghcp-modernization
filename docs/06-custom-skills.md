@@ -32,6 +32,8 @@ Custom skills follow the [Agent Skills specification](https://agentskills.io/spe
     └── ...               # Any additional files
 ```
 
+> 📂 **Reference example**: a complete, workshop-tested `SKILL.md` is shipped at [`docs/examples/SKILL.md.example`](./examples/SKILL.md.example) (the JUnit 4 → JUnit 5 migration skill from Lab 3, with the Pattern 4 / Pattern 5 extensions added during the workshop dry-run). The repo's `.gitignore` excludes `.github/skills/` itself so workshop participants generate their own copy during Lab 3 — copy the example into `.github/skills/junit4-to-junit5/SKILL.md` to follow along.
+
 ### SKILL.md Format
 
 The `SKILL.md` file consists of **YAML frontmatter** + **Markdown body**:
