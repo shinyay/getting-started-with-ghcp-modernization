@@ -4,6 +4,24 @@ All notable changes to this repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.2.0] — 2026-04-25
+
+> **Release theme**: Workshop labs deep review (75 findings closed across Phases 1-3) + top-level docs refresh (Phase 4) + demo scripts refresh (Phase 5) + final polish on `demo/fallback/`, `docs/examples/`, and a shipped `SKILL.md.example` reference (Phase 6). All edits are surface-level alignment with the live `modernize` CLI v0.0.293+ / Copilot CLI 1.0.36+ / `claude-sonnet-4.6` / VS Code 1.106+ baseline as of 2026-04-25 — no behavioural changes to scripts, validators, or sample apps.
+
+### Added
+- `docs/examples/SKILL.md.example` — shipped reference copy of the Lab 3 JUnit 4 → JUnit 5 custom skill (140 lines, all 5 patterns including the workshop-dry-run Pattern 4 BookStore note + Pattern 5 `@MockitoBean` migration). The repo's `.gitignore` excludes `.github/skills/` so workshop participants generate their own copy during Lab 3 — this reference is what the workshop *would* produce.
+- `docs/06-custom-skills.md`: callout under the Directory Structure section pointing at `docs/examples/SKILL.md.example` and explaining the gitignore rationale.
+
+### Changed
+- Phase 6A — `demo/fallback/*` refresh:
+  - `demo/fallback/cli-assessment-report.md`: replaced the frozen "Generated: 2026-04-12" banner with a "Last refreshed: 2026-04-25" + "Tested With" stamp; flagged the static metrics (47 issues, 4m32s execution time) as illustrative; added cross-links to scenario1/scenario2 fallback files.
+  - `demo/fallback/scenario1-expected-diff.md`: added "Last refreshed" + "Tested With" stamps; softened the hard-pinned Spring Boot 3.3.5 with an inline comment noting the agent picks the newest 3.3.x/3.4.x it can resolve.
+  - `demo/fallback/scenario2-expected-diff.md`: added "Last refreshed" + "Tested With" stamps. Truth-checked: every secret literal matches `demo-apps/task-tracker-app` byte-for-byte; no content edits needed beyond the stamp.
+- Phase 6B — `docs/examples/cli-cookbook.md` refresh:
+  - Added a "Last reviewed: 2026-04-25" stamp under the v0.0.293+ banner.
+  - Spot-checked all 15 recipes: no residual `--multi-repo`, model IDs current, `#modernize-plan-create` anchor in `docs/04` resolves correctly.
+  - Recipe 2 (Portfolio assess from `repos.json`) now spells out that each `repos[]` entry needs one of `url:` (git remote — CLI runs `git clone`) or `path:` (local, **must be absolute**), with a pointer at `workshop/generate-repos-json.sh`, plus a warning that `url: file://...` fails with exit 128.
+
 ### Changed
 - Demo scripts + workshop ancillary refresh (Phase 5 — surface-only alignment of `demo/` presenter scripts with the post-review repo state):
   - `demo/00-prerequisites.md`: added "Tested With" version stamp; added VS Code Insiders recommendation; promoted the .NET modernization extension to a 4th (optional) row gated on Act 3c; replaced the hard "JDK 21+ required" pin with "JDK 21+ recommended / 17+ acceptable for the read-only walkthrough sections" (no demo step builds the *upgraded* Java code); added a new "Act 3c" block in Section 2 covering .NET SDK 10+, the .NET extension, and the `dotnet-sample-app` build check; added a 9th `dotnet build` verification step in Section 4 gated on `command -v dotnet`.
