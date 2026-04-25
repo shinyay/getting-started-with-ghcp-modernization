@@ -1,9 +1,15 @@
-<!-- Generated: April 2026 | If the actual modernization output differs significantly, regenerate using the current tool version. -->
+<!-- Generated: April 2026 | Static fallback shown when the live demo stalls. Regenerate from `modernize assess --source ./.github/modernize/repos.json --format markdown` if the actual output diverges materially. -->
 # GitHub Copilot Modernization — Portfolio Assessment Report
 
-> **Generated**: 2026-04-12  
-> **Repositories assessed**: 3  
-> **Execution time**: 4 min 32 sec
+> **Last refreshed**: 2026-04-25
+>
+> **Tested With**: `modernize` CLI v0.0.293+ · `claude-sonnet-4.6` (default model). Numbers below are illustrative — captured from a representative run; real runs will vary by repo content, tooling versions, and model.
+>
+> **Generated** *(illustrative)*: 2026-04-25
+> **Repositories assessed**: 3
+> **Execution time** *(illustrative)*: ~4–5 minutes for 3 small Spring Boot apps on `claude-sonnet-4.6`
+
+> 📂 **See also**: [`scenario1-expected-diff.md`](scenario1-expected-diff.md) (Java 8→21 + Spring Boot 2.7→3.x) · [`scenario2-expected-diff.md`](scenario2-expected-diff.md) (secrets → Azure Key Vault) for the per-scenario fallback diffs.
 
 ---
 

@@ -1,6 +1,10 @@
-<!-- Generated: April 2026 | If the actual modernization output differs significantly, regenerate using the current tool version. -->
+<!-- Generated: April 2026 | Static fallback shown when the live demo stalls. Patch versions below (Spring Boot 3.3.5, ojdbc17) are illustrative — `modernize upgrade "Java 21"` may resolve to a slightly newer minor depending on the dependency graph. -->
 # Fallback: Scenario 1 — Version Upgrade Expected Diff
 
+> **Last refreshed**: 2026-04-25
+>
+> **Tested With**: `modernize` CLI v0.0.293+ · `claude-sonnet-4.6` · against `Azure-Samples/PhotoAlbum-Java`
+>
 > Use this if the live demo stalls. Walk through these changes to show what the upgrade produces.
 
 ---
@@ -24,6 +28,7 @@
 ```xml
 <parent>
     <artifactId>spring-boot-starter-parent</artifactId>
+    <!-- Patch version is illustrative — agent picks the newest 3.3.x (or 3.4.x) it can resolve. -->
     <version>3.3.5</version>
 </parent>
 <properties>

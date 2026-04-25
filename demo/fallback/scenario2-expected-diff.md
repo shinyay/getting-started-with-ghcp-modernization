@@ -1,6 +1,10 @@
-<!-- Generated: April 2026 | If the actual modernization output differs significantly, regenerate using the current tool version. -->
+<!-- Generated: April 2026 | Static fallback shown when the live demo stalls. Secret literals below match `demo-apps/task-tracker-app` byte-for-byte; if those fixtures change, regenerate this file. -->
 # Fallback: Scenario 2 — Secrets Migration Expected Diff
 
+> **Last refreshed**: 2026-04-25
+>
+> **Tested With**: `modernize` CLI v0.0.293+ · `claude-sonnet-4.6` · against `demo-apps/task-tracker-app` (3 hardcoded-secret patterns)
+>
 > Use this if the live demo stalls. Walk through these changes to show what the secrets migration produces.
 
 ---
