@@ -262,17 +262,31 @@ modernize plan execute --delegate cloud
 6. Creates commits with descriptive messages
 7. Generates summary
 
-> **🐛 Same hang as `plan create` (v0.0.293).** Once `plan execute`
-> prints **"Modernization Plan — Execution Complete"** with green
-> checkmarks **and** new commits appear in `git log`, the work is
-> done — but the CLI may sit forever printing
-> `[!] Still waiting for Copilot response (Ns elapsed)…`. Verified on
-> 2026-04-25 with `plan execute --no-tty` against NewsFeedSite (10+
-> minutes of post-success spinning). Workaround:
+> **🐛 Intermittent hang (v0.0.293) — `plan execute` may not always exit cleanly.**
+> Some `plan execute --no-tty` runs print **"Modernization Plan —
+> Execution Complete"** with green checkmarks **and** land new commits
+> in `git log`, then sit forever printing
+> `[!] Still waiting for Copilot response (Ns elapsed)…`. Other runs
+> exit cleanly with code 0 within seconds of the success message — so
+> this is **not deterministic**. Observed on 2026-04-25:
+> - 10+ minute post-success spin against NewsFeedSite (Java, RabbitMQ → Service Bus chain).
+> - Clean exit 0 against DotnetSampleApp (`.NET 6 → 10` + Key Vault chain).
+>
+> **Workarounds** (apply when it does hang):
 > 1. After the success block, `git log --oneline` to confirm commits.
 > 2. Press **Ctrl+C** — the commits are already in the repo.
 > 3. Or wrap with `timeout 1800 modernize plan execute …` and treat
 >    exit code 124 as "verify with git log".
+
+> **⚠️ `modernize upgrade --language dotnet` does NOT auto-commit.**
+> The direct `modernize upgrade` subcommand on .NET projects modifies
+> files on disk and prints SUCCESS, but **does not produce a git commit**
+> — `git status` will show `M *.csproj` afterwards. The
+> `plan create` + `plan execute` chain *does* auto-commit (one commit per
+> task on an auto-spawned `dotnet-version-upgrade-N` branch). Verified
+> 2026-04-25 against `workshop-apps/dotnet-sample-app`. The Java
+> `modernize upgrade` path *does* auto-commit. If you want commits on
+> the .NET path, use `plan create` + `plan execute` or commit manually.
 
 **Options**:
 | Option | Default | Description |

@@ -1,6 +1,6 @@
 # IDE Experience — .NET Modernization
 
-> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/) and verified against the live CLI: **April 2026***
 
 ## Overview
 
@@ -47,6 +47,15 @@ The .NET modernization agent is identified as:
 ## Three-Stage Workflow
 
 The .NET modernization agent follows a strict **Assessment → Planning → Execution** workflow, generating markdown files under `.github/upgrades/{scenarioId}/` at each stage:
+
+> **ℹ️ This three-file layout is IDE-only.** The Modernize CLI
+> (`modernize upgrade --language dotnet`, `modernize plan create --language dotnet`)
+> writes to **`.github/modernize/{plan-name}/`** instead — same location as
+> the Java agent — and emits only `plan.md` + `tasks.json`. There is **no
+> `assessment.md` or `tasks.md`** on the CLI path. See
+> [docs/04 — Modernization Agent CLI](04-modernization-agent-cli.md) for
+> the CLI workflow and [Lab 7](../workshop/lab7-dotnet-upgrade.md#step-4--invoke-the-net-modernization-agent)
+> for a side-by-side comparison.
 
 ### Stage 1: Assessment (`assessment.md`)
 

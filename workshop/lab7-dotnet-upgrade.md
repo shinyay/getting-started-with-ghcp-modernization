@@ -107,6 +107,25 @@ git checkout -b upgrade-dotnet
 1. Right-click the solution in **Solution Explorer** → **Modernize**
 2. Or open **GitHub Copilot Chat** → type `@Modernize upgrade to .NET 10`
 
+**From the CLI (alternative — if you have `modernize` installed):**
+
+The Modernize CLI also supports .NET upgrades. Two paths exist with **materially different behavior** — read both before choosing:
+
+| Command | Auto-commits? | Three-stage files? | Best for |
+|---|---|---|---|
+| `modernize upgrade ".NET 10" --source workshop-apps/dotnet-sample-app --language dotnet` | ❌ No (modifies files on disk only) | ❌ Only `plan.md` + `tasks.json` | Quick TFM bump; you commit manually |
+| `modernize plan create "upgrade to .NET 10" --source workshop-apps/dotnet-sample-app --language dotnet --plan-name dotnet10-upgrade` then `modernize plan execute --plan-name dotnet10-upgrade --source workshop-apps/dotnet-sample-app --language dotnet` | ✅ Yes (one commit per task on an auto-spawned `dotnet-version-upgrade-N` branch) | ❌ Only `plan.md` + `tasks.json` | Demo-grade flow; matches Java workflow |
+
+Run from the **repository root** (not from inside `dotnet-sample-app`). Verified against `modernize v0.0.293` + `claude-sonnet-4.6` on 2026-04-25.
+
+> ⚠️ **CLI artifact location differs from the IDE.** The CLI writes
+> artifacts to **`.github/modernize/{plan-name}/`** (mirroring the Java
+> agent), **not** `.github/upgrades/{scenarioId}/` as the IDE does.
+> Likewise, the CLI emits only `plan.md` + `tasks.json` — there is **no
+> `assessment.md` or `tasks.md`** trio. The three-markdown-file convention
+> is IDE-only. Adjust Step 8 / Checkpoint 1 accordingly when you take the
+> CLI path.
+
 ### Step 5 — Watch the Assessment Phase
 
 The agent scans your project. You'll see:
@@ -138,15 +157,26 @@ The agent will:
 - Fix any breaking API changes
 - Commit each change to git
 
+> **CLI users:** Behavior depends on which subcommand you used in Step 4.
+> `modernize plan execute` auto-commits each task on an auto-spawned
+> `dotnet-version-upgrade-N` branch. Direct `modernize upgrade` only
+> modifies files on disk — `git status` will show `M *.csproj` and you
+> must stage and commit yourself (`git add -A && git commit -m "Upgrade to .NET 10"`).
+
 ### Step 8 — Verify with Checkpoint 1
 
 Check that upgrade artifacts were generated:
 
 ```bash
+# IDE path
 ls .github/upgrades/
+
+# CLI path
+ls workshop-apps/dotnet-sample-app/.github/modernize/
 ```
 
-✅ **Expected:** A directory containing `assessment.md`, `plan.md`, `tasks.md`.
+✅ **Expected (IDE):** A `{scenarioId}` directory containing `assessment.md`, `plan.md`, `tasks.md`.
+✅ **Expected (CLI):** A `{plan-name}` directory containing `plan.md` and `tasks.json`. (No `assessment.md` / `tasks.md` — those are IDE-only.)
 
 ### Step 9 — Verify with Checkpoint 2
 
@@ -180,7 +210,7 @@ You just upgraded a .NET 6.0 application to .NET 10 — with AI assistance track
 
 | # | Check | Command | Expected |
 |---|-------|---------|----------|
-| 1 | Upgrade artifacts exist | `ls .github/upgrades/` | Directory with assessment.md, plan.md, tasks.md |
+| 1 | Upgrade artifacts exist | `ls .github/upgrades/` (IDE) **or** `ls workshop-apps/dotnet-sample-app/.github/modernize/` (CLI) | IDE: `assessment.md` + `plan.md` + `tasks.md`. CLI: `plan.md` + `tasks.json` only. |
 | 2 | Target framework updated | `grep "TargetFramework" *.csproj` | `net10.0` |
 | 3 | Build passes | `dotnet build` | `Build succeeded` |
 
@@ -195,8 +225,8 @@ The `@modernize-dotnet` agent followed the same **Assess → Plan → Execute** 
 3. **Execution** — Applied changes (target framework, package versions, API fixes) and committed each step to git for full traceability.
 
 The key .NET-specific differences:
-- Artifacts are stored under `.github/upgrades/{scenarioId}/` (not `.github/modernize/`)
-- The three-stage files (`assessment.md`, `plan.md`, `tasks.md`) serve as review checkpoints
+- Artifacts are stored under `.github/upgrades/{scenarioId}/` (not `.github/modernize/`) **— IDE only**. The CLI writes to `.github/modernize/{plan-name}/`, same path as Java, with `plan.md` + `tasks.json` only (no `assessment.md` / `tasks.md`).
+- The three-stage files (`assessment.md`, `plan.md`, `tasks.md`) serve as review checkpoints — IDE only
 - The agent works in Visual Studio, VS Code, GitHub Copilot CLI, and on GitHub.com
 - No OpenRewrite equivalent — the agent uses AI-powered code transformation directly
 
@@ -210,7 +240,9 @@ The key .NET-specific differences:
 | **Agent stops after assessment** | Type `continue` or `yes` to proceed. Or enable auto-approve in Copilot settings. |
 | **Build fails after upgrade** | Read the error carefully — it usually indicates a NuGet package incompatibility. Ask the agent: `@modernize-dotnet fix the build error`. |
 | **Target framework didn't change** | The agent may have found compatibility issues. Review `assessment.md` for blockers. |
-| **`.github/upgrades/` not created** | The agent creates this directory during execution. If it's missing, the agent may not have reached the execution phase. |
+| **`.github/upgrades/` not created** | The agent creates this directory during execution. If it's missing, the agent may not have reached the execution phase. **CLI users:** check `workshop-apps/dotnet-sample-app/.github/modernize/{plan-name}/` instead — the CLI uses a different path. |
+| **CLI: `git status` shows `M *.csproj` after `modernize upgrade`** | `modernize upgrade --language dotnet` (direct call) does not auto-commit. Either use the `plan create` + `plan execute` chain (which does commit), or commit manually with `git add -A && git commit -m "Upgrade to .NET 10"`. |
+| **CLI: orphan branch `dotnet-version-upgrade-N` appears** | The .NET upgrade engineer agent may auto-create this branch. After the run, check `git log --all --oneline` and delete with `git branch -D dotnet-version-upgrade-N` if no commits landed there. |
 
 ---
 
@@ -230,3 +262,12 @@ If you finish early, try these:
    ```
    @modernize-dotnet migrate secrets to Azure Key Vault
    ```
+   Or via the CLI (verified end-to-end against this app on 2026-04-25):
+   ```bash
+   modernize plan create "migrate secrets to Azure Key Vault" \
+       --source workshop-apps/dotnet-sample-app \
+       --language dotnet --plan-name keyvault-migration
+   modernize plan execute --plan-name keyvault-migration \
+       --source workshop-apps/dotnet-sample-app --language dotnet
+   ```
+   Expected outcome: 5 secrets in `appsettings.json` + `Services/NotificationService.cs` are removed and replaced with `IConfiguration` lookups; `Program.cs` is wired with `AddAzureKeyVault` + `DefaultAzureCredential`; the built-in `migration-azure-keyvault-secret` skill drives the transformation. Two commits land on an auto-spawned `dotnet-version-upgrade-N` branch.
