@@ -5,6 +5,15 @@ All notable changes to this repository are documented in this file.
 ## [Unreleased]
 
 ### Changed
+- Workshop labs deep review (Phase 2 — Live verification & high-impact fixes): an additional ~22 of 75 review findings addressed across 4 commits, all live-verified against `modernize` CLI v0.0.293 + Copilot CLI 1.0.36 + `claude-sonnet-4.6` on 2026-04-25.
+  - Lab 1 / `docs/07`: corrected Java IDE chat-handler artifact path. The pattern is `.github/java-upgrade/{yyyyMMddHHmmss}/` (14-digit timestamp), not `{yyyyMMdd}-bks-{NNN}`. Added a 📂 path-note distinguishing the three Java output paths (IDE chat handler, IDE predefined-tasks panel, CLI) and expanded the docs/07 "Artifact Output Locations" section accordingly.
+  - Lab 2: removed the stale `plan create --no-tty` indefinite-hang callout (the issue is no longer reproducible on v0.0.293 — it now exits cleanly in 30-60s); kept the defensive `timeout 600` wrapper guidance. Expanded the `tasks.json` schema description from 5 to the 8 actually-emitted fields plus the top-level `metadata` block.
+  - Lab 5: refreshed `Verified-With` to pin Copilot CLI 1.0.36 (was 1.0.10) with explicit 2026-04-25 date stamp.
+  - `setup.sh`: relaxed Java check (warn at JDK 17-20, fail only below 17 — only Lab 1's *post-upgrade* build strictly requires JDK 21+); promoted `modernize` CLI from optional to required; accept both `vscjava.` and `microsoft.` extension publisher prefixes; added a guarded `dotnet build` of `dotnet-sample-app` for Lab 7.
+  - `validate.sh`: replaced Lab 7's manual-instructions stub with three real automated checks (TFM upgraded to net8.0+, `dotnet build` succeeds, upgrade artifacts present); updated the usage banner to include lab6/lab7; dropped the legacy repo-root plan.md fallback for Lab 2.
+  - `templates/pre-workshop-email.md`: recommended VS Code Insiders, added the `modernize` CLI install step, renamed the Java extension to its current marketplace name, and tightened the .NET prerequisites.
+
+### Changed (Phase 1 — Quick Wins, 2026-04-25)
 - Workshop labs deep review (Phase 1 — Quick Wins): 24 of 75 review findings addressed across 6 commits.
   - Lab 3 / Lab 5: removed Japanese-language prompt leak and replaced destructive `git clean -fd` reset with safer `git stash --include-untracked` (with documented destructive alternative).
   - Lab 1 / 2 / 3 / 6 / 7: added `Verified With` front-matter row + `📚 Reference docs for this lab` callout for parity with Labs 4 / 5; Lab 4 / 5 also got the Reference-docs callout.
