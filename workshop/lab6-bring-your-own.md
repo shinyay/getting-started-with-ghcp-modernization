@@ -91,13 +91,64 @@ Based on the assessment, pick **one** action to start with:
 
 **Option B — Predefined Task** (if a specific migration is relevant):
 
+In the **IDE**:
+
 1. Open the **TASKS** panel in the modernization extension.
 2. Browse the available tasks.
 3. Select one that applies to your project and click **Run**.
 
+In the **CLI** (no enumerated catalog — translate the assess findings
+into a task-shaped prompt):
+
+```bash
+# 1. read the cloud-readiness issues from .github/modernize/assessment/...
+#    and pick a recommended migration (e.g. RabbitMQ → Service Bus).
+# 2. create a plan from a free-form prompt:
+modernize plan create "Migrate from RabbitMQ to Azure Service Bus" --source . --language java
+# 3. execute the plan:
+modernize plan execute --source . --language java
+```
+
+> 💡 **Custom skills win automatically.** If your repo already ships
+> with a project-local skill at `.github/skills/<name>/SKILL.md`, the
+> agent picks it up and uses it **with priority over the built-in
+> skill** — even when you don't mention the skill by name in the
+> prompt. NewsFeedSite is a worked example: the
+> `rabbitmq-to-azureservicebus` skill is auto-selected by the
+> "Migrate from RabbitMQ to Azure Service Bus" prompt above.
+
+> ⚠️ **`plan create --source` is local-only.** Unlike `assess`,
+> `plan create` and `plan execute` only accept a local path for
+> `--source` — no Git URL, no `repos.json`. Clone the repo first.
+
+> ⚠️ **CLI may not exit on its own after success.** When you see
+> "Modernization Plan — Execution Complete" with green checkmarks
+> *and* fresh commits in `git log`, the work is done — you can safely
+> Ctrl-C if the process keeps printing "Still waiting for Copilot
+> response (Ns elapsed)…". Verify with `git log --oneline` instead of
+> trusting the exit code.
+
 **Option C — Both** (if time allows):
 
-Start with the upgrade, then apply a predefined task.
+Start with the upgrade (Option A), then apply a predefined task
+(Option B) on the upgraded tree.
+
+> ⚠️ **Chained tasks need human review.** When the second task runs
+> on an already-upgraded codebase, the agent often produces a
+> **`WIP:` commit + a consistency-check report** rather than a clean
+> finish — it is intentionally cautious about layered changes. Expect
+> to read the consistency report under
+> `.github/modernize/modernization-plan/<task-id>/` and finish the
+> work manually. This is fine for a 40-minute lab, but plan time for
+> the review phase rather than assuming "two tasks = two clean
+> commits".
+
+> 💡 **Don't expect bit-for-bit reproducibility.** Even with a fixed
+> prompt, model, and version, framework-introduction prompts (e.g.
+> `"Java 21 and Spring Boot 3"` on a non-Spring app) can land on
+> different end states across runs — sometimes adopting Spring Boot,
+> sometimes only doing the Jakarta EE namespace migration. Pre-run
+> your demo path before the workshop and have a fallback narrative.
 
 ### Step 6 — Review Every Change
 
@@ -218,6 +269,9 @@ Raise your hand if you encounter any of these situations:
 | **Agent suggests changes you disagree with** | Reject them. You know your codebase best. The agent's suggestions are recommendations, not mandates. |
 | **`mvn` says "release version 21 not supported"** | Your local JDK is older than the upgraded `pom.xml` requires. Switch JDKs (`sdk use java 21.0.x-open` with SDKMAN!) or set `JAVA_HOME` before running `mvn`. |
 | **CLI users only: orphan `.github/modernize/upgrade-to-lts-*/` appears in the wrong repo** | If you ran `modernize upgrade --source /path/to/your/app` from a different directory, the plan dir is created in the **CWD** repo as well as the source. `cd` into the source first, or delete the orphan after the run. The IDE flow (`@modernize`) does not have this issue. |
+| **CLI: `plan execute` won't exit even though it says "Complete"** | Known v0.0.293 quirk. After "Modernization Plan — Execution Complete" with green checks AND new `git log` commits, you can Ctrl-C the process. Verify with `git log --oneline` rather than waiting for an exit code. |
+| **Option C: only a `WIP:` commit appears, no clean finish** | Expected for chained tasks. The agent ran the migration, then a consistency check flagged items for manual review. Read `.github/modernize/modernization-plan/<task>/` for the report and finish manually. |
+| **Same prompt produced a different result this time** | Framework-introduction prompts (e.g. `Java 21 and Spring Boot 3` on a non-Spring app) are not bit-for-bit reproducible. Use a fixed pre-recorded fallback for live demos; in the lab, treat both outcomes as valid teaching material. |
 
 ---
 

@@ -250,6 +250,18 @@ modernize plan execute --delegate cloud
 6. Creates commits with descriptive messages
 7. Generates summary
 
+> **🐛 Same hang as `plan create` (v0.0.293).** Once `plan execute`
+> prints **"Modernization Plan — Execution Complete"** with green
+> checkmarks **and** new commits appear in `git log`, the work is
+> done — but the CLI may sit forever printing
+> `[!] Still waiting for Copilot response (Ns elapsed)…`. Verified on
+> 2026-04-25 with `plan execute --no-tty` against NewsFeedSite (10+
+> minutes of post-success spinning). Workaround:
+> 1. After the success block, `git log --oneline` to confirm commits.
+> 2. Press **Ctrl+C** — the commits are already in the repo.
+> 3. Or wrap with `timeout 1800 modernize plan execute …` and treat
+>    exit code 124 as "verify with git log".
+
 **Options**:
 | Option | Default | Description |
 |--------|---------|-------------|
