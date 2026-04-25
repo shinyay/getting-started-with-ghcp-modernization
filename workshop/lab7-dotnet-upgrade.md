@@ -32,7 +32,7 @@ Before you begin, confirm every item below:
   ```bash
   dotnet --version
   ```
-  ✅ Expected: A version number (e.g., `10.x.x` or `8.x.x`)
+  ✅ Expected: A version number that matches your TFM target. **For the default `net10.0` upgrade target you need SDK 10 (preview or GA)**; SDK 9 also installs net10 targeting packs in some preview channels. SDK 8 alone is **not sufficient** to build `net10.0` — if you only have 8.x.x, change the lab target to `net8.0` and adjust the prompt accordingly.
 
 - [ ] You have one of the following IDEs:
   - **VS Code** with GitHub Copilot + `@modernize-dotnet` extension
@@ -59,7 +59,7 @@ The `.NET modernization agent` (`@modernize-dotnet`) follows the same **Assess �
 | Artifact location (IDE) | `.github/modernize/` | `.github/upgrades/` |
 | Artifact location (CLI) | `.github/modernize/` | `.github/modernize/` *(same as Java)* |
 | IDE support | VS Code, IntelliJ | VS, VS Code, CLI, GitHub.com |
-| Upgrade tool | OpenRewrite + AI | AI-powered transformation |
+| Upgrade tool | Roslyn analyzers + AI-driven transforms (no OpenRewrite-style recipe engine) | AI-powered transformation |
 
 In the IDE, the agent generates three markdown files under `.github/upgrades/{scenarioId}/`:
 - **`assessment.md`** — What needs to change
@@ -124,7 +124,7 @@ The Modernize CLI also supports .NET upgrades. Two paths exist with **materially
 | Command | Auto-commits? | Three-stage files? | Best for |
 |---|---|---|---|
 | `modernize upgrade ".NET 10" --source workshop-apps/dotnet-sample-app --language dotnet` | ❌ No (modifies files on disk only) | ❌ Only `plan.md` + `tasks.json` | Quick TFM bump; you commit manually |
-| `modernize plan create "upgrade to .NET 10" --source workshop-apps/dotnet-sample-app --language dotnet --plan-name dotnet10-upgrade` then `modernize plan execute --plan-name dotnet10-upgrade --source workshop-apps/dotnet-sample-app --language dotnet` | ✅ Yes (one commit per task on an auto-spawned `dotnet-version-upgrade-N` branch) | ❌ Only `plan.md` + `tasks.json` | Demo-grade flow; matches Java workflow |
+| **Two-step:** `modernize plan create "upgrade to .NET 10" --source workshop-apps/dotnet-sample-app --language dotnet --plan-name dotnet10-upgrade` <br>then `modernize plan execute --plan-name dotnet10-upgrade --source workshop-apps/dotnet-sample-app --language dotnet` | ✅ Yes (one commit per task on an auto-spawned `dotnet-version-upgrade-N` branch) | ❌ Only `plan.md` + `tasks.json` | Demo-grade flow; matches Java workflow |
 
 Run from the **repository root** (not from inside `dotnet-sample-app`). Verified against `modernize v0.0.293` + `claude-sonnet-4.6` on 2026-04-25.
 
@@ -238,7 +238,7 @@ The key .NET-specific differences:
 - Artifacts are stored under `.github/upgrades/{scenarioId}/` (not `.github/modernize/`) **— IDE only**. The CLI writes to `.github/modernize/{plan-name}/`, same path as Java, with `plan.md` + `tasks.json` only (no `assessment.md` / `tasks.md`).
 - The three-stage files (`assessment.md`, `plan.md`, `tasks.md`) serve as review checkpoints — IDE only
 - The agent works in Visual Studio, VS Code, GitHub Copilot CLI, and on GitHub.com
-- No OpenRewrite equivalent — the agent uses AI-powered code transformation directly
+- No OpenRewrite-equivalent recipe engine — the agent leans on Roslyn analyzers plus AI-powered code transformation rather than a deterministic transform DSL
 
 ---
 
@@ -249,7 +249,7 @@ The key .NET-specific differences:
 | **`@modernize-dotnet` not recognized** | Ensure you have the GitHub Copilot modernization extension installed. In VS Code, check the Extensions panel. In Visual Studio, check if Copilot is active. |
 | **Agent stops after assessment** | Type `continue` or `yes` to proceed. Or enable auto-approve in Copilot settings. |
 | **Build fails after upgrade** | Read the error carefully — it usually indicates a NuGet package incompatibility. Ask the agent: `@modernize-dotnet fix the build error`. |
-| **Target framework didn't change** | The agent may have found compatibility issues. Review `assessment.md` for blockers. |
+| **Target framework didn't change** | The agent may have found compatibility issues. **IDE:** Review `.github/upgrades/{scenarioId}/assessment.md` for blockers. **CLI:** Inspect `.github/modernize/{plan-name}/plan.md` (the CLI does not produce a separate `assessment.md`); blockers appear inline in the plan text. |
 | **`.github/upgrades/` not created** | The agent creates this directory during execution. If it's missing, the agent may not have reached the execution phase. **CLI users:** check `workshop-apps/dotnet-sample-app/.github/modernize/{plan-name}/` instead — the CLI uses a different path. |
 | **CLI: `git status` shows `M *.csproj` after `modernize upgrade`** | `modernize upgrade --language dotnet` (direct call) does not auto-commit. Either use the `plan create` + `plan execute` chain (which does commit), or commit manually with `git add -A && git commit -m "Upgrade to .NET 10"`. |
 | **CLI: orphan branch `dotnet-version-upgrade-N` appears** | The .NET upgrade engineer agent may auto-create this branch. After the run, check `git log --all --oneline` and delete with `git branch -D dotnet-version-upgrade-N` if no commits landed there. |

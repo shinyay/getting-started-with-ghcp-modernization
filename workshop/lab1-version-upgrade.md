@@ -175,8 +175,12 @@ mvn clean package
 You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Java 21 + the latest Spring Boot 3.x GA at runtime (verified 2026-04-25: 3.5.x) — with AI assistance staging every change in your working tree for review.
 
 > **📝 Heads-up for Lab 3:** If the agent migrated your JUnit 4 tests to JUnit 5
-> during this lab (check with `grep -r "org.junit.jupiter" src/test/`), you'll need
-> to reset the test files before starting Lab 3: `git checkout main -- src/test/`
+> during this lab (check from the project dir with `grep -r "org.junit.jupiter" src/test/`), you'll need
+> to reset the test files before starting Lab 3:
+> ```bash
+> cd workshop-apps/bookstore-app
+> git checkout main -- src/test/
+> ```
 
 ---
 
@@ -184,7 +188,7 @@ You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Ja
 
 | # | Check | Command | Expected |
 |---|-------|---------|----------|
-| 1 | Plan files generated | `ls .github/java-upgrade/` | Timestamped dir (e.g. `20260421-bks-001/`) with `plan.md` |
+| 1 | Plan files generated | `ls .github/java-upgrade/` | Timestamped dir (14-digit `{yyyyMMddHHmmss}/`, e.g. `20260424065029/`) with `plan.md` |
 | 2a | Jakarta imports present | `grep -r "jakarta.persistence" src/main/` | One or more matches |
 | 2b | Javax imports removed | `grep -r "javax.persistence" src/main/` | No output |
 | 3 | Build passes | `mvn clean package` | `BUILD SUCCESS`, exit code 0 |

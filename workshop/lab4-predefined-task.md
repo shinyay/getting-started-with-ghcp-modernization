@@ -32,6 +32,7 @@ By the end of this lab you will be able to:
   ```bash
   cd workshop-apps/notes-app
   mvn clean package
+  cd ../..   # return to repo root
   ```
 
 - [ ] When the predefined task starts, VS Code will prompt you to start two MCP servers — **CopilotMod** and **Foundry MCP**. Click **Allow / Start** for both. Without these the task cannot run.
@@ -40,13 +41,9 @@ By the end of this lab you will be able to:
 
 ---
 
-## Why This Matters
+## Background
 
 In cloud and container environments, file-based logging is an anti-pattern. Container filesystems are **ephemeral** — when a container restarts, any log files written to disk are lost. Azure Monitor, Application Insights, and other observability platforms integrate with **console/stdout** output, not local files. The predefined task automates the migration from file-based logging to console-only logging, saving time and reducing the risk of misconfiguration.
-
----
-
-## The Problem: Two File-Logging Anti-Patterns
 
 The NotesApp contains **two** places where logs are written to the filesystem:
 
@@ -221,7 +218,7 @@ rm -rf logs.before-fix
 ### Step 11 — Review What the Agent Committed
 
 ```bash
-git log --oneline appmod/java-log-to-console-* --not main
+git log --oneline --branches='appmod/java-log-to-console-*' --not main
 ```
 
 You should see the commits the agent created (typically two — one for the migration, one for completeness fixes). Inspect them:
@@ -234,39 +231,19 @@ git --no-pager show <sha>
 
 ---
 
-## Checkpoint 1 — No RollingFileAppender
+## Checkpoints Summary
 
-```bash
-grep "RollingFileAppender" src/main/resources/logback-spring.xml \
-  && echo "FAIL: RollingFileAppender still present" \
-  || echo "PASS: RollingFileAppender removed"
-```
+Run these from the `workshop-apps/notes-app/` directory.
 
-**Expected:** `PASS: RollingFileAppender removed`.
+| # | Check | Command | Expected |
+|---|-------|---------|----------|
+| 1 | No `RollingFileAppender` in Logback config | `grep "RollingFileAppender" src/main/resources/logback-spring.xml \|\| echo "PASS: RollingFileAppender removed"` | `PASS: RollingFileAppender removed` |
+| 2 | No direct file-writing in source | `grep -rE "FileWriter\|Files\\.write" src/main/java/ \|\| echo "PASS: no direct file writes"` | `PASS: no direct file writes` |
+| 3 | Build passes | `mvn clean package` | `BUILD SUCCESS`, exit code 0 |
 
----
+> ⚡ **One-shot validation:** From the repository root, run `bash workshop/validate.sh lab4` to execute all three checkpoints in a single command. Expected: `3/3 passed`.
 
-## Checkpoint 2 — No Direct File Writing
-
-```bash
-grep -rE "FileWriter|Files\.write" src/main/java/ \
-  && echo "FAIL: direct file writes still present" \
-  || echo "PASS: no direct file writes"
-```
-
-**Expected:** `PASS: no direct file writes`.
-
----
-
-## Checkpoint 3 — Build Passes
-
-```bash
-mvn clean package
-```
-
-**Expected:** `BUILD SUCCESS` with exit code 0.
-
-> 💡 **Shell note.** The Checkpoint commands above use `&& / ||` so they work the same in `bash`, `zsh`, and `fish`. (Avoid `$?` — that variable does not exist in `fish`; use `$status` there.)
+> 💡 **Shell note.** The Checkpoint 1/2 one-liners use `&& / ||` so they work the same in `bash`, `zsh`, and `fish`. (Avoid `$?` — that variable does not exist in `fish`; use `$status` there.)
 
 ---
 

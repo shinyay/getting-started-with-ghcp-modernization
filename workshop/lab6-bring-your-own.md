@@ -106,12 +106,21 @@ In the **CLI** (no enumerated catalog — translate the assess findings
 into a task-shaped prompt):
 
 ```bash
-# 1. read the cloud-readiness issues from .github/modernize/assessment/...
-#    and pick a recommended migration (e.g. RabbitMQ → Service Bus).
-# 2. create a plan from a free-form prompt:
-modernize plan create "Migrate from RabbitMQ to Azure Service Bus" --source . --language java
-# 3. execute the plan:
-modernize plan execute --source . --language java
+# 1. Read your assessment to find a high-priority migration
+ls .github/modernize/assessment/reports-*/index.md
+# (Open the latest index.md and skim "Cloud-readiness issues")
+
+# 2. Pick one issue (e.g. RabbitMQ → Service Bus, in-memory cache → Redis)
+#    and craft a plan from a free-form prompt:
+modernize plan create "Migrate from RabbitMQ to Azure Service Bus" \
+  --source . --language java --plan-name byo-task --no-tty
+
+# 3. Inspect the generated plan
+cat .github/modernize/byo-task/plan.md
+cat .github/modernize/byo-task/tasks.json | python3 -m json.tool
+
+# 4. Execute the plan
+modernize plan execute --source . --language java --plan-name byo-task
 ```
 
 > 💡 **Custom skills win automatically.** If your repo already ships
@@ -262,7 +271,7 @@ mvn clean package
 
 ---
 
-## Instructor Help
+## Troubleshooting (Instructor Help)
 
 Raise your hand if you encounter any of these situations:
 
@@ -274,7 +283,7 @@ Raise your hand if you encounter any of these situations:
 | **Agent suggests changes you disagree with** | Reject them. You know your codebase best. The agent's suggestions are recommendations, not mandates. |
 | **`mvn` says "release version 21 not supported"** | Your local JDK is older than the upgraded `pom.xml` requires. Switch JDKs (`sdk use java 21.0.x-open` with SDKMAN!) or set `JAVA_HOME` before running `mvn`. |
 | **CLI users only: orphan `.github/modernize/upgrade-to-lts-*/` appears in the wrong repo** | If you ran `modernize upgrade --source /path/to/your/app` from a different directory, the plan dir is created in the **CWD** repo as well as the source. `cd` into the source first, or delete the orphan after the run. The IDE flow (`@modernize`) does not have this issue. |
-| **CLI: `plan execute` won't exit even though it says "Complete"** | Known v0.0.293 quirk. After "Modernization Plan — Execution Complete" with green checks AND new `git log` commits, you can Ctrl-C the process. Verify with `git log --oneline` rather than waiting for an exit code. |
+| **CLI: `plan execute` won't exit even though it says "Complete"** | Known v0.0.293 quirk — see the same callout in Step 5 Option B. Verify with `git log --oneline` and Ctrl-C if needed. |
 | **Option C: only a `WIP:` commit appears, no clean finish** | Expected for chained tasks. The agent ran the migration, then a consistency check flagged items for manual review. Read `.github/modernize/modernization-plan/<task>/` for the report and finish manually. |
 | **Same prompt produced a different result this time** | Framework-introduction prompts (e.g. `Java 21 and Spring Boot 3` on a non-Spring app) are not bit-for-bit reproducible. Use a fixed pre-recorded fallback for live demos; in the lab, treat both outcomes as valid teaching material. |
 

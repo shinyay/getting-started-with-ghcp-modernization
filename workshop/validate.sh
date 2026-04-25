@@ -45,25 +45,29 @@ echo ""
 
 case "$LAB" in
   lab1)
-    # Check 1: jakarta.persistence imports present
+    # Check 1: Lab 1's IDE chat-handler artifact dir exists with a 14-digit
+    # timestamp subdir (e.g. .github/java-upgrade/20260424065029/). The dir
+    # is gitignored but kept in the working tree — its presence proves the
+    # @modernize-java-upgrade agent ran.
+    if ls -d "$REPO_ROOT/workshop-apps/bookstore-app/.github/java-upgrade/"[0-9]*/ 2>/dev/null | grep -q .; then
+      check_pass ".github/java-upgrade/{timestamp}/ artifact dir found"
+    else
+      check_fail "No .github/java-upgrade/{14-digit-timestamp}/ dir under workshop-apps/bookstore-app/ (did you run @modernize-java-upgrade?)"
+    fi
+
+    # Check 2: jakarta.persistence imports present
     if grep -r "jakarta.persistence" "$REPO_ROOT/workshop-apps/bookstore-app/src/main/" 2>/dev/null | head -1 | grep -q .; then
       check_pass "jakarta.persistence imports found"
     else
       check_fail "jakarta.persistence imports not found"
     fi
 
-    # Check 2: javax.persistence imports removed
-    if grep -r "javax.persistence" "$REPO_ROOT/workshop-apps/bookstore-app/src/main/" 2>/dev/null | head -1 | grep -q .; then
-      check_fail "javax.persistence imports still present (should be removed)"
+    # Check 3: Build passes (combined: javax removed + build green)
+    if ! grep -r "javax.persistence" "$REPO_ROOT/workshop-apps/bookstore-app/src/main/" 2>/dev/null | head -1 | grep -q . \
+       && (cd "$REPO_ROOT/workshop-apps/bookstore-app" && mvn clean package -q 2>/dev/null); then
+      check_pass "javax.persistence removed AND bookstore-app builds successfully"
     else
-      check_pass "javax.persistence imports removed"
-    fi
-
-    # Check 3: Build passes
-    if (cd "$REPO_ROOT/workshop-apps/bookstore-app" && mvn clean package -q 2>/dev/null); then
-      check_pass "bookstore-app builds successfully"
-    else
-      check_fail "bookstore-app build failed"
+      check_fail "Either javax.persistence still present, or bookstore-app build failed"
     fi
     ;;
 

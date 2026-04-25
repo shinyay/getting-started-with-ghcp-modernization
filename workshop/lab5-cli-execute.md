@@ -190,21 +190,15 @@ mvn clean package
 
 ### Step 7 — Compare with Lab 1
 
-In Lab 1 you ran the same upgrade through the IDE (`@modernize` chat).
-The result is the same; the workflow differs:
+In Lab 1 you ran the same upgrade through the IDE (`@modernize` chat). The result is the same; the workflow differs.
 
-| | Lab 1 (IDE) | Lab 5 (CLI) |
-|---|---|---|
-| Experience | Interactive, in-editor diff preview | Terminal, scriptable |
-| Branch behavior | Inline edits; you commit | Commits straight to `HEAD` |
-| Batch | ❌ | ✅ via `--source ./repos.json` |
-| Best for | Single-app exploration | Automation, CI/CD |
-
-Both produce equivalent code. Pick the surface that fits your workflow.
+> 📊 See the **[IDE vs CLI Comparison](#ide-vs-cli-comparison)** table at the end of this lab for the full side-by-side breakdown.
 
 ---
 
-## Phase B — Multi-Repository (Batch) Mode
+## Phase B (Optional Extension) — Multi-Repository (Batch) Mode
+
+> ℹ️ Phase B continues the **Step-by-Step Instructions** above with Steps 8–12. The H2 break is for navigation only — there are no separate Pre-Lab requirements.
 
 Phase B upgrades **multiple** repositories in one invocation. The CLI
 calls this **"Multi-repository" mode** (header reads
@@ -427,7 +421,7 @@ pass an explicit floor like `"Java 21, Spring Boot 3.5"`.
 | Problem | Solution |
 |---------|----------|
 | **`modernize` command not found** | Verify installation. Check your `PATH`. Try `which modernize` (or `where modernize` on Windows). |
-| **Upgrade stalls / hangs** | Check network. Try a different model: `modernize upgrade "Java 21" --source ... --model claude-sonnet-4.6`. Consider `--no-tty` if the rich UI is interfering with the terminal. |
+| **Upgrade stalls / hangs** | Check network. Try a different model: `modernize upgrade "Java 21" --source ... --model claude-sonnet-4.6`. The `--no-tty` flag is for piping to logs/CI — not a stall fix. |
 | **The agent committed onto my feature branch — I wanted a separate one** | This is by design for `modernize upgrade`. To recover: `git branch lab5/result HEAD` to save it, then `git reset --hard <pre-upgrade-sha>` on the original branch. Always start on a throwaway branch (Pre-Lab note). |
 | **Spring Boot version overshoots my target** | The prompt `"Java 21"` upgrades to the **latest** Spring Boot GA. Pin it explicitly: `modernize upgrade "Java 21, Spring Boot 3.3" --source ...`. |
 | **`modernization-summary.md` is missing from the commits** | `.github/modernize/` is gitignored at the repo root. The agent normally `git add -f`'s the summary; if it's missing the agent failed at the summarize phase — check the CLI output for the `summarize_upgrade` step. |
