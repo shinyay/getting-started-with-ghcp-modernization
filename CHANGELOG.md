@@ -2,6 +2,18 @@
 
 All notable changes to this repository are documented in this file.
 
+## [Unreleased]
+
+### Changed
+- Workshop labs deep review (Phase 1 — Quick Wins): 24 of 75 review findings addressed across 6 commits.
+  - Lab 3 / Lab 5: removed Japanese-language prompt leak and replaced destructive `git clean -fd` reset with safer `git stash --include-untracked` (with documented destructive alternative).
+  - Lab 1 / 2 / 3 / 6 / 7: added `Verified With` front-matter row + `📚 Reference docs for this lab` callout for parity with Labs 4 / 5; Lab 4 / 5 also got the Reference-docs callout.
+  - Lab 1 / 3 / 5 + `validate.sh`: replaced hardcoded patch versions with date-stamped phrasing; replaced brittle `around lines 65/69` references with `grep -n TODO` instructions; added full FQCN for `@MockitoBean`.
+  - `instructor-guide.md`: added Lab 7 instructor section + a "Tooling versions to call out" subsection pinning the verified extension/CLI/model baseline.
+  - `agenda.md`: clarified Java vs .NET note and rebased Full-Day header to "6h30m core + 50min optional Lab 7".
+  - Lab 1 / 4 / 5 / 7: added reciprocal `See also` cross-links closing the IDE↔CLI and Java↔.NET asymmetries.
+  - `CONTRIBUTING.md`: codified the Lab Authoring Style (canonical 7-section structure with documented Lab 6 exception, required Verified-With, sentence-case step headers, version-stamp convention, callout glyph cheat-sheet).
+
 ## [1.1.0] — 2026-04-14
 
 ### Added
