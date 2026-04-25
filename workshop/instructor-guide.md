@@ -62,7 +62,7 @@
 ### Lab 7: .NET Upgrade (50 min, optional)
 
 - **What to say before**: "Same Assess→Plan→Execute workflow you saw in Lab 1, applied to a .NET 6 → .NET 10 upgrade. Useful contrast for polyglot teams."
-- **What to watch for**: missing `dotnet` SDK (NET 10 SDK preview required), the .NET extension creating its own `dotnet-version-upgrade-N` branch, IDE artifacts landing in `.github/upgrades/{scenarioId}/` (not `.github/modernize/`)
+- **What to watch for**: missing `dotnet` SDK (**.NET 10 SDK required** to target `net10.0`; SDK 8 cannot rebuild the upgraded project), the .NET extension creating its own `dotnet-version-upgrade-N` branch, IDE artifacts landing in `.github/upgrades/{scenarioId}/` (not `.github/modernize/`)
 - **Common mistakes**: confusing the Java IDE artifact path with the .NET one, expecting the CLI and IDE surfaces to share the same workflow
 - **Fast participants**: try the same upgrade via the CLI (`modernize plan execute`) and compare commit history; cross-reference with Lab 1 to see Java/.NET differences
 

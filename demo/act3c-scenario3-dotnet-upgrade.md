@@ -3,6 +3,10 @@
 > **Duration**: 10 minutes (inserted between Act 3b and Act 4)
 > **Mode**: Brief WALKTHROUGH (show artifacts, not full live execution)
 > **When to use**: Include this act when your audience has significant .NET representation
+>
+> **Verified With**: `claude-sonnet-4.6` + GitHub Copilot App Modernization for .NET (GA) + `modernize` CLI v0.0.293+, 2026-04-25
+>
+> 🔧 **Pre-requisite**: requires .NET SDK 10+ and the .NET modernization extension — see [`00-prerequisites.md`](00-prerequisites.md#act-3c-optional-net-6--net-10-walkthrough).
 
 ---
 
@@ -61,7 +65,7 @@ If you've run the agent previously, open the `.github/upgrades/` directory (IDE)
 | Artifact location (IDE) | `.github/modernize/` | `.github/upgrades/` |
 | Artifact location (CLI) | `.github/modernize/` | `.github/modernize/` |
 | IDE support | VS Code, IntelliJ | **Visual Studio**, VS Code, CLI, GitHub.com |
-| Upgrade tool | OpenRewrite + AI | AI-powered transformation |
+| Upgrade tool | OpenRewrite + AI | Roslyn analyzers + AI-driven transforms (no OpenRewrite-style recipe engine) |
 | Predefined tasks | 13 | 10 |
 | Supported types | Spring Boot, Jakarta EE | ASP.NET Core, Blazor, WPF, WinForms, Azure Functions |
 

@@ -2,6 +2,8 @@
 
 > **Single-page master reference.** Each act has its own detailed file in `demo/`.
 > This guide provides timing, transitions, audience talking points, and recovery strategies.
+>
+> **Verified With**: `claude-sonnet-4.6` + `modernize` CLI v0.0.293+ + Copilot CLI 1.0.36+ + GitHub Copilot App Modernization for Java/.NET (both GA), 2026-04-25
 
 ---
 
@@ -41,8 +43,8 @@
 | 22:00–28:00 | Act 4 (shortened) | Quick recap + call to action |
 | 28:00–30:00 | Buffer | Q&A |
 
-**90-Minute Extended Version (with .NET + deep Q&A):**
-Add Act 3c (.NET Upgrade, 10 min) between Acts 3b and 4. Expand Act 2 to 12 min (deeper CLI exploration). Expand Buffer to 15 min for extended Q&A.
+**70-Minute Extended Version (with .NET):**
+Add **Act 3c** (.NET Upgrade, 10 min) between Acts 3b and 4. See §5b below for the canonical timing table. Best for mixed Java/.NET audiences.
 
 ---
 
@@ -166,8 +168,9 @@ See [`demo/act3c-scenario3-dotnet-upgrade.md`](act3c-scenario3-dotnet-upgrade.md
 2. **Extensions** installed and enabled:
    - GitHub Copilot
    - GitHub Copilot Chat
-   - GitHub Copilot Modernization (preview)
-3. **Java 21 JDK** installed and `java --version` returns 21+
+   - GitHub Copilot App Modernization for Java (**GA**)
+   - *(only if running Act 3c)* GitHub Copilot App Modernization for .NET (**GA**)
+3. **Java JDK** installed — JDK 21+ recommended (JDK 17+ acceptable for the read-only walkthrough sections; the demo never builds the *upgraded* Java code) and `java --version` confirms the version
 4. **Maven 3.8+** installed and `mvn --version` returns 3.8+
 5. **Git** installed and configured with your GitHub credentials
 6. **GitHub Copilot authenticated** — Copilot icon in VS Code status bar shows active (not "Sign in")

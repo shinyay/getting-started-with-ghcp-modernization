@@ -49,10 +49,10 @@ description: Migrate from RabbitMQ to Azure Service Bus for messaging.
 > "But remember that portfolio assessment from the beginning? The **Modernize CLI** can also batch-upgrade — running the same upgrade across multiple repos simultaneously."
 
 ```bash
-# Assess the whole portfolio
-modernize assess --multi-repo
+# Assess the whole portfolio (v0.0.293+: --source replaces the deprecated --multi-repo)
+modernize assess --source ./.github/modernize/repos.json
 
-# Upgrade everything to Java 21
+# Upgrade everything to Java 21 — Java upgrade auto-commits each task
 modernize upgrade "Java 21" --delegate cloud
 ```
 
@@ -80,7 +80,7 @@ modernize upgrade "Java 21" --delegate cloud
 >
 > "**Step 1**: You need a **GitHub Copilot subscription** — any plan works, including the free tier."
 >
-> "**Step 2**: Install the **VS Code extension** — search for 'GitHub Copilot modernization' in the marketplace, or install ID `vscjava.migrate-java-to-azure`."
+> "**Step 2**: Install the **VS Code extension** that matches your stack — for Java search 'GitHub Copilot App Modernization for Java' (ID `vscjava.migrate-java-to-azure`), and for .NET install the corresponding 'GitHub Copilot App Modernization for .NET' extension. Both are GA today."
 >
 > "**Step 3**: Point it at your own Java or .NET application and type `@modernize`."
 >

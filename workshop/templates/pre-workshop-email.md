@@ -8,7 +8,7 @@ Hi [Team/Participants],
 
 Looking forward to our GitHub Copilot Modernization workshop on [DATE]!
 
-**⏱ Format:** [Half-day (3.5 hours) / Full-day (6.5 hours)]
+**⏱ Format:** [Half-day (3.5 hours) / Full-day (6h30m core + 50 min optional Lab 7)]
 
 **🔧 Please complete these setup steps BEFORE the workshop:**
 
@@ -34,8 +34,8 @@ Looking forward to our GitHub Copilot Modernization workshop on [DATE]!
 
 **⚠️ Important:** The setup script builds Java applications and downloads Maven dependencies. Please run it on a reliable network connection (not airport/conference WiFi).
 
-**For .NET Lab participants** (full-day only, Lab 7):
-- .NET SDK 8+ (10 SDK preview recommended): `dotnet --version`
+**For .NET Lab participants** (optional Lab 7 add-on):
+- **.NET SDK 10+ required** (SDK 8 cannot target `net10.0`): verify with `dotnet --version`
 - VS Code (Insiders) with the GitHub Copilot App Modernization for .NET extension OR Visual Studio 2026 with the equivalent extension
 - The `setup.sh` script will build `workshop-apps/dotnet-sample-app` if `dotnet` is on your PATH
 

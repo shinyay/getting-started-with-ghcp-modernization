@@ -25,10 +25,13 @@
 **Show** the command:
 
 ```bash
-modernize assess --multi-repo
+# v0.0.293+: prefer --source pointing at a repos.json manifest
+modernize assess --source ./.github/modernize/repos.json
 ```
 
-> "One command assesses everything. Or you can delegate to **Cloud Coding Agents** for parallel processing across your entire portfolio. Either way, you get back a comprehensive report."
+> "One command assesses everything. Or you can delegate to **Cloud Coding Agents** for parallel processing across your entire portfolio (`--delegate cloud`). Either way, you get back a comprehensive report."
+
+> 📝 Older decks may show `modernize assess --multi-repo`; that flag still parses in v0.0.293 but emits a deprecation notice — `--source` is the supported portfolio entrypoint going forward.
 
 ---
 

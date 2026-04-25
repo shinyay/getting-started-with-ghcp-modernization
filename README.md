@@ -64,7 +64,7 @@ Act 1  → demo/act1-opening.md                  (5 min — Opening hook)
 Act 2  → demo/act2-cli-walkthrough.md           (8 min — Portfolio discovery)
 Act 3a → demo/act3-scenario1-upgrade.md        (20 min — LIVE version upgrade — Java)
 Act 3b → demo/act3-scenario2-secrets.md        (15 min — LIVE secrets migration — Java)
-Act 3c → demo/act3c-scenario3-dotnet-upgrade.md (15 min — Optional .NET 6 → .NET 10 walkthrough)
+Act 3c → demo/act3c-scenario3-dotnet-upgrade.md (10 min — Optional .NET 6 → .NET 10 walkthrough)
 Act 4  → demo/act4-closing.md                   (7 min — Custom Skills + closing)
 ```
 
@@ -120,7 +120,7 @@ The demo follows a **Discover → Modernize → Scale** arc that mirrors a real 
 | [act2-cli-walkthrough.md](demo/act2-cli-walkthrough.md) | 8 min | Walkthrough | CLI assessment report — dashboard, waves, recommendations |
 | [act3-scenario1-upgrade.md](demo/act3-scenario1-upgrade.md) | 20 min | ⚡ LIVE | PhotoAlbum-Java: Java 8→21, Spring Boot 2.7→3.x |
 | [act3-scenario2-secrets.md](demo/act3-scenario2-secrets.md) | 15 min | ⚡ LIVE | Task Tracker: 3 hardcoded secrets → Azure Key Vault |
-| [act3c-scenario3-dotnet-upgrade.md](demo/act3c-scenario3-dotnet-upgrade.md) | 15 min | Walkthrough | Optional .NET 6 → .NET 10 upgrade for mixed audiences (uses `dotnet-sample-app`) |
+| [act3c-scenario3-dotnet-upgrade.md](demo/act3c-scenario3-dotnet-upgrade.md) | 10 min | Walkthrough | Optional .NET 6 → .NET 10 upgrade for mixed audiences (uses `dotnet-sample-app`) |
 | [act4-closing.md](demo/act4-closing.md) | 7 min | Narration | Custom Skills teaser, scale message, recap, CTA |
 | [presenter-guide.md](demo/presenter-guide.md) | — | Reference | **Master guide**: timing table, transitions, Q&A, recovery strategies |
 
@@ -250,7 +250,7 @@ getting-started-with-ghcp-modernization/
 │   ├── act2-cli-walkthrough.md            #   Act 2: CLI assessment walkthrough (8 min)
 │   ├── act3-scenario1-upgrade.md          #   Act 3a: Java version upgrade — LIVE (20 min)
 │   ├── act3-scenario2-secrets.md          #   Act 3b: Java secrets migration — LIVE (15 min)
-│   ├── act3c-scenario3-dotnet-upgrade.md  #   Act 3c: Optional .NET 6 → .NET 10 (15 min)
+│   ├── act3c-scenario3-dotnet-upgrade.md  #   Act 3c: Optional .NET 6 → .NET 10 (10 min)
 │   ├── act4-closing.md                    #   Act 4: Custom Skills + closing (7 min)
 │   ├── presenter-guide.md                 #   Master guide: timing, transitions, Q&A
 │   ├── setup.sh                           #   Pre-demo automation (clone, build, verify)
