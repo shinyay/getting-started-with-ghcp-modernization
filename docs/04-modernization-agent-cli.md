@@ -354,7 +354,7 @@ See [`docs/examples/repos.json.example`](./examples/repos.json.example) for a ru
   "repos": [
     {
       "name": "bookstore-app",
-      "path": "./workshop-apps/bookstore-app",
+      "path": "/abs/path/to/repo/workshop-apps/bookstore-app",
       "branch": "main",
       "description": "Spring Boot 2.7 → 3 demo"
     },
@@ -389,7 +389,7 @@ See [`docs/examples/repos.json.example`](./examples/repos.json.example) for a ru
 |-----|-------|---------|
 | `repos[].name` | required | Display name in reports |
 | `repos[].url` | one of url/path | Git URL (HTTPS or SSH) |
-| `repos[].path` | one of url/path | Local path (alternative to `url`) |
+| `repos[].path` | one of url/path | Local path (alternative to `url`). **Must be absolute** — relative paths like `./workshop-apps/...` are rejected at startup with `ERROR: 'path' must be an absolute path`. Use `workshop/generate-repos-json.sh` or build paths from `"$(pwd)"`. |
 | `repos[].branch` | optional | Branch to assess (default: repo's default branch) |
 | `repos[].description` | optional | Free-text label |
 | `apps[]` | optional | Logical grouping; produces grouped sections in the consolidated report |

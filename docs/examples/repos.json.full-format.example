@@ -1,17 +1,17 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/modernize-cli/main/schemas/repos.schema.json",
-  "_comment": "Full-format repos.json example. Use with: modernize assess --source ./repos.json (or modernize upgrade ... --source ./repos.json). Cannot be combined with other --source arguments in the same command.",
+  "_comment": "Full-format repos.json example. Use with: modernize assess --source ./repos.json (or modernize upgrade ... --source ./repos.json). Cannot be combined with other --source arguments in the same command. NOTE: repos[].path MUST be an absolute path — relative paths like ./workshop-apps/... are rejected at startup by modernize v0.0.293+. The shipped helper workshop/generate-repos-json.sh emits absolute paths for all four workshop apps.",
 
   "repos": [
     {
       "name": "bookstore-app",
-      "path": "./workshop-apps/bookstore-app",
+      "path": "/abs/path/to/getting-started-with-ghcp-modernization/workshop-apps/bookstore-app",
       "branch": "main",
       "description": "Spring Boot 2.7 storefront — Java 11 → 21 demo"
     },
     {
       "name": "notes-app",
-      "path": "./workshop-apps/notes-app",
+      "path": "/abs/path/to/getting-started-with-ghcp-modernization/workshop-apps/notes-app",
       "branch": "main",
       "description": "Servlet/JSP legacy app — modernize to Spring Boot"
     },

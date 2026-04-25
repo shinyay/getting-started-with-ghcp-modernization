@@ -140,13 +140,15 @@ Use the [full-format `repos.json`](./repos.json.full-format.example):
 
 ```json
 {
-  "repos": [ { "name": "bookstore-app", "path": "./workshop-apps/bookstore-app" }, ... ],
+  "repos": [ { "name": "bookstore-app", "path": "/abs/path/to/repo/workshop-apps/bookstore-app" }, ... ],
   "apps": [
     { "name": "shop-platform",  "repos": ["bookstore-app", "notes-app"] },
     { "name": "media-platform", "repos": ["PhotoAlbum-Java", "PhotoAlbum-DotNet"] }
   ]
 }
 ```
+
+> ⚠️ `repos[].path` must be **absolute**. Use `bash workshop/generate-repos-json.sh` to emit a Full-format `repos.json` with absolute paths for all workshop apps, or build paths from `"$(pwd)"`.
 
 ```bash
 modernize assess --source ./.github/modernize/repos.json --format markdown --no-tty
