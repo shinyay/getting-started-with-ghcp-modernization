@@ -3,6 +3,8 @@
 > **Duration**: 5 minutes (00:00–05:00)  
 > **Mode**: Narration + VS Code screen share  
 > **Visual**: PhotoAlbum-Java pre-opened in VS Code
+>
+> **Verified With**: `claude-sonnet-4.6` + `modernize` CLI v0.0.293+ + GitHub Copilot App Modernization for Java, 2026-04-25
 
 ---
 

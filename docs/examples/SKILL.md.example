@@ -1,18 +1,27 @@
 ---
-# Reference custom-skill example — drop into `.github/skills/<skill-name>/SKILL.md`
-# of the project you want the modernize agent to apply this skill to.
+# Reference custom-skill example — Lab 3 *finished-state* reference.
 #
 # Tested With: modernize CLI v0.0.293+ · GitHub Copilot App Modernization for Java
 # Last reviewed: 2026-04-25
 #
-# Why this file is in `docs/examples/`:
-#   The repo's `.gitignore` excludes `.github/skills/` (workshop participants
-#   generate their own copy during Lab 3 — see `workshop/lab3-custom-skills.md`).
-#   This shipped reference copy is what the workshop *would* produce, augmented
-#   with the two extensions added during the Phase-2 workshop dry-run
-#   (Pattern 4 BookStore note + Pattern 5 @MockitoBean migration).
+# Two related files (do not confuse):
+#   - workshop/templates/junit4-to-junit5-skill/SKILL.md  → STARTER (Patterns 1–3
+#     + a TODO marker). Lab 3 has you copy this into `.github/skills/` then
+#     extend it with two more patterns.
+#   - docs/examples/SKILL.md.example  (this file)         → FINISHED reference
+#     (Patterns 1–3 plus the Pattern 4 BookStore note and Pattern 5 @MockitoBean
+#     additions produced by completing Lab 3).
 #
-# To use:  cp docs/examples/SKILL.md.example .github/skills/junit4-to-junit5/SKILL.md
+# Why both ship: `.github/skills/` is gitignored, so the repo cannot store a
+# canonical built skill. This file lets readers see the after-Lab-3 result
+# without running through the whole lab.
+#
+# Two ways to use:
+#   1. Doing Lab 3 yourself: start from workshop/templates/, follow the lab
+#      (workshop/lab3-custom-skills.md) — your final SKILL.md should match this
+#      file modulo wording.
+#   2. Skipping Lab 3 and using the finished skill directly:
+#        cp docs/examples/SKILL.md.example .github/skills/junit4-to-junit5/SKILL.md
 name: junit4-to-junit5
 description: Migrate JUnit 4 tests to JUnit 5 (Jupiter) — replaces @RunWith with @ExtendWith, org.junit.Test with org.junit.jupiter.api.Test, and Assert.* with Assertions.*.
 language: java

@@ -4,6 +4,15 @@ All notable changes to this repository are documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- 6 broken internal markdown links surfaced by a cross-cutting audit (Phase 7A): `workshop/agenda.md` and `docs/08-workshop-preparation.md` used absolute `/docs/...` / `/workshop/...` paths that break on GitHub render; `workshop/templates/pre-workshop-email.md` used a relative depth that did not account for the file living one level deeper than other workshop docs; `workshop/lab4-predefined-task.md` (×2) and `workshop/lab5-cli-execute.md` linked to the non-existent `docs/05-modernization-cli-task-execution.md` (correct file is `docs/05-batch-operations.md`).
+
+### Changed
+- Reframed `docs/examples/SKILL.md.example` header (Phase 7B): now positioned as the **finished/reference** state of the JUnit 4 → JUnit 5 skill, complementary to (not competing with) the **starter** template at `workshop/templates/junit4-to-junit5-skill/SKILL.md`. Both files now cross-link, and `docs/06-custom-skills.md` callout explains the two-file relationship.
+- Completed Tested-With/Verified-With stamp coverage on the 6 remaining files that lacked it: `workshop/agenda.md` plus `demo/act{1-opening,2-cli-walkthrough,3-scenario1-upgrade,3-scenario2-secrets,4-closing}.md` (Phase 5 had stamped only 3 of the 8 demo files).
+- Tightened the canonical extension name across `docs/02-ide-experience-java.md` (link text) and `docs/08-workshop-preparation.md` (3 occurrences): "Copilot modernization extension" → "Copilot App Modernization for Java extension" to match the marketplace title used elsewhere in the repo.
+- README repository structure list (line 225) now includes the 5th `docs/examples/` file (`SKILL.md.example`, shipped in 1.2.0).
+
 ## [1.2.0] — 2026-04-25
 
 > **Release theme**: Workshop labs deep review (75 findings closed across Phases 1-3) + top-level docs refresh (Phase 4) + demo scripts refresh (Phase 5) + final polish on `demo/fallback/`, `docs/examples/`, and a shipped `SKILL.md.example` reference (Phase 6). All edits are surface-level alignment with the live `modernize` CLI v0.0.293+ / Copilot CLI 1.0.36+ / `claude-sonnet-4.6` / VS Code 1.106+ baseline as of 2026-04-25 — no behavioural changes to scripts, validators, or sample apps.

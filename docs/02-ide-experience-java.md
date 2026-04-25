@@ -19,7 +19,7 @@ The IDE experience for Java is delivered through **VS Code** and **IntelliJ IDEA
 #### Visual Studio Code
 1. VS Code **1.106+**
 2. [GitHub Copilot extension](https://code.visualstudio.com/docs/copilot/overview)
-3. [GitHub Copilot modernization extension](https://marketplace.visualstudio.com/items?itemName=vscjava.migrate-java-to-azure) (`vscjava.migrate-java-to-azure`)
+3. [GitHub Copilot App Modernization for Java extension](https://marketplace.visualstudio.com/items?itemName=vscjava.migrate-java-to-azure) (`vscjava.migrate-java-to-azure`)
 4. Restart VS Code after installation
 
 #### IntelliJ IDEA

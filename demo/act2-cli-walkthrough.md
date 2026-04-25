@@ -3,6 +3,8 @@
 > **Duration**: 8 minutes (05:00–13:00)  
 > **Mode**: WALKTHROUGH — uses pre-generated content (NOT live execution)  
 > **Source**: Content from [fallback/cli-assessment-report.md](fallback/cli-assessment-report.md)
+>
+> **Verified With**: `claude-sonnet-4.6` + `modernize` CLI v0.0.293+ + GitHub Copilot App Modernization for Java, 2026-04-25
 
 ---
 

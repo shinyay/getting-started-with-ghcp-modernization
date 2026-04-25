@@ -11,6 +11,13 @@ requires:
   - "org.junit.Test"
 ---
 
+<!--
+  STARTER template for Lab 3. Copy this into `.github/skills/junit4-to-junit5/`
+  then extend it with the patterns the lab guides you through. The finished
+  reference (with all patterns, including the Pattern 4 BookStore note and
+  Pattern 5 @MockitoBean additions) lives at `docs/examples/SKILL.md.example`.
+-->
+
 # JUnit 4 → JUnit 5 Migration Skill
 
 ## Overview

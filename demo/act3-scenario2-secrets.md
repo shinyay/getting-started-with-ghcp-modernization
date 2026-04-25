@@ -4,6 +4,8 @@
 > **Mode**: ⚡ LIVE demo  
 > **App**: Task Tracker (`demo-apps/task-tracker-app/`) — Spring Boot 3.2.5 + Java 17 + H2  
 > **Fallback**: [fallback/scenario2-expected-diff.md](fallback/scenario2-expected-diff.md)
+>
+> **Verified With**: `claude-sonnet-4.6` + `modernize` CLI v0.0.293+ + GitHub Copilot App Modernization for Java, 2026-04-25
 
 ---
 

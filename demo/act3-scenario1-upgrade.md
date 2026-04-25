@@ -4,6 +4,8 @@
 > **Mode**: ⚡ LIVE demo  
 > **App**: [PhotoAlbum-Java](https://github.com/Azure-Samples/PhotoAlbum-Java) — Spring Boot 2.7.18 + Java 8 + Oracle DB  
 > **Fallback**: [fallback/scenario1-expected-diff.md](fallback/scenario1-expected-diff.md)
+>
+> **Verified With**: `claude-sonnet-4.6` + `modernize` CLI v0.0.293+ + GitHub Copilot App Modernization for Java, 2026-04-25
 
 ---
 

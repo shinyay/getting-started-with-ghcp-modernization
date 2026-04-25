@@ -1,5 +1,9 @@
 # Workshop Agenda — GitHub Copilot Modernization
 
+> *Last reviewed: **April 2026***
+>
+> **Tested With**: `modernize v0.0.293+` · `Copilot CLI 1.0.36+` · `claude-sonnet-4.6` · VS Code 1.106+ — verified 2026-04-25
+
 > [!NOTE]
 > Labs 1–6 use **Java applications** (Spring Boot + Maven). Lab 7 (optional, full-day only) is a **.NET hands-on lab**. Additional .NET modernization concepts are in the knowledge base — see [`docs/03-ide-experience-dotnet.md`](../docs/03-ide-experience-dotnet.md).
 

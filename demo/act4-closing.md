@@ -2,6 +2,8 @@
 
 > **Duration**: 7 minutes (48:00–55:00)  
 > **Mode**: Narration + brief file show (NO live execution)
+>
+> **Verified With**: `claude-sonnet-4.6` + `modernize` CLI v0.0.293+ + GitHub Copilot App Modernization for Java, 2026-04-25
 
 ---
 

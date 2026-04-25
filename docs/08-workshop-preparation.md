@@ -25,7 +25,7 @@ GitHub Copilot modernization is Microsoft's AI-powered solution for **upgrading 
 
 **Steps**:
 1. Clone `PhotoAlbum-Java` sample
-2. Open in VS Code with Copilot modernization extension
+2. Open in VS Code with the Copilot App Modernization for Java extension
 3. Invoke `@modernize` in chat
 4. Walk through: assessment → plan → execute
 5. Show the generated `plan.md` and `progress.md`
@@ -54,7 +54,7 @@ GitHub Copilot modernization is Microsoft's AI-powered solution for **upgrading 
 
 **Steps**:
 1. Start with a Spring Boot app using RabbitMQ
-2. Open Copilot modernization extension
+2. Open Copilot App Modernization for Java extension
 3. Select "Spring RabbitMQ to Azure Service Bus" predefined task
 4. Watch the agent create plan and execute migration
 5. Review code changes: dependencies, configuration, message handling
@@ -185,7 +185,7 @@ modernize upgrade "Java 21" --delegate cloud
 ### For Java Track
 - [ ] Java 21+ installed
 - [ ] Maven or Gradle installed
-- [ ] VS Code with GitHub Copilot + Copilot modernization extensions
+- [ ] VS Code with GitHub Copilot + Copilot App Modernization extensions
 - [ ] OR IntelliJ IDEA 2023.3+ with plugins (Windows/macOS only)
 
 ### For .NET Track

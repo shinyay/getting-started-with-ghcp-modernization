@@ -222,7 +222,7 @@ Comprehensive research on GitHub Copilot modernization, covering the entire plat
 | [09 — FAQ & Troubleshooting](docs/09-faq-and-troubleshooting.md) | Operational reference | Common errors, recovery patterns, environment gotchas across IDE + CLI |
 | [10 — Deployment & Azure Integration](docs/10-deployment-and-azure-integration.md) | Post-modernization | Azure Container Apps / App Service deployment, Key Vault wiring, Managed Identity |
 
-Worked CLI examples and config templates live alongside in [`docs/examples/`](docs/examples/) (`cli-cookbook.md`, `config.json.example`, `repos.json.example`, `repos.json.full-format.example`).
+Worked CLI examples and config templates live alongside in [`docs/examples/`](docs/examples/) (`cli-cookbook.md`, `config.json.example`, `repos.json.example`, `repos.json.full-format.example`, `SKILL.md.example`).
 
 ---
 

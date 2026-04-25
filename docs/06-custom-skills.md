@@ -32,7 +32,12 @@ Custom skills follow the [Agent Skills specification](https://agentskills.io/spe
     └── ...               # Any additional files
 ```
 
-> 📂 **Reference example**: a complete, workshop-tested `SKILL.md` is shipped at [`docs/examples/SKILL.md.example`](./examples/SKILL.md.example) (the JUnit 4 → JUnit 5 migration skill from Lab 3, with the Pattern 4 / Pattern 5 extensions added during the workshop dry-run). The repo's `.gitignore` excludes `.github/skills/` itself so workshop participants generate their own copy during Lab 3 — copy the example into `.github/skills/junit4-to-junit5/SKILL.md` to follow along.
+> 📂 **Reference examples** — two related files ship for the JUnit 4 → JUnit 5 migration skill:
+>
+> - **Starter template**: [`workshop/templates/junit4-to-junit5-skill/SKILL.md`](../workshop/templates/junit4-to-junit5-skill/SKILL.md) — Patterns 1–3 plus a TODO marker. This is what Lab 3 has you copy into `.github/skills/junit4-to-junit5/` before extending it.
+> - **Finished reference**: [`docs/examples/SKILL.md.example`](./examples/SKILL.md.example) — the same skill after Lab 3, with the Pattern 4 BookStore note and Pattern 5 `@MockitoBean` additions added during the workshop dry-run.
+>
+> The repo's `.gitignore` excludes `.github/skills/` itself, so neither copy lives at the runtime path — workshop participants build their own. To skip Lab 3 and use the finished skill directly: `cp docs/examples/SKILL.md.example .github/skills/junit4-to-junit5/SKILL.md`.
 
 ### SKILL.md Format
 
