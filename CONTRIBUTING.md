@@ -13,8 +13,10 @@ Thank you for your interest in improving this workshop repository!
 
 1. Fork the repository
 2. Create a branch (`git checkout -b fix/description`)
-3. Make your changes
-4. Test: run `mvn clean package` in any modified Java app (or `dotnet build` for .NET)
+3. Make your changes — for lab edits, also follow the **[Lab Authoring Style](#lab-authoring-style)** below
+4. Test:
+   - Run `mvn clean package` in any modified Java app (or `dotnet build` for .NET)
+   - If you touched anything under `workshop/`, run `bash workshop/validate.sh lab{2,3,4,5}` and confirm 3/3 for each
 5. Submit a Pull Request
 
 ## Style Guidelines

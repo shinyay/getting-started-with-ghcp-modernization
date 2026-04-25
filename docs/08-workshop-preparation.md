@@ -15,7 +15,7 @@ GitHub Copilot modernization is Microsoft's AI-powered solution for **upgrading 
 ---
 
 > [!NOTE]
-> The **demo scenarios** below include both Java and .NET suggestions, but the **implemented** demo scripts in `demo/` and workshop labs in `workshop/` are currently **Java-only**. .NET scenarios are described here for planning purposes — you would need to set up your own .NET sample application to deliver them live.
+> The **demo scenarios** below include both Java and .NET suggestions. Hands-on Java coverage lives in `demo/act1`–`act4` and `workshop/lab1`–`lab6`; **hands-on .NET** coverage is provided by `workshop/lab7-dotnet-upgrade.md` and the optional `demo/act3c-scenario3-dotnet-upgrade.md` walkthrough using the bundled `workshop-apps/dotnet-sample-app/`.
 
 ## Potential Demo Scenarios
 

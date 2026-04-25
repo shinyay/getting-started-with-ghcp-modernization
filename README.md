@@ -1,24 +1,29 @@
 # Getting Started with GitHub Copilot Modernization
 
-> **A 60-minute demo and comprehensive knowledge base for AI-powered application modernization with GitHub Copilot — from legacy assessment to code transformation.**
+> **A 60-minute demo, a half-/full-day hands-on workshop, and a comprehensive knowledge base for AI-powered application modernization with GitHub Copilot — from legacy assessment to code transformation.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://gist.githubusercontent.com/shinyay/56e54ee4c0e22db8211e05e70a63247e/raw/f3ac65a05ed8c8ea70b653875ccac0c6dbc10ba1/LICENSE)
+
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/) and verified live: **April 2026***
+>
+> **Tested With**: `modernize v0.0.293+` · `Copilot CLI 1.0.36+` · `claude-sonnet-4.6` · VS Code 1.106+ (Insiders recommended) — verified 2026-04-25
 
 [GitHub Copilot modernization](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/) is an **agentic, end-to-end solution** that analyzes, upgrades, and migrates Java and .NET applications to Azure. It follows an **Assess → Plan → Execute** workflow with humans in the loop at every checkpoint — every recommendation is transparent, every change is reviewable, and every step is validated via git.
 
 This repository provides everything needed to **demonstrate** GitHub Copilot modernization to a mixed audience of developers, architects, and managers:
 
-- 🎬 **6 presenter scripts** with minute-by-minute narration
+- 🎬 **7 presenter scripts** with minute-by-minute narration (including an optional .NET act)
 - 🛡️ **3 fallback files** for demo resilience (pre-generated diffs)
 - 🔧 **1 custom demo app** (Spring Boot 3.2 with intentional hardcoded secrets)
-- 📚 **8 knowledge base documents** covering the entire platform
-- ⚙️ **1 setup script** for automated pre-demo preparation
+- 🧑‍🏫 **7 hands-on workshop labs** (half-day Labs 1-3 / full-day Labs 1-6 / optional Lab 7 for .NET)
+- 📚 **10 knowledge base documents** covering the entire platform
+- ⚙️ **2 setup scripts** (`demo/setup.sh` for the demo, `workshop/setup.sh` for the labs)
 
 > [!NOTE]
 > GitHub Copilot modernization **IDE experience is GA** for both Java and .NET. The **Modernization Agent (CLI)** is in **Public Preview** as of April 2026. This demo covers both.
 
 > [!IMPORTANT]
-> **Hands-on scope:** Demo scripts and workshop labs are primarily **Java-focused** (Spring Boot + Maven). A .NET upgrade lab (Lab 7) and sample app are available for full-day workshops. The knowledge base docs (see [`docs/`](docs/)) provide comprehensive coverage of both **Java and .NET** modernization. For additional .NET hands-on guidance, refer to the [official .NET modernization documentation](https://learn.microsoft.com/en-us/dotnet/core/porting/github-copilot-app-modernization-overview).
+> **Hands-on scope:** Most demo scripts and workshop labs are **Java-focused** (Spring Boot + Maven). A **.NET 6 → .NET 10 upgrade** is also covered hands-on by **Lab 7** (full-day, optional) and the matching **Demo Act 3c** walkthrough, both built on the `dotnet-sample-app` shipped in this repo. The knowledge base docs (see [`docs/`](docs/)) provide comprehensive coverage of both **Java and .NET** modernization. For additional .NET hands-on guidance, refer to the [official .NET modernization documentation](https://learn.microsoft.com/en-us/dotnet/core/porting/github-copilot-app-modernization-overview).
 
 ---
 
@@ -29,10 +34,13 @@ This repository provides everything needed to **demonstrate** GitHub Copilot mod
 | Tool | Version | Verify |
 |------|---------|--------|
 | GitHub Copilot | Any plan (Free/Pro/Pro+/Business/Enterprise) | [github.com/settings/copilot](https://github.com/settings/copilot) |
-| VS Code | 1.106+ | `code --version` |
-| VS Code Extensions | Copilot + Copilot Chat + Modernization | `code --list-extensions \| grep -E "copilot\|migrate"` |
-| Java | JDK 21+ | `java -version` |
+| VS Code | 1.106+ (**Insiders** recommended for the latest preview features) | `code --version` |
+| VS Code Extensions | Copilot + Copilot Chat + Modernization (Java and/or .NET) | `code --list-extensions \| grep -E "copilot\|migrate"` |
+| Java | **JDK 21+ recommended** (JDK 17+ acceptable for everything except Lab 1's *post*-upgrade build) | `java -version` |
 | Maven | 3.8+ | `mvn -version` |
+| Modernization Agent CLI | `v0.0.293+` (REQUIRED for Lab 2 / Lab 5 and Demo Act 2) | `modernize --version` |
+| .NET SDK | **SDK 10+** (only required for Lab 7 / Demo Act 3c) | `dotnet --version` |
+| Copilot CLI | `1.0.36+` (used by Lab 5 / Demo) | `copilot --version` |
 | Git | Any | `git --version` |
 
 👉 **Full setup guide**: [demo/00-prerequisites.md](demo/00-prerequisites.md)
@@ -52,11 +60,12 @@ The setup script clones sample repos, warms Maven caches, builds the demo app, a
 Follow the **[Presenter Guide](demo/presenter-guide.md)** for the full 60-minute flow, or jump to individual acts:
 
 ```
-Act 1 → demo/act1-opening.md          (5 min — Opening hook)
-Act 2 → demo/act2-cli-walkthrough.md   (8 min — Portfolio discovery)
-Act 3a → demo/act3-scenario1-upgrade.md (20 min — LIVE version upgrade)
-Act 3b → demo/act3-scenario2-secrets.md (15 min — LIVE secrets migration)
-Act 4 → demo/act4-closing.md           (7 min — Custom Skills + closing)
+Act 1  → demo/act1-opening.md                  (5 min — Opening hook)
+Act 2  → demo/act2-cli-walkthrough.md           (8 min — Portfolio discovery)
+Act 3a → demo/act3-scenario1-upgrade.md        (20 min — LIVE version upgrade — Java)
+Act 3b → demo/act3-scenario2-secrets.md        (15 min — LIVE secrets migration — Java)
+Act 3c → demo/act3c-scenario3-dotnet-upgrade.md (15 min — Optional .NET 6 → .NET 10 walkthrough)
+Act 4  → demo/act4-closing.md                   (7 min — Custom Skills + closing)
 ```
 
 ---
@@ -111,6 +120,7 @@ The demo follows a **Discover → Modernize → Scale** arc that mirrors a real 
 | [act2-cli-walkthrough.md](demo/act2-cli-walkthrough.md) | 8 min | Walkthrough | CLI assessment report — dashboard, waves, recommendations |
 | [act3-scenario1-upgrade.md](demo/act3-scenario1-upgrade.md) | 20 min | ⚡ LIVE | PhotoAlbum-Java: Java 8→21, Spring Boot 2.7→3.x |
 | [act3-scenario2-secrets.md](demo/act3-scenario2-secrets.md) | 15 min | ⚡ LIVE | Task Tracker: 3 hardcoded secrets → Azure Key Vault |
+| [act3c-scenario3-dotnet-upgrade.md](demo/act3c-scenario3-dotnet-upgrade.md) | 15 min | Walkthrough | Optional .NET 6 → .NET 10 upgrade for mixed audiences (uses `dotnet-sample-app`) |
 | [act4-closing.md](demo/act4-closing.md) | 7 min | Narration | Custom Skills teaser, scale message, recap, CTA |
 | [presenter-guide.md](demo/presenter-guide.md) | — | Reference | **Master guide**: timing table, transitions, Q&A, recovery strategies |
 
@@ -153,14 +163,14 @@ These 3 patterns represent the most common enterprise secret anti-patterns and a
 The workshop provides **participant-driven** hands-on labs using **different apps and scenarios** from the demo — minimal overlap by design.
 
 > [!NOTE]
-> The workshop is currently **Java-only**. .NET modernization is covered in the knowledge base at [`docs/03-ide-experience-dotnet.md`](docs/03-ide-experience-dotnet.md).
+> Labs 1-6 are Java-focused (Spring Boot + Maven). **Lab 7** adds a hands-on .NET 6 → .NET 10 upgrade for mixed audiences and is offered as an optional add-on after the full-day core. Deeper .NET background lives in the knowledge base at [`docs/03-ide-experience-dotnet.md`](docs/03-ide-experience-dotnet.md).
 
 ### Two Formats
 
 | Format | Duration | Labs | Best For |
 |--------|----------|------|----------|
 | **Half-Day** | 3.5 hours | Labs 1-3 | Teams wanting an introduction with hands-on experience |
-| **Full-Day** | 6.5 hours | Labs 1-6 | Teams planning real modernization projects |
+| **Full-Day** | 6h30m core + 50min optional Lab 7 | Labs 1-6 (+ Lab 7 optional) | Teams planning real modernization projects; optional .NET track |
 
 👉 **Full agendas**: [workshop/agenda.md](workshop/agenda.md) · **Instructor guide**: [workshop/instructor-guide.md](workshop/instructor-guide.md)
 
@@ -174,7 +184,7 @@ The workshop provides **participant-driven** hands-on labs using **different app
 | [Lab 4](workshop/lab4-predefined-task.md) | 50 min | Full only | Predefined task: file logging → console | NotesApp |
 | [Lab 5](workshop/lab5-cli-execute.md) | 50 min | Full only | CLI batch upgrade + plan execute | BookStore |
 | [Lab 6](workshop/lab6-bring-your-own.md) | 40 min | Full only | Apply to your own project | Participant's app |
-| [Lab 7](workshop/lab7-dotnet-upgrade.md) | 50 min | Full (optional) | .NET 6 → .NET 10 upgrade | DotnetSampleApp |
+| [Lab 7](workshop/lab7-dotnet-upgrade.md) | 50 min | Full-day **optional** add-on | .NET 6 → .NET 10 upgrade (IDE + CLI parallel paths) | dotnet-sample-app |
 
 ### Workshop Apps
 
@@ -209,6 +219,10 @@ Comprehensive research on GitHub Copilot modernization, covering the entire plat
 | [06 — Custom Skills](docs/06-custom-skills.md) | Extensibility | Agent Skills specification, SKILL.md format, creating/sharing/applying skills |
 | [07 — Key Concepts & Comparison](docs/07-key-concepts-and-comparison.md) | Reference matrix | IDE vs CLI comparison, Java vs .NET, complete predefined task catalog (23 tasks) |
 | [08 — Workshop Preparation](docs/08-workshop-preparation.md) | Workshop planning | 6 demo scenarios, half-day/full-day agendas, commands cheat sheet, prerequisites |
+| [09 — FAQ & Troubleshooting](docs/09-faq-and-troubleshooting.md) | Operational reference | Common errors, recovery patterns, environment gotchas across IDE + CLI |
+| [10 — Deployment & Azure Integration](docs/10-deployment-and-azure-integration.md) | Post-modernization | Azure Container Apps / App Service deployment, Key Vault wiring, Managed Identity |
+
+Worked CLI examples and config templates live alongside in [`docs/examples/`](docs/examples/) (`cli-cookbook.md`, `config.json.example`, `repos.json.example`, `repos.json.full-format.example`).
 
 ---
 
@@ -218,14 +232,25 @@ Comprehensive research on GitHub Copilot modernization, covering the entire plat
 getting-started-with-ghcp-modernization/
 │
 ├── README.md                              # This file
+├── CHANGELOG.md                           # Versioned change log
+├── CONTRIBUTING.md                        # Contribution guide + Lab Authoring Style
+├── LICENSE                                # MIT
 ├── .gitignore                             # Maven/IDE/modernization artifact exclusions
+│
+├── .github/                               # Repo automation
+│   ├── workflows/ci.yml                   #   CI: builds all apps + runs validate.sh
+│   ├── ISSUE_TEMPLATE/                    #   Bug + feature request templates
+│   ├── skills/                            #   Reusable Custom Skills (Agent Skills spec)
+│   ├── modernize/                         #   Sample CLI artifacts (assessment / plan / tasks)
+│   └── java-upgrade/                      #   Sample Java IDE chat-handler artifacts
 │
 ├── demo/                                  # 60-minute demo — presenter scripts & guides
 │   ├── 00-prerequisites.md                #   Environment setup & verification
 │   ├── act1-opening.md                    #   Act 1: Opening hook (5 min)
 │   ├── act2-cli-walkthrough.md            #   Act 2: CLI assessment walkthrough (8 min)
-│   ├── act3-scenario1-upgrade.md          #   Act 3a: Version upgrade — LIVE (20 min)
-│   ├── act3-scenario2-secrets.md          #   Act 3b: Secrets migration — LIVE (15 min)
+│   ├── act3-scenario1-upgrade.md          #   Act 3a: Java version upgrade — LIVE (20 min)
+│   ├── act3-scenario2-secrets.md          #   Act 3b: Java secrets migration — LIVE (15 min)
+│   ├── act3c-scenario3-dotnet-upgrade.md  #   Act 3c: Optional .NET 6 → .NET 10 (15 min)
 │   ├── act4-closing.md                    #   Act 4: Custom Skills + closing (7 min)
 │   ├── presenter-guide.md                 #   Master guide: timing, transitions, Q&A
 │   ├── setup.sh                           #   Pre-demo automation (clone, build, verify)
@@ -235,37 +260,34 @@ getting-started-with-ghcp-modernization/
 │       └── scenario2-expected-diff.md     #     Expected secrets migration + recovery
 │
 ├── demo-apps/                             # Custom demo applications
-│   └── task-tracker-app/                  #   Spring Boot 3.2 + Java 17 + H2
-│       ├── pom.xml                        #     Maven build (Spring Boot 3.2.5)
-│       ├── src/main/java/.../             #     7 Java files (model, service, controller, config)
-│       ├── src/main/resources/            #     application.properties (🔑 secrets)
-│       ├── src/test/java/.../             #     Unit tests
-│       └── README.md                      #     App docs with secret locations
+│   └── task-tracker-app/                  #   Spring Boot 3.2 + Java 17 + H2 (🔑 secrets)
 │
-├── workshop/                              # Hands-on workshop (half-day + full-day)
-│   ├── agenda.md                          #   Half-day (3.5h) + full-day (6.5h) agendas
-│   ├── instructor-guide.md               #   Per-lab instructor notes
+├── workshop/                              # Hands-on workshop (half-day + full-day + optional)
+│   ├── agenda.md                          #   Half-day (3.5h) + full-day (6h30m) + Lab 7 add-on
+│   ├── instructor-guide.md                #   Per-lab instructor notes (Labs 1-7)
 │   ├── lab1-version-upgrade.md            #   Lab 1: BookStore upgrade (50 min)
 │   ├── lab2-cli-assessment.md             #   Lab 2: CLI portfolio assessment (45 min)
 │   ├── lab3-custom-skills.md              #   Lab 3: JUnit 4→5 custom skill (30 min)
 │   ├── lab4-predefined-task.md            #   Lab 4: Logging→Console (50 min, full-day)
 │   ├── lab5-cli-execute.md                #   Lab 5: CLI batch upgrade (50 min, full-day)
 │   ├── lab6-bring-your-own.md             #   Lab 6: BYO app clinic (40 min, full-day)
+│   ├── lab7-dotnet-upgrade.md             #   Lab 7: .NET 6 → .NET 10 (50 min, optional)
 │   ├── setup.sh                           #   Workshop environment setup
-│   ├── validate.sh                        #   Per-lab checkpoint validation
+│   ├── validate.sh                        #   Per-lab checkpoint validation (lab1-lab7)
+│   ├── generate-repos-json.sh             #   Helper for Lab 2 portfolio file
 │   └── templates/
-│       └── junit4-to-junit5-skill/
-│           └── SKILL.md                   #   Scaffolded skill template for Lab 3
+│       ├── pre-workshop-email.md          #   Participant invitation + prep checklist
+│       └── junit4-to-junit5-skill/SKILL.md #  Scaffolded skill template for Lab 3
 │
 ├── workshop-apps/                         # Workshop-specific applications
 │   ├── bookstore-app/                     #   Spring Boot 2.7 + Java 11 + JUnit 4 (Labs 1,3,5)
 │   ├── notes-app/                         #   Spring Boot 3.2 + file logging (Lab 4)
-│   ├── dotnet-sample-app/                 #   .NET 6.0 + hardcoded secrets (Lab 7)
+│   ├── dotnet-sample-app/                 #   .NET 6.0 + hardcoded secrets (Lab 7 / Act 3c)
 │   └── stub-repos/
-│       ├── inventory-api/                 #   SB 2.7 + Java 8 stub (Labs 2,5)
-│       └── order-service/                 #   SB 3.1 + Java 17 stub (Labs 2,5)
+│       ├── inventory-api/                 #     SB 2.7 + Java 8 stub (Labs 2,5)
+│       └── order-service/                 #     SB 3.1 + Java 17 stub (Labs 2,5)
 │
-└── docs/                                  # Knowledge base — 8 deep-dive documents
+└── docs/                                  # Knowledge base — 10 deep-dive documents
     ├── 01-overview-and-architecture.md
     ├── 02-ide-experience-java.md
     ├── 03-ide-experience-dotnet.md
@@ -273,7 +295,14 @@ getting-started-with-ghcp-modernization/
     ├── 05-batch-operations.md
     ├── 06-custom-skills.md
     ├── 07-key-concepts-and-comparison.md
-    └── 08-workshop-preparation.md
+    ├── 08-workshop-preparation.md
+    ├── 09-faq-and-troubleshooting.md
+    ├── 10-deployment-and-azure-integration.md
+    └── examples/                          # Worked CLI examples + config templates
+        ├── cli-cookbook.md
+        ├── config.json.example
+        ├── repos.json.example
+        └── repos.json.full-format.example
 ```
 
 ---
