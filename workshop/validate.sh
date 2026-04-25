@@ -1,5 +1,5 @@
 #!/bin/bash
-# Usage: ./validate.sh lab1|lab2|lab3|lab4|lab5
+# Usage: ./validate.sh lab1|lab2|lab3|lab4|lab5|lab6|lab7
 
 # Colors
 GREEN='\033[0;32m'
@@ -82,14 +82,13 @@ case "$LAB" in
       check_fail "Assessment does not reference BookStore or NotesApp"
     fi
 
-    # Check 3: Plan file exists — modernize plan create writes inside the --source path
-    # Lab 2 uses --source ./workshop-apps/bookstore-app --plan-name bookstore-java21.
-    # Fall back to the repo-root location for older/alternate layouts.
-    if ls "$REPO_ROOT/workshop-apps/bookstore-app/.github/modernize/"*/plan.md 2>/dev/null | grep -q . \
-       || ls "$REPO_ROOT/.github/modernize/"*/plan.md 2>/dev/null | grep -q .; then
+    # Check 3: Plan file exists at the canonical CLI output path.
+    # Lab 2 uses --source ./workshop-apps/bookstore-app, which writes to
+    # workshop-apps/bookstore-app/.github/modernize/{plan-name}/.
+    if ls "$REPO_ROOT/workshop-apps/bookstore-app/.github/modernize/"*/plan.md 2>/dev/null | grep -q .; then
       check_pass "Modernization plan file exists"
     else
-      check_fail "No plan.md found in workshop-apps/bookstore-app/.github/modernize/*/ or .github/modernize/*/"
+      check_fail "No plan.md found in workshop-apps/bookstore-app/.github/modernize/*/"
     fi
     ;;
 
@@ -177,18 +176,33 @@ case "$LAB" in
     ;;
 
   lab7)
-    echo ""
-    echo "Lab 7: .NET Upgrade"
-    echo "==========================================="
-    echo ""
-    echo "Lab 7 uses the .NET DotnetSampleApp."
-    echo "Manual verification:"
-    echo "  1. Check: grep 'TargetFramework' workshop-apps/dotnet-sample-app/*.csproj"
-    echo "     (should show the upgraded TFM, e.g. net10.0; verified 2026-04-25)"
-    echo "  2. Run: cd workshop-apps/dotnet-sample-app && dotnet build"
-    echo "     (should succeed)"
-    echo "  3. Check: ls .github/upgrades/ (IDE) or ls workshop-apps/dotnet-sample-app/.github/modernize/ (CLI)"
-    echo ""
+    # Check 1: TFM was upgraded (anything other than net6.0 / net7.0)
+    CSPROJ="$REPO_ROOT/workshop-apps/dotnet-sample-app/DotnetSampleApp.csproj"
+    if [ -f "$CSPROJ" ] && grep -E "<TargetFramework>net(8|9|10)\.0</TargetFramework>" "$CSPROJ" >/dev/null 2>&1; then
+      TFM=$(grep -oE "net[0-9]+\.[0-9]+" "$CSPROJ" | head -1)
+      check_pass "TargetFramework upgraded to $TFM"
+    else
+      check_fail "TargetFramework not upgraded (expected net8.0+ in DotnetSampleApp.csproj)"
+    fi
+
+    # Check 2: dotnet build succeeds
+    if command -v dotnet &>/dev/null; then
+      if (cd "$REPO_ROOT/workshop-apps/dotnet-sample-app" && dotnet build -v q --nologo 2>/dev/null); then
+        check_pass "dotnet-sample-app builds successfully"
+      else
+        check_fail "dotnet-sample-app build failed"
+      fi
+    else
+      check_fail "dotnet SDK not found — cannot verify build"
+    fi
+
+    # Check 3: Upgrade artifacts exist (IDE .github/upgrades/ or CLI .github/modernize/)
+    if ls "$REPO_ROOT/.github/upgrades/"*/ 2>/dev/null | grep -q . \
+       || ls "$REPO_ROOT/workshop-apps/dotnet-sample-app/.github/modernize/"*/ 2>/dev/null | grep -q .; then
+      check_pass "Upgrade artifacts found (.github/upgrades/ or .github/modernize/)"
+    else
+      check_fail "No upgrade artifacts in .github/upgrades/ or workshop-apps/dotnet-sample-app/.github/modernize/"
+    fi
     ;;
 
   *)
