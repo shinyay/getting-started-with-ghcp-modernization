@@ -116,12 +116,14 @@ Under `.github/upgrades/{scenarioId}/`:
 Use the `--no-tty` flag to disable interactive prompts:
 
 ```bash
-# Assess multiple repos in headless mode
-modernize assess --multi-repo --no-tty
+# Assess multiple repos in headless mode (v0.0.293+)
+modernize assess --source ./.github/modernize/repos.json --no-tty
 
 # Upgrade with cloud delegation, wait for completion
-modernize upgrade "Java 21" --delegate cloud --wait --no-tty
+modernize upgrade "Java 21" --source ./.github/modernize/repos.json --delegate cloud --wait --no-tty
 ```
+
+> The legacy `--multi-repo` flag is deprecated. See [`docs/04-modernization-agent-cli.md` § Multi-Repository Configuration](04-modernization-agent-cli.md#multi-repository-configuration-reposjson).
 
 ---
 
@@ -132,7 +134,7 @@ modernize upgrade "Java 21" --delegate cloud --wait --no-tty
 | Symptom | Solution |
 |---------|----------|
 | `modernize: command not found` | Reinstall CLI and open a **new terminal** for PATH to update |
-| `repos.json` not detected | Must be at exactly `.github/modernize/repos.json` (case-sensitive) |
+| `repos.json` not detected | The CLI does **not** auto-detect `repos.json`. Pass it explicitly via `--source ./.github/modernize/repos.json` (or any other path). The `.github/modernize/` location is convention only. |
 | Agent stalls (no output >2 minutes) | Cancel the operation and re-invoke the same prompt |
 | Build fails after upgrade | Expected behavior — review the error, ask the agent to fix it, or use fallback files |
 | VS Code extensions not found | **Restart VS Code** after installing the modernization extension |

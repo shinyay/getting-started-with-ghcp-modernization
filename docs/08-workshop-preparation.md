@@ -77,7 +77,7 @@ GitHub Copilot modernization is Microsoft's AI-powered solution for **upgrading 
 **Steps**:
 1. Install Modernize CLI
 2. Create `repos.json` with multiple sample repos
-3. Run `modernize assess --multi-repo`
+3. Run `modernize assess --source ./.github/modernize/repos.json` (`--multi-repo` is deprecated)
 4. Review aggregated report: dashboard, recommendations, assessment matrix
 5. Discuss migration waves and prioritization
 
@@ -157,7 +157,7 @@ modernize
 
 # Assess
 modernize assess
-modernize assess --multi-repo
+modernize assess --source ./.github/modernize/repos.json   # multi-repo (was: --multi-repo, now deprecated)
 modernize assess --delegate cloud
 
 # Plan

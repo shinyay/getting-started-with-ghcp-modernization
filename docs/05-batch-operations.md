@@ -78,8 +78,10 @@ Add MCP server configuration in the repository's **Cloud Coding Agent settings**
 modernize
 # → Select repos → 1. Assess application → 1. Assess locally
 
-# Non-interactive
-modernize assess --multi-repo
+# Non-interactive (v0.0.293+)
+modernize assess --source ./.github/modernize/repos.json --no-tty
+
+# Legacy: --multi-repo is deprecated, see docs/04-modernization-agent-cli.md
 ```
 
 #### Cloud Coding Agent Assessment (Parallel)
@@ -167,8 +169,8 @@ Applies consistent modernization plans across multiple repositories simultaneous
 modernize
 # → Select repos → 2. Upgrade → 1. Upgrade locally
 
-# Non-interactive
-modernize upgrade "Java 21"
+# Non-interactive (v0.0.293+)
+modernize upgrade "Java 21" --source ./.github/modernize/repos.json
 ```
 
 #### Cloud Coding Agent Upgrade (Parallel)
