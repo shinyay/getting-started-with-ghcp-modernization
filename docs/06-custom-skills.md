@@ -1,6 +1,6 @@
 # Custom Skills — Reusable Migration Patterns
 
-> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/) and verified against the live CLI: **April 2026***
 
 ## Overview
 
@@ -154,6 +154,22 @@ When creating a modernization plan, the agent **automatically**:
 # Agent auto-detects and uses the RabbitMQ skill
 modernize plan create "migrate from rabbitmq to azure service bus"
 ```
+
+> **Project-local skills take priority over built-in skills.** When both a
+> built-in (Microsoft) skill and a project-local skill match the same
+> migration path, the agent chooses the project-local one. This was verified
+> in a live CLI run against [Azure-Samples/NewsFeedSite](https://github.com/Azure-Samples/NewsFeedSite),
+> which ships `.github/skills/rabbitmq-to-azureservicebus/SKILL.md`. Even
+> when the prompt did **not** name the skill, the agent log explicitly
+> recorded:
+>
+> ```
+> rabbitmq-to-azureservicebus (project) — taking priority over the built-in skill per the rules
+> ```
+>
+> Implication: dropping a `SKILL.md` into `.github/skills/<name>/` is enough
+> to override the default behavior for that migration — no flag, no prompt
+> tweak required.
 
 ### IDE: Run Skill Manually
 

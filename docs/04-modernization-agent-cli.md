@@ -164,6 +164,18 @@ When `--issue-url` is set, the aggregate summary is also posted as an issue comm
 
 Create a modernization plan from natural language prompt.
 
+> **ℹ️ No enumerated task catalog from the CLI.** The IDE surfaces a fixed
+> set of predefined tasks in its **TASKS** panel (Java JMS → Service Bus,
+> .NET Framework → .NET 8, etc. — see the
+> [Predefined Tasks Catalog](07-key-concepts-and-comparison.md#predefined-tasks-catalog--complete-reference)).
+> The CLI has **no equivalent listing subcommand** — `modernize plan` only
+> exposes `create` and `execute`. You compose a task by writing a free-form
+> prompt to `plan create` that names a migration path the agent recognizes
+> (e.g. `"Migrate from RabbitMQ to Azure Service Bus"`,
+> `"Upgrade to Spring Boot 3"`). The agent matches your prompt against the
+> same internal catalog the IDE uses. Use the `assess` report's
+> recommended Azure services as the source for prompt wording.
+
 ```bash
 # Migration plan
 modernize plan create "migrate from oracle to azure postgresql"
@@ -201,7 +213,7 @@ This is intentional (the plan ships with the app it modernizes), but it surprise
 **Options**:
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--source <path>` | `.` | Path to application source code |
+| `--source <path>` | `.` | **Local path only** to application source code. Unlike `assess`, this flag does **not** accept Git URLs or a `repos.json` file — clone the repository locally first, then point `--source` at the working tree. Verified against `modernize plan create --help` in v0.0.293. |
 | `--plan-name <name>` | `modernization-plan` | Name for the modernization plan |
 | `--language <lang>` | Auto-detected | Programming language. **Only `java` or `dotnet`** are accepted by the CLI in v0.0.293 (the older docs that mention `python` predate the current build). |
 | `--overwrite` | Disabled | Overwrite an existing plan with the same name |
@@ -265,7 +277,7 @@ modernize plan execute --delegate cloud
 **Options**:
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--source <path>` | `.` | Path to application source code |
+| `--source <path>` | `.` | **Local path only** to application source code. Same constraint as `plan create` — Git URLs and `repos.json` are rejected. |
 | `--plan-name <name>` | `modernization-plan` | Name of the plan to execute |
 | `--language <lang>` | Auto-detected | Programming language (`java` or `dotnet`) |
 | `--model <model>` | `claude-sonnet-4.6` | LLM model to use |
@@ -746,6 +758,50 @@ The Modernization Agent ships in two surfaces. Both call the same backend skills
 - *Single repo, single dev, want to feel the changes?* → IDE Agent (Lab 1).
 - *5+ repos, weekly cadence, want a Slack-postable report?* → CLI + GitHub Actions (Lab 2 + Cookbook recipe 11).
 - *Both?* — that's exactly the workshop arc: Lab 1 to learn the shape, Lab 2 to scale it.
+
+## Determinism & Reproducibility
+
+> **⚠️ modernize is not bit-for-bit reproducible.** Two runs of the same
+> prompt, against the same source tree, with the same CLI version
+> (`v0.0.293`) and the same model (`claude-sonnet-4.6`) can land on
+> **materially different** end states. This is not a bug in the agent —
+> it is a property of LLM-driven planners.
+
+**Observed example** (NewsFeedSite, prompt `"Java 21 and Spring Boot 3"`,
+2026-04-25, two runs an hour apart):
+
+| | Run 1 | Run 2 |
+|---|---|---|
+| Commits produced | 1 | 3 |
+| Spring Boot adopted | ✅ 3.4.1 + embedded Tomcat | ❌ none |
+| Jakarta EE namespace migration | ✅ done | ✅ done |
+| Servlet container | Embedded Tomcat | Jetty 12 |
+| Build outcome | Pass | Pass |
+
+Both runs were valid responses to the prompt, but the *shape* of the
+result diverged — one app became a Spring Boot service, the other stayed
+plain Jakarta EE on Jetty. **This matters most for prompts that
+*introduce* a framework** (e.g. adding Spring Boot to a non-Spring app).
+Pure version bumps (`Java 11 → Java 21`, `Spring Boot 2.7 → 3.x` on an
+existing Spring app) tend to be much more stable across runs.
+
+**Mitigation guidance**:
+- **For instructor-led demos**: pre-record the run you want to show. Have
+  a fallback narrative ready in case a live re-run produces a different
+  end state mid-session.
+- **For CI/CD pipelines**: do not assert on specific commit counts, file
+  paths, or framework choices. Validate on **outcome** (build passes,
+  tests green, target capability declared) rather than **shape**.
+- **For task chaining**: anchor each step with a tightly-scoped prompt
+  (`"Upgrade Spring Boot to 3.4 only"` rather than `"Modernize the
+  framework"`) to narrow the agent's solution space.
+- **For repeatable runs**: pin model + version, then commit the produced
+  `tasks.json` to source control so subsequent `plan execute` runs share
+  the same task list — `plan execute` is far more deterministic than
+  `plan create` because the LLM is constrained by the existing plan.
+
+Related: see also the [`plan create` non-determinism behavior](#modernize-plan-create)
+when the same prompt is re-run with `--overwrite`.
 
 ## CLI Troubleshooting
 

@@ -1,6 +1,6 @@
 # Key Concepts & Comparison Matrix
 
-> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/) and verified against the live CLI: **April 2026***
 
 ## Concept Map
 
@@ -99,6 +99,16 @@ GitHub Copilot Modernization
 ```
 
 ## Predefined Tasks Catalog — Complete Reference
+
+> **ℹ️ "Predefined task" is IDE nomenclature.** The names below are what
+> the **VS Code TASKS panel** surfaces as one-click options. **The CLI
+> has no equivalent listing command** — `modernize plan` only exposes
+> `create` and `execute`. From the CLI you trigger the same migrations
+> with a free-form prompt to `plan create`, e.g.
+> `modernize plan create "Migrate from RabbitMQ to Azure Service Bus"`.
+> The agent matches your prompt against this same catalog under the
+> hood. See [docs/04 — `modernize plan create`](04-modernization-agent-cli.md#modernize-plan-create)
+> for the prompt-authoring conventions.
 
 ### Java Tasks (13)
 
