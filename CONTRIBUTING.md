@@ -24,6 +24,61 @@ Thank you for your interest in improving this workshop repository!
 - **Code**: Follow existing naming/style conventions in each app
 - **Commits**: Use [conventional commits](https://www.conventionalcommits.org/) (`fix:`, `feat:`, `docs:`, `chore:`)
 
+## Lab Authoring Style
+
+These conventions apply to every file under `workshop/lab*.md`.
+
+### Section structure
+
+Follow the canonical 7-section pattern:
+
+1. Learning Objectives
+2. Pre-Lab Checklist
+3. Step-by-Step Instructions
+4. Checkpoints Summary (table)
+5. What Just Happened
+6. Troubleshooting (table)
+7. Stretch Goal
+
+A `See also` section linking to closely-related labs/docs may follow the Stretch Goal.
+
+> **Documented exception**: `lab6-bring-your-own.md` is an explicitly bespoke "open lab" format and may diverge from the 7-section pattern; new bespoke labs require a similar exception note here.
+
+### Front-matter
+
+Every lab MUST include in its detail table:
+
+- `Verified With` — pinned tool/extension versions and ISO date (e.g. `modernize CLI v0.0.293+ + claude-sonnet-4.6, 2026-04-25`).
+
+Every lab SHOULD include above the table:
+
+- A `> 📚 **Reference docs for this lab:**` callout linking to the most relevant `docs/` pages.
+
+### Step header casing
+
+Use **sentence case** for step headers (e.g. *"Open the project in VS Code"*, not *"Open The Project In VS Code"*). Match the casing of surrounding lab content.
+
+### Version examples
+
+Avoid hardcoding specific patch versions where the agent resolves "latest GA" at runtime. Prefer phrasing like *"the latest Spring Boot 3.x GA at runtime (verified 2026-04-25: 3.5.x)"*. The same applies to .NET TFM examples.
+
+### Brittle line references
+
+Do not reference template/skill files by line number. Instruct readers to use `grep -n` so the lab survives template edits.
+
+### Callout glyph cheat-sheet
+
+| Glyph | Meaning |
+|-------|---------|
+| ⚠️ | Warning — destructive or risky action |
+| 🐛 | Known bug or limitation in tooling |
+| 💡 | Tip or shortcut |
+| 📝 | Note (informational) |
+| ℹ️ | Info / context |
+| ⏱ | Timing / duration hint |
+| 📂 | File or directory pointer |
+| 📚 | Reference docs callout |
+
 ## Reporting Issues
 
 Use GitHub Issues with the provided templates for bugs and feature requests.
