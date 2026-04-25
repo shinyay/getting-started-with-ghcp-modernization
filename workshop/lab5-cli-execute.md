@@ -192,30 +192,63 @@ Both produce equivalent code. Pick the surface that fits your workflow.
 
 ---
 
-## Phase B — Batch Mode
+## Phase B — Multi-Repository (Batch) Mode
 
-(Phase B walks you through upgrading **multiple** repositories in one
-invocation. The dry-run for Phase B is being finalized; the steps below
-are based on `modernize upgrade --help` and will be re-verified before
-Lab 5 is published.)
+Phase B upgrades **multiple** repositories in one invocation. The CLI
+calls this **"Multi-repository" mode** (header reads
+`Mode: Multi-repository (N repositories)`), and dispatches each repo
+sequentially through its own per-repo plan.
 
 ### Step 8 — Prepare a `repos.json`
 
-The CLI accepts a JSON config file via `--source`. A minimal shape:
+The CLI accepts a JSON config file via `--source`. The supported schema
+is the **Full format** with `path` (absolute) — see
+[`docs/examples/repos.json.full-format.example`](../docs/examples/repos.json.full-format.example)
+and `docs/04-modernization-agent-cli.md` for details.
+
+> ⚠️ **Two pitfalls verified during dry-run:**
+> 1. `path` **must be an absolute path**. Relative paths like
+>    `./workshop-apps/bookstore-app` are rejected at startup with
+>    `ERROR: 'path' must be an absolute path`.
+> 2. `url: file://...` **does not work** — the CLI treats every `url`
+>    as a remote and runs `git clone`, which fails on `file://` schemes
+>    in this version. Always use `path:` for local sources.
+
+**Quickest path** — use the helper, which emits absolute paths for all
+four workshop apps:
+
+```bash
+bash workshop/generate-repos-json.sh
+# Writes .github/modernize/repos.json (Full-format, absolute paths)
+```
+
+**Manual minimal example** for just two repos:
 
 ```bash
 mkdir -p .github/modernize
-cat > .github/modernize/repos.json << 'EOF'
-[
-  { "name": "BookStore",    "url": "file://workshop-apps/bookstore-app" },
-  { "name": "InventoryAPI", "url": "file://workshop-apps/stub-repos/inventory-api" }
-]
-EOF
+REPO_ROOT="$(pwd)"
+cat > .github/modernize/repos.json << JSON
+{
+  "repos": [
+    {
+      "name": "bookstore-app",
+      "path": "${REPO_ROOT}/workshop-apps/bookstore-app",
+      "description": "Spring Boot 2.7 / Java 11 storefront"
+    },
+    {
+      "name": "inventory-api",
+      "path": "${REPO_ROOT}/workshop-apps/stub-repos/inventory-api",
+      "description": "Spring Boot 2.7 / Java 8 inventory stub"
+    }
+  ]
+}
+JSON
 ```
 
-> The schema is documented at <https://aka.ms/ghcp-modernization-agent/repos-config>.
-
 ### Step 9 — Reset BookStore for the Batch Run
+
+If you completed Phase A on this branch, reset bookstore-app so the
+batch run starts from a clean Java 11 / Spring Boot 2.7 baseline:
 
 ```bash
 cd workshop-apps/bookstore-app
@@ -226,12 +259,29 @@ cd ../..
 ### Step 10 — Run the Batch Upgrade
 
 > ⚠️ **No auto-detection.** Pass the JSON file explicitly with `--source`.
-> (`modernize upgrade --help` shows `--source` accepts a "JSON config
-> file" — there is no implicit pickup of `./repos.json` from the cwd.)
+> The CLI does not look for `repos.json` in the cwd or in
+> `.github/modernize/` automatically.
 
 ```bash
 modernize upgrade "Java 21" --source ./.github/modernize/repos.json
 ```
+
+You'll see, in order:
+
+1. Header: `Mode: Multi-repository (2 repositories)`
+2. A **Copilot Usage** notice ("This operation will run across N
+   repositories and use Copilot premium requests for each one").
+3. An **Upgrade Dashboard** table (TASK / NAME / STATUS / TIME) that
+   refreshes between repos with `PENDING` → `RUNNING...` → `SUCCESS` /
+   `FAILED`.
+4. A single **shared plan** is created at
+   `.github/modernize/upgrade-to-lts-<TIMESTAMP>/plan.md` containing
+   one generic task: `001-upgrade-java-21` (skill `java-version-upgrade`).
+5. Each repo is then processed **sequentially** — one `RUNNING...` at a
+   time, never two — and the per-repo agent generates its own
+   milestones based on the repo's actual state.
+6. A final **Aggregated Upgrade Report** lists each repo with
+   Success / Failed.
 
 ### Step 11 — Verify Both Repositories
 
@@ -240,7 +290,27 @@ modernize upgrade "Java 21" --source ./.github/modernize/repos.json
 ( cd workshop-apps/stub-repos/inventory-api && git log --oneline | head -5 && mvn -q clean package )
 ```
 
+> 💡 **Don't be surprised if the two repos receive different upgrades.**
+> In Multi-repository mode the CLI applies a **minimum-change strategy**:
+> it bumps Spring Boot only when required for the build to pass on the
+> target Java version.
+>
+> | Repo | Start | Result | Commits added |
+> |---|---|---|---|
+> | bookstore-app | Java 11 / SB 2.7.18 | Java 21 / **SB 2.7.18** | 2 (pom + summary) |
+> | inventory-api | Java 8 / SB 2.7.18 / `javax.persistence` | Java 21 / SB 3.5.3 / `jakarta.persistence` | 4 (3 SB hops + summary) |
+>
+> bookstore-app skips the Spring Boot upgrade because SB 2.7.18 still
+> builds on Java 21. inventory-api is forced through three SB hops
+> because `javax.persistence` requires Spring Boot 3.x. This differs
+> from Phase A, where the same bookstore-app received the full
+> SB 2.7 → 3.5 chain.
+
 ### Step 12 — Clean Up
+
+`.github/modernize/` is gitignored at the repo root, so generated
+artifacts (`repos.json`, `upgrade-to-lts-*/`) won't pollute commits.
+You can remove `repos.json` if you want a clean working tree:
 
 ```bash
 rm .github/modernize/repos.json
@@ -287,6 +357,8 @@ bash workshop/validate.sh lab5
 
 ## What Just Happened?
 
+### Phase A — single repository
+
 The CLI did the same thing the IDE does in Lab 1, with the agent's
 internals more visible:
 
@@ -298,6 +370,24 @@ internals more visible:
    when no recipe existed.
 4. Validated each Milestone (build + tests + CVE + behavioral consistency).
 5. Wrote `modernization-summary.md` and committed everything to `HEAD`.
+
+### Phase B — multi-repository
+
+The Multi-repository flow is two layers:
+
+1. **Top-level batch plan** — `create-java-upgrade-plan` runs once at
+   the repo root and writes a single generic task
+   (`001-upgrade-java-21`, skill `java-version-upgrade`) to
+   `.github/modernize/upgrade-to-lts-<TIMESTAMP>/plan.md`.
+2. **Per-repo execution** — for each repo in `repos.json`, the CLI
+   launches the upgrade agent which generates its own session-specific
+   milestone plan based on that repo's actual state. Repos that already
+   build on the target Java version skip the Spring Boot bumps; repos
+   that require Jakarta migration get the full SB hop chain.
+
+This minimum-change strategy is why the same prompt produces different
+commit histories per repo. To force the full upgrade chain everywhere,
+pass an explicit floor like `"Java 21, Spring Boot 3.5"`.
 
 ---
 
@@ -325,7 +415,10 @@ internals more visible:
 | **Spring Boot version overshoots my target** | The prompt `"Java 21"` upgrades to the **latest** Spring Boot GA. Pin it explicitly: `modernize upgrade "Java 21, Spring Boot 3.3" --source ...`. |
 | **`modernization-summary.md` is missing from the commits** | `.github/modernize/` is gitignored at the repo root. The agent normally `git add -f`'s the summary; if it's missing the agent failed at the summarize phase — check the CLI output for the `summarize_upgrade` step. |
 | **Batch fails on one repo** | The CLI continues with remaining repos; check the failed repo's error. Common cause: non-standard project structure, missing `pom.xml`, or no detectable language. |
-| **`repos.json` not picked up** | The CLI does **not** auto-detect it. Pass it explicitly: `--source ./.github/modernize/repos.json`. Validate JSON: `cat .github/modernize/repos.json | python3 -m json.tool`. |
+| **`repos.json` not picked up** | The CLI does **not** auto-detect it. Pass it explicitly: `--source ./.github/modernize/repos.json`. Validate JSON: `cat .github/modernize/repos.json \| python3 -m json.tool`. |
+| **`ERROR: 'path' must be an absolute path`** | Full-format `repos[].path` only accepts absolute paths. Use `bash workshop/generate-repos-json.sh` (which uses absolute paths) or build paths with `"$(pwd)/workshop-apps/..."`. |
+| **`url: file://...` causes `git clone` failure** | `repos[].url` is treated as a remote and cloned. Use `repos[].path` (absolute) for local sources instead. |
+| **Batch upgraded one repo but skipped Spring Boot on another** | Multi-repository mode applies a minimum-change strategy per repo. To force the SB upgrade everywhere, pin the floor: `modernize upgrade "Java 21, Spring Boot 3.5" --source ...`. |
 
 ---
 
