@@ -4,6 +4,8 @@
 >
 > Tested against `modernize v0.0.293+`. Run `modernize --version` to confirm yours; upgrade with `modernize update` (or `brew upgrade modernize`).
 >
+> **Last reviewed**: 2026-04-25 against `modernize` CLI v0.0.293+ · `claude-sonnet-4.6` (default model).
+>
 > For deep reference (every flag, every output path) see [`docs/04-modernization-agent-cli.md`](../04-modernization-agent-cli.md).
 
 ---
@@ -54,9 +56,11 @@ Output (CWD-relative):
 modernize assess --source ./.github/modernize/repos.json --format markdown --no-tty
 ```
 
-Use either the [simple](./repos.json.example) or [full-format](./repos.json.full-format.example) shape.
+Use either the [simple](./repos.json.example) or [full-format](./repos.json.full-format.example) shape. Each `repos[]` entry needs **one of** `url:` (Git remote — the CLI runs `git clone`) or `path:` (local — **must be absolute**; see [docs/04 §Multi-Repository Configuration](../04-modernization-agent-cli.md#multi-repository-configuration-reposjson)). For local workshop apps the helper `workshop/generate-repos-json.sh` emits the correct absolute-path form.
 
 > ⚠ `--source repos.json` **cannot** be combined with other `--source` arguments in the same command. Pick one mode per run.
+>
+> ⚠ Do **not** use `url: file://…` for local sources — the CLI runs `git clone` on every `url` and `file://` URLs against non-bare working trees fail with exit 128. Use the Full-format `path:` field instead.
 
 ---
 
