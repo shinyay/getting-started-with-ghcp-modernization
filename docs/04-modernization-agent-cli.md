@@ -302,6 +302,18 @@ modernize plan execute --delegate cloud
 
 End-to-end upgrade in a single command (plan + execute combined).
 
+> **⚠️ Java vs .NET commit asymmetry.** `modernize upgrade "Java …"`
+> auto-commits each task. `modernize upgrade ".NET …" --language dotnet`
+> **does NOT auto-commit** — it only modifies files on disk. After a
+> .NET run you will see `M *.csproj` in `git status` and must commit
+> manually (`git add -A && git commit -m "Upgrade to .NET N"`). If you
+> need commits in a CI/CD pipeline targeting .NET, prefer the
+> `plan create` + `plan execute` chain, which **does** auto-commit each
+> task on an auto-spawned `dotnet-version-upgrade-N` branch — see the
+> [plan execute callout above](#modernize-plan-execute) and
+> [Lab 7 Step 4 / Step 7](../workshop/lab7-dotnet-upgrade.md#step-4--invoke-the-net-modernization-agent).
+> Verified 2026-04-25 against `workshop-apps/dotnet-sample-app`.
+
 ```bash
 # Upgrade Java
 modernize upgrade "Java 17"

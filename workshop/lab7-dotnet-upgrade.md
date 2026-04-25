@@ -15,7 +15,7 @@ By the end of this lab you will be able to:
 
 - **Understand the `@modernize-dotnet` agent** and its three-stage Assessment → Planning → Execution workflow.
 - **Upgrade a .NET 6.0 application to .NET 10** using VS Code or Visual Studio, with the agent handling API changes, dependency updates, and configuration migrations.
-- **Review the generated `.github/upgrades/` artifacts** (assessment.md, plan.md, tasks.md) to understand exactly what was changed and why.
+- **Review the generated `.github/upgrades/` artifacts** (assessment.md, plan.md, tasks.md) when running in the IDE — or `.github/modernize/{plan-name}/plan.md` + `tasks.json` when running via the CLI — to understand exactly what was changed and why.
 
 ---
 
@@ -51,14 +51,19 @@ The `.NET modernization agent` (`@modernize-dotnet`) follows the same **Assess �
 | Aspect | Java (`@modernize`) | .NET (`@modernize-dotnet`) |
 |--------|---------------------|---------------------------|
 | Agent name | `@modernize` | `@modernize-dotnet` |
-| Artifact location | `.github/modernize/` | `.github/upgrades/` |
+| Artifact location (IDE) | `.github/modernize/` | `.github/upgrades/` |
+| Artifact location (CLI) | `.github/modernize/` | `.github/modernize/` *(same as Java)* |
 | IDE support | VS Code, IntelliJ | VS, VS Code, CLI, GitHub.com |
 | Upgrade tool | OpenRewrite + AI | AI-powered transformation |
 
-The agent generates three markdown files under `.github/upgrades/{scenarioId}/`:
+In the IDE, the agent generates three markdown files under `.github/upgrades/{scenarioId}/`:
 - **`assessment.md`** — What needs to change
 - **`plan.md`** — How to change it
 - **`tasks.md`** — Step-by-step execution with status tracking
+
+> **CLI users:** the three-file trio is **IDE-only**. The CLI emits
+> `plan.md` + `tasks.json` (no `assessment.md`, no `tasks.md`) under
+> `.github/modernize/{plan-name}/` — same path as Java.
 
 ---
 
@@ -202,7 +207,7 @@ dotnet build
 
 You just upgraded a .NET 6.0 application to .NET 10 — with AI assistance tracking every change in git.
 
-> **📝 Comparison with Lab 1:** The workflow is identical to the Java upgrade in Lab 1: Assess → Plan → Execute. The key difference is the agent name (`@modernize-dotnet` vs `@modernize`) and the artifact location (`.github/upgrades/` vs `.github/modernize/`).
+> **📝 Comparison with Lab 1:** The workflow is identical to the Java upgrade in Lab 1: Assess → Plan → Execute. The key differences are the agent name (`@modernize-dotnet` vs `@modernize`) and — when using the IDE — the artifact location (`.github/upgrades/` vs `.github/modernize/`). Via the CLI both languages share `.github/modernize/`.
 
 ---
 

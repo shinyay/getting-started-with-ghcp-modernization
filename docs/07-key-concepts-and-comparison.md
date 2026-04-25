@@ -55,7 +55,7 @@ GitHub Copilot Modernization
 | **Cloud delegation** | Via GitHub.com | ✅ Cloud Coding Agents |
 | **Custom skills** | ✅ Create & apply in IDE | ✅ Auto-detected in plans |
 | **Assessment reports** | Per-app | Per-app + aggregated |
-| **Output artifacts** | `.github/upgrades/` | `.github/modernize/` |
+| **Output artifacts** | Java → `.github/modernize/` · **.NET → `.github/upgrades/`** | Java → `.github/modernize/` · **.NET → `.github/modernize/`** *(same as Java; IDE uses `.github/upgrades/` for .NET, CLI does not)* |
 | **Languages** | Java, .NET | Java, .NET |
 
 ## Java vs. .NET Comparison

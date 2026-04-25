@@ -42,12 +42,12 @@ Open **Copilot Chat** and type (but don't execute):
 
 ### Show pre-generated artifacts (if available)
 
-If you've run the agent previously, open the `.github/upgrades/` directory and show:
-- `assessment.md` — what the agent found
+If you've run the agent previously, open the `.github/upgrades/` directory (IDE) — or `.github/modernize/{plan-name}/` (CLI) — and show:
+- `assessment.md` — what the agent found *(IDE only)*
 - `plan.md` — the upgrade strategy
-- `tasks.md` — execution steps with status
+- `tasks.md` *(IDE)* / `tasks.json` *(CLI)* — execution steps with status
 
-> "Three markdown files — fully reviewable, fully editable, saved in your repository. Assessment, Plan, Tasks. Same three stages."
+> "Three markdown files in the IDE — fully reviewable, fully editable, saved in your repository. Assessment, Plan, Tasks. Same three stages as the IDE workflow. (When using the CLI, you get `plan.md` + `tasks.json` under `.github/modernize/` — same path as the Java agent.)"
 
 ---
 
@@ -58,7 +58,8 @@ If you've run the agent previously, open the `.github/upgrades/` directory and s
 | Aspect | Java (`@modernize`) | .NET (`@modernize-dotnet`) |
 |--------|---------------------|---------------------------|
 | Agent name | `@modernize` | `@modernize-dotnet` |
-| Artifact location | `.github/modernize/` | `.github/upgrades/` |
+| Artifact location (IDE) | `.github/modernize/` | `.github/upgrades/` |
+| Artifact location (CLI) | `.github/modernize/` | `.github/modernize/` |
 | IDE support | VS Code, IntelliJ | **Visual Studio**, VS Code, CLI, GitHub.com |
 | Upgrade tool | OpenRewrite + AI | AI-powered transformation |
 | Predefined tasks | 13 | 10 |
@@ -85,7 +86,7 @@ If you've run the agent previously, open the `.github/upgrades/` directory and s
 - [ ] `workshop-apps/dotnet-sample-app/` open in VS Code
 - [ ] `DotnetSampleApp.csproj` tab visible
 - [ ] Familiar with the comparison table
-- [ ] If showing artifacts: `.github/upgrades/` pre-generated from a prior run (optional)
+- [ ] If showing artifacts: `.github/upgrades/` (IDE) or `.github/modernize/{plan-name}/` (CLI) pre-generated from a prior run (optional)
 
 ---
 

@@ -103,7 +103,7 @@ Copilot creates sequential tasks with:
 - At the end
 
 ### Workflow Behavior
-- If `.github/upgrades/{scenarioId}` exists from a prior attempt → Copilot asks whether to continue or start fresh
+- If `.github/upgrades/{scenarioId}` exists from a prior attempt → Copilot asks whether to continue or start fresh *(IDE only — the CLI uses `.github/modernize/{plan-name}/` and respects `--overwrite` instead)*
 - If Copilot can't resolve a problem → asks for help
 - Copilot **learns from your interventions** and applies similar fixes if the same issue recurs
 
@@ -173,7 +173,7 @@ When starting an upgrade, Copilot collects:
 3. Real-time command-line output appears
 
 ### All environments
-- Review `tasks.md` in `.github/upgrades/{scenarioId}/` for step-by-step status
+- Review `tasks.md` in `.github/upgrades/{scenarioId}/` for step-by-step status *(IDE only — CLI users open `tasks.json` under `.github/modernize/{plan-name}/` instead; see [docs/04](04-modernization-agent-cli.md#tasksjson-schema-observed-in-v00293))*
 - Each task shows ✓ or [ ] status with timestamps
 
 ## Limitations

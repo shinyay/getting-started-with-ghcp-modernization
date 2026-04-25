@@ -187,7 +187,7 @@ case "$LAB" in
     echo "     (should show net10.0 or later)"
     echo "  2. Run: cd workshop-apps/dotnet-sample-app && dotnet build"
     echo "     (should succeed)"
-    echo "  3. Check: ls .github/upgrades/ (should contain upgrade artifacts)"
+    echo "  3. Check: ls .github/upgrades/ (IDE) or ls workshop-apps/dotnet-sample-app/.github/modernize/ (CLI)"
     echo ""
     ;;
 

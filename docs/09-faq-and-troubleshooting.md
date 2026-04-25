@@ -1,6 +1,6 @@
 # FAQ & Troubleshooting
 
-> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/) and verified against the live CLI: **April 2026***
 
 ## General FAQ
 
@@ -92,10 +92,14 @@ ASP.NET Core (MVC, Razor Pages, Web API), Blazor, Azure Functions, WPF, WinForms
 
 ### Where are .NET upgrade artifacts stored?
 
-Under `.github/upgrades/{scenarioId}/`:
+**IDE** (`@modernize-dotnet` in VS Code / Visual Studio) — under `.github/upgrades/{scenarioId}/`:
 - `assessment.md` — Assessment results
 - `plan.md` — Upgrade plan
 - `tasks.md` — Executable tasks with progress tracking
+
+**CLI** (`modernize upgrade --language dotnet` or `modernize plan create --language dotnet`) — under `.github/modernize/{plan-name}/` (same path as Java):
+- `plan.md` — Upgrade plan
+- `tasks.json` — Executable tasks with progress tracking *(no `assessment.md`, no `tasks.md` — the three-file trio is IDE-only)*
 
 ---
 

@@ -1,6 +1,6 @@
 # Workshop Preparation — Key Takeaways & Demo Scenarios
 
-> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/): April 2026*
+> *Last reviewed against [official documentation](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/) and verified against the live CLI: **April 2026***
 
 ## Executive Summary for Workshop
 
@@ -44,7 +44,7 @@ GitHub Copilot modernization is Microsoft's AI-powered solution for **upgrading 
 1. Open .NET Framework solution in VS 2026
 2. Right-click → Modernize (or `@Modernize` in chat)
 3. Walk through three-stage workflow
-4. Show `assessment.md`, `plan.md`, `tasks.md` under `.github/upgrades/`
+4. Show `assessment.md`, `plan.md`, `tasks.md` under `.github/upgrades/` *(IDE convention; if you ran the agent from the CLI instead, the artifacts are at `.github/modernize/{plan-name}/plan.md` + `tasks.json`)*
 5. Demonstrate intervention when agent encounters issues
 6. Show final task completion status
 
