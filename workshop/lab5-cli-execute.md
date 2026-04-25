@@ -1,5 +1,10 @@
 # Lab 5: CLI Plan Execute — Run an Upgrade via the Modernize CLI
 
+> 📚 **Reference docs for this lab:**
+> - **[CLI deep reference](../docs/04-modernization-agent-cli.md)** — every flag and output path.
+> - **[CLI task execution](../docs/05-modernization-cli-task-execution.md)** — `plan execute`, batch flows, `repos.json`.
+> - **[CLI cookbook](../docs/examples/cli-cookbook.md)** — copy-paste recipes.
+
 | Detail | Value |
 |--------|-------|
 | **Duration** | 50 minutes |

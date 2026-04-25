@@ -1,10 +1,15 @@
 # Lab 3: Custom Skills — Create a JUnit 4 → JUnit 5 Migration Skill
 
+> 📚 **Reference docs for this lab:**
+> - **[Custom skills](../docs/06-custom-skills.md)** — full skill anatomy, YAML front-matter, prompt patterns.
+> - **[CLI deep reference](../docs/04-modernization-agent-cli.md)** — how the CLI consumes `.github/skills/`.
+
 | Detail | Value |
 |--------|-------|
 | **Duration** | 30 minutes |
 | **Application** | BookStore (`workshop-apps/bookstore-app/`) |
 | **Difficulty** | Intermediate |
+| **Verified With** | GitHub Copilot extension v0.0.293+ + Copilot Chat, 2026-04-25 |
 
 ---
 

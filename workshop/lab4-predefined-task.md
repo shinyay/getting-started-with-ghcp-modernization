@@ -1,5 +1,9 @@
 # Lab 4: Predefined Tasks — Migrate File Logging to Console for Azure Monitor
 
+> 📚 **Reference docs for this lab:**
+> - **[IDE experience — Java](../docs/02-ide-experience-java.md#predefined-tasks)** — Tasks panel and predefined task catalog.
+> - **[CLI task execution](../docs/05-modernization-cli-task-execution.md)** — the CLI equivalent for batch operations.
+
 | Detail | Value |
 |--------|-------|
 | **Duration** | 50 minutes |

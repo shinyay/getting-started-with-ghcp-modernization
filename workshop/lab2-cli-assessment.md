@@ -10,6 +10,7 @@
 | **Duration** | 45 minutes |
 | **Applications** | BookStore, NotesApp, InventoryAPI, OrderService (via `repos.json`) |
 | **Difficulty** | Intermediate |
+| **Verified With** | modernize CLI v0.0.293+ + claude-sonnet-4.6, 2026-04-25 |
 
 ---
 

@@ -1,9 +1,14 @@
 # Lab 6: Bring Your Own App — Apply Modernization to Your Project
 
+> 📚 **Reference docs for this lab:**
+> - **[CLI deep reference](../docs/04-modernization-agent-cli.md)** — flags and artifact paths used in this lab's harness.
+> - **[Custom skills](../docs/06-custom-skills.md)** — for participants who want to layer a custom skill on top of their own project.
+
 | Detail | Value |
 |--------|-------|
 | **Duration** | 40 minutes |
 | **Application** | Your own Java project (or NewsFeedSite as fallback) |
+| **Verified With** | Harness compatible with modernize v0.0.293+, 2026-04-25 (NewsFeedSite dry-run) |
 
 ---
 

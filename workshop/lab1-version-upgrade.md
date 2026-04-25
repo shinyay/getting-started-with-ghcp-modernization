@@ -1,10 +1,15 @@
 # Lab 1: Version Upgrade — Spring Boot 2.7 + Java 11 → Java 21 + Spring Boot 3.5.x
 
+> 📚 **Reference docs for this lab:**
+> - **[IDE experience — Java](../docs/02-ide-experience-java.md)** — full walkthrough of the `@modernize-java-upgrade` chat handler.
+> - **[Key concepts and comparison](../docs/07-key-concepts-and-comparison.md)** — Assess → Plan → Execute workflow.
+
 | Detail | Value |
 |--------|-------|
 | **Duration** | 50 minutes |
 | **Application** | BookStore (`workshop-apps/bookstore-app/`) |
 | **Difficulty** | Beginner |
+| **Verified With** | GitHub Copilot app modernization extension v0.0.293+ (VS Code Insiders), 2026-04-25 |
 
 ---
 

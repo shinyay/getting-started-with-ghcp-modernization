@@ -1,11 +1,16 @@
 # Lab 7: .NET Upgrade — .NET 6.0 → .NET 10
 
+> 📚 **Reference docs for this lab:**
+> - **[IDE experience — .NET](../docs/03-ide-experience-dotnet.md)** — `.NET Upgrade` extension flow and artifact paths.
+> - **[Key concepts and comparison](../docs/07-key-concepts-and-comparison.md)** — how Java and .NET surfaces compare.
+
 | Detail | Value |
 |--------|-------|
 | **Duration** | 50 minutes |
 | **Application** | DotnetSampleApp (`workshop-apps/dotnet-sample-app/`) |
 | **Difficulty** | Beginner (for .NET developers) |
 | **Format** | Full-day only (optional) |
+| **Verified With** | .NET Upgrade Assistant extension + modernize CLI v0.0.293+, 2026-04-25 |
 
 ---
 
