@@ -135,13 +135,15 @@ git log --oneline | head -10
 ```
 
 On the verification run you should see **one commit per Spring Boot
-hop** plus one docs commit, e.g.:
+hop** plus one docs commit. The exact patch versions resolve at runtime
+to the latest GA on each major line; the chain below was verified on
+2026-04-25 (`2.7.x → 3.3.x → 3.4.x → 3.5.x`):
 
 ```
 docs: add modernization summary for Java 21 and Spring Boot 3.x upgrade
-Upgrade Spring Boot 3.4.5 to 3.5.3
-Upgrade Spring Boot 3.3.13 to 3.4.5 and migrate @MockBean to @MockitoBean
-Upgrade Spring Boot 2.7.18 to 3.3.13 and Java 11 to 21 with javax to jakarta migration
+Upgrade Spring Boot 3.4.x to 3.5.x
+Upgrade Spring Boot 3.3.x to 3.4.x and migrate @MockBean to @MockitoBean
+Upgrade Spring Boot 2.7.x to 3.3.x and Java 11 to 21 with javax to jakarta migration
 ```
 
 > 📂 **Where the agent wrote its plan/summary**

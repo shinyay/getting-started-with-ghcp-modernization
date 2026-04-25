@@ -184,7 +184,7 @@ case "$LAB" in
     echo "Lab 7 uses the .NET DotnetSampleApp."
     echo "Manual verification:"
     echo "  1. Check: grep 'TargetFramework' workshop-apps/dotnet-sample-app/*.csproj"
-    echo "     (should show net10.0 or later)"
+    echo "     (should show the upgraded TFM, e.g. net10.0; verified 2026-04-25)"
     echo "  2. Run: cd workshop-apps/dotnet-sample-app && dotnet build"
     echo "     (should succeed)"
     echo "  3. Check: ls .github/upgrades/ (IDE) or ls workshop-apps/dotnet-sample-app/.github/modernize/ (CLI)"

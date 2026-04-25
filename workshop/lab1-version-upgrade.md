@@ -170,7 +170,7 @@ mvn clean package
 
 ### Step 12 — Celebrate 🎉
 
-You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Java 21 + Spring Boot 3.5.x (latest 3.x line) — with AI assistance staging every change in your working tree for review.
+You just upgraded a Spring Boot application from Java 11 + Spring Boot 2.7 to Java 21 + the latest Spring Boot 3.x GA at runtime (verified 2026-04-25: 3.5.x) — with AI assistance staging every change in your working tree for review.
 
 > **📝 Heads-up for Lab 3:** If the agent migrated your JUnit 4 tests to JUnit 5
 > during this lab (check with `grep -r "org.junit.jupiter" src/test/`), you'll need
@@ -199,7 +199,7 @@ Every change the agent made appears in your **working tree** as an uncommitted e
 
 The `javax` → `jakarta` rename is one of the most impactful changes in the Spring Boot 2 → 3 migration. It affects persistence annotations, validation constraints, servlet APIs, and more. Doing this manually across a large codebase is tedious and error-prone — exactly the kind of task AI excels at.
 
-> 💡 **Bonus catch:** The agent also proactively replaces `@MockBean` with `@MockitoBean` in your Spring Boot tests. `@MockBean` was deprecated in Spring Boot 3.4, and the new agent migrates it for you in the same pass — a small but valuable touch you'd otherwise discover only after seeing build warnings.
+> 💡 **Bonus catch:** The agent also proactively replaces `@MockBean` with `@MockitoBean` (the replacement annotation lives in `org.springframework.test.context.bean.override.mockito`) in your Spring Boot tests. `@MockBean` was deprecated in Spring Boot 3.4, and the new agent migrates it for you in the same pass — a small but valuable touch you'd otherwise discover only after seeing build warnings.
 
 ---
 

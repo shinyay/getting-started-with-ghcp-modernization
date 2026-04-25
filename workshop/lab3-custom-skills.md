@@ -153,9 +153,15 @@ requires:                        # Marker the agent should look for
 
 ### Step 5 — Fill in the TODO markers (YOUR TURN)
 
-Open `SKILL.md` and find the two `<!-- TODO: -->` comments (around lines 65 and 69). They mark places where you can extend the skill for *your* codebase. For BookStore, a useful addition is the `@MockBean → @MockitoBean` migration that Spring Boot 3.4 introduced.
+Open `SKILL.md` and find the two `<!-- TODO: -->` comments — locate them with:
 
-#### TODO 1 (around line 65) — Add a Spring Boot 3.4 mock annotation pattern
+```bash
+grep -n TODO .github/skills/junit4-to-junit5/SKILL.md
+```
+
+They mark places where you can extend the skill for *your* codebase. For BookStore, a useful addition is the `@MockBean → @MockitoBean` migration that Spring Boot 3.4 introduced.
+
+#### TODO 1 — Add a Spring Boot 3.4 mock annotation pattern
 
 Replace the comment `<!-- TODO: Add additional patterns specific to your organization's codebase -->` with a new Pattern 5:
 
@@ -181,7 +187,7 @@ private BookRepository bookRepository;
 > Note: `@MockBean` is deprecated in Spring Boot 3.4. The replacement `@MockitoBean` lives in `org.springframework.test.context.bean.override.mockito` and works identically with JUnit 5.
 ````
 
-#### TODO 2 (around line 69) — Add project-specific teardown guidance
+#### TODO 2 — Add project-specific teardown guidance
 
 Replace the comment `<!-- TODO: Extend this pattern with any project-specific @Before/@After teardown logic -->` with:
 
@@ -276,9 +282,13 @@ git diff -- workshop-apps/bookstore-app/
 Then commit the migration:
 
 ```bash
-git add workshop-apps/bookstore-app/
+git add workshop-apps/bookstore-app/ .github/skills/junit4-to-junit5/
 git commit -m "test(bookstore): migrate JUnit 4 → JUnit 5 via custom skill"
 ```
+
+> 📝 The skill itself (`.github/skills/junit4-to-junit5/`) is also a
+> tracked artifact — staging it in the same commit keeps the test
+> migration and the skill that produced it together in your history.
 
 ---
 
