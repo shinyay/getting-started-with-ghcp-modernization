@@ -1,7 +1,7 @@
 # Workshop Agenda — GitHub Copilot Modernization
 
 > [!NOTE]
-> Labs 1–6 use **Java applications** (Spring Boot + Maven). Lab 7 (optional, full-day only) is a **.NET hands-on lab**. Additional .NET modernization concepts are in the knowledge base — see [`docs/03-ide-experience-dotnet.md`](/docs/03-ide-experience-dotnet.md).
+> Labs 1–6 use **Java applications** (Spring Boot + Maven). Lab 7 (optional, full-day only) is a **.NET hands-on lab**. Additional .NET modernization concepts are in the knowledge base — see [`docs/03-ide-experience-dotnet.md`](../docs/03-ide-experience-dotnet.md).
 
 ## Half-Day Workshop (3 hours 30 minutes)
 

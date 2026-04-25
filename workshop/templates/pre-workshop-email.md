@@ -20,7 +20,7 @@ Looking forward to our GitHub Copilot Modernization workshop on [DATE]!
    - GitHub Copilot (`github.copilot`)
    - GitHub Copilot Chat (`github.copilot-chat`)
    - GitHub Copilot App Modernization for Java (`vscjava.migrate-java-to-azure`)
-6. **`modernize` CLI** (required for Labs 2 and 5): see [docs/04](../docs/04-modernization-agent-cli.md) for installation. Confirm with `modernize --version`.
+6. **`modernize` CLI** (required for Labs 2 and 5): see [docs/04](../../docs/04-modernization-agent-cli.md) for installation. Confirm with `modernize --version`.
 7. **Restart VS Code** after installing extensions
 8. **Clone the workshop repo**:
    ```

@@ -97,7 +97,7 @@ GitHub Copilot modernization is Microsoft's AI-powered solution for **upgrading 
 ## Workshop Agenda Ideas
 
 > **Note:** The agendas below are **alternative suggestions** for longer formats.
-> The implemented workshop (see [`workshop/agenda.md`](/workshop/agenda.md)) uses
+> The implemented workshop (see [`workshop/agenda.md`](../workshop/agenda.md)) uses
 > a **3.5-hour half-day** and **6.5-hour full-day** format with the labs listed
 > in the Workshop section of the main README.
 

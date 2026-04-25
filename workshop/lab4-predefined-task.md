@@ -2,7 +2,7 @@
 
 > 📚 **Reference docs for this lab:**
 > - **[IDE experience — Java](../docs/02-ide-experience-java.md#predefined-tasks)** — Tasks panel and predefined task catalog.
-> - **[CLI task execution](../docs/05-modernization-cli-task-execution.md)** — the CLI equivalent for batch operations.
+> - **[CLI task execution](../docs/05-batch-operations.md)** — the CLI equivalent for batch operations.
 
 | Detail | Value |
 |--------|-------|
@@ -287,4 +287,4 @@ Browse the other predefined tasks in the **TASKS** panel under `Java > Migration
 
 ## See also
 
-- **[CLI task execution](../docs/05-modernization-cli-task-execution.md)** — the CLI equivalent of predefined tasks, including batch operations across multiple repos.
+- **[CLI task execution](../docs/05-batch-operations.md)** — the CLI equivalent of predefined tasks, including batch operations across multiple repos.

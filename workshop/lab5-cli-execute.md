@@ -2,7 +2,7 @@
 
 > 📚 **Reference docs for this lab:**
 > - **[CLI deep reference](../docs/04-modernization-agent-cli.md)** — every flag and output path.
-> - **[CLI task execution](../docs/05-modernization-cli-task-execution.md)** — `plan execute`, batch flows, `repos.json`.
+> - **[CLI task execution](../docs/05-batch-operations.md)** — `plan execute`, batch flows, `repos.json`.
 > - **[CLI cookbook](../docs/examples/cli-cookbook.md)** — copy-paste recipes.
 
 | Detail | Value |
