@@ -211,12 +211,6 @@ In VS Code:
 Open **Copilot Chat** in VS Code and invoke the skill with a slash command:
 
 ```
-/junit4-to-junit5 を workshop-apps/bookstore-app に対して実行してください
-```
-
-You can also write the prompt in English:
-
-```
 /junit4-to-junit5 apply to workshop-apps/bookstore-app
 ```
 

@@ -39,11 +39,16 @@ By the end of this lab you will be able to:
   grep "spring-boot-starter-parent" pom.xml -A1 | head -3   # -> 2.7.x
   ```
 
-  If you ran any previous lab against BookStore, reset it:
+  If you ran any previous lab against BookStore, reset it safely:
 
   ```bash
-  git checkout main && git clean -fd && git checkout .
+  git stash --include-untracked   # preserves any local scratch work
+  git checkout main
   ```
+
+  > ⚠️ If you have **no** local changes you want to keep, you may use
+  > `git reset --hard main && git clean -fd` instead — this is faster but
+  > **deletes untracked files** (IDE configs, scratch notes, etc.).
 
 > ⚠️ **Be on a throwaway branch before Step 2.** The CLI **commits directly
 > onto your currently checked-out branch** — it does *not* create a separate
@@ -252,9 +257,14 @@ batch run starts from a clean Java 11 / Spring Boot 2.7 baseline:
 
 ```bash
 cd workshop-apps/bookstore-app
-git checkout main && git clean -fd && git checkout .
+git stash --include-untracked
+git checkout main
 cd ../..
 ```
+
+> ⚠️ Same destructive-alternative caveat as the Pre-Lab Checklist applies:
+> `git reset --hard main && git clean -fd` is faster but deletes
+> untracked files.
 
 ### Step 10 — Run the Batch Upgrade
 
