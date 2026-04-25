@@ -281,3 +281,9 @@ If you finish early, try these:
        --source workshop-apps/dotnet-sample-app --language dotnet
    ```
    Expected outcome: 5 secrets in `appsettings.json` + `Services/NotificationService.cs` are removed and replaced with `IConfiguration` lookups; `Program.cs` is wired with `AddAzureKeyVault` + `DefaultAzureCredential`; the built-in `migration-azure-keyvault-secret` skill drives the transformation. Two commits land on an auto-spawned `dotnet-version-upgrade-N` branch.
+
+---
+
+## See also
+
+- **[Lab 1: Version Upgrade](lab1-version-upgrade.md)** — the same Assess→Plan→Execute workflow on a Java app; useful contrast for polyglot teams comparing the Java and .NET surfaces.

@@ -450,3 +450,9 @@ modernize
 Running `modernize` without arguments launches an interactive terminal UI
 where you can browse assessments, plans, and tasks visually — all from
 the terminal.
+
+---
+
+## See also
+
+- **[Lab 1: Version Upgrade](lab1-version-upgrade.md)** — the same Spring Boot 2.7 → 3.x upgrade driven from the IDE chat handler; useful contrast between the IDE and CLI surfaces.

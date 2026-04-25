@@ -307,3 +307,7 @@ There are **13 predefined tasks** available for Java applications, covering:
 ## Stretch Goal
 
 Browse the other predefined tasks in the **TASKS** panel under `Java > Migration Tasks` (Security / Database / Message Queue / Compute / Storage / Build Tools / Authentication / Cache / Configuration / Email / Event Streaming). Explore what's available — you may find tasks relevant to your own projects. Consider which ones you might apply in Lab 6.
+
+## See also
+
+- **[CLI task execution](../docs/05-modernization-cli-task-execution.md)** — the CLI equivalent of predefined tasks, including batch operations across multiple repos.

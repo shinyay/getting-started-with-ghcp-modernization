@@ -235,3 +235,10 @@ Try answering these questions:
 - What is the net change in lines (insertions vs. deletions)?
 - Can you identify the diff hunks that performed the `javax` → `jakarta` migration?
 - Which test-framework changes were required to move from JUnit 4 to JUnit 5?
+
+---
+
+## See also
+
+- **[Lab 5: CLI Plan Execute](lab5-cli-execute.md)** — same Spring Boot upgrade run via the `modernize` CLI; useful contrast between the IDE and CLI surfaces.
+- **[Lab 7: .NET Upgrade](lab7-dotnet-upgrade.md)** — same Assess→Plan→Execute workflow applied to a .NET app; useful for polyglot teams.
