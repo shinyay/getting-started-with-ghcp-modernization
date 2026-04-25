@@ -33,16 +33,20 @@ echo ""
 echo "Checking prerequisites..."
 echo ""
 
-# Java 21+
+# Java 21+ (required for Lab 1's *post-upgrade* build of bookstore-app on
+# Java 21; pre-upgrade exercises only need the source compatibility level
+# pinned in each app's pom.xml. Recommended baseline is JDK 21+.)
 if command -v java &>/dev/null; then
   JAVA_VER=$(java -version 2>&1 | head -1 | sed -E 's/.*"([0-9]+).*/\1/')
   if [ "$JAVA_VER" -ge 21 ] 2>/dev/null; then
-    check_pass "Java $JAVA_VER (need 21+)"
+    check_pass "Java $JAVA_VER (need 21+ for post-upgrade builds)"
+  elif [ "$JAVA_VER" -ge 17 ] 2>/dev/null; then
+    check_warn "Java $JAVA_VER (works for pre-upgrade exercises; install 21+ before Lab 1's final build)"
   else
-    check_fail "Java $JAVA_VER found (need 21+)"
+    check_fail "Java $JAVA_VER found (need 17+ minimum, 21+ recommended)"
   fi
 else
-  check_fail "Java not found (need 21+)"
+  check_fail "Java not found (need 21+ recommended)"
 fi
 
 # Maven 3.8+
@@ -76,25 +80,35 @@ else
 fi
 
 # VS Code extensions
+# NOTE: The Java modernization extension is published as
+# 'vscjava.migrate-java-to-azure' per the marketplace listing and
+# docs/02. Earlier internal builds used the 'microsoft.' publisher
+# prefix. We accept either prefix to tolerate both publication
+# channels until the publisher question is settled (setup-004).
 if command -v code &>/dev/null; then
   EXTENSIONS=$(code --list-extensions 2>/dev/null || true)
-  for ext in "GitHub.copilot" "GitHub.copilot-chat" "microsoft.migrate-java-to-azure"; do
+  for ext in "GitHub.copilot" "GitHub.copilot-chat"; do
     if echo "$EXTENSIONS" | grep -qi "$ext" 2>/dev/null; then
       check_pass "VS Code extension: $ext"
     else
       check_fail "VS Code extension: $ext not found"
     fi
   done
+  if echo "$EXTENSIONS" | grep -qiE "(vscjava|microsoft)\.migrate-java-to-azure" 2>/dev/null; then
+    check_pass "VS Code extension: migrate-java-to-azure"
+  else
+    check_fail "VS Code extension: migrate-java-to-azure not found (try 'vscjava.migrate-java-to-azure')"
+  fi
 else
   check_fail "Cannot check VS Code extensions (VS Code not found)"
 fi
 
-# modernize CLI (optional)
+# modernize CLI (REQUIRED for Labs 2 and 5)
 if command -v modernize &>/dev/null; then
   MOD_VER=$(modernize --version 2>&1 | head -1)
   check_pass "modernize CLI: $MOD_VER"
 else
-  check_warn "modernize CLI not found (optional — install later if needed)"
+  check_fail "modernize CLI not found (REQUIRED for Labs 2 and 5 — see docs/04 for installation)"
 fi
 
 # gh auth status (optional)
@@ -138,6 +152,17 @@ if (cd "$REPO_ROOT/workshop-apps/stub-repos/order-service" && mvn compile -q 2>/
   check_pass "order-service compiles successfully"
 else
   check_fail "order-service compile failed"
+fi
+
+# dotnet-sample-app (Lab 7) — only if dotnet SDK is available
+if command -v dotnet &>/dev/null; then
+  if (cd "$REPO_ROOT/workshop-apps/dotnet-sample-app" && dotnet build -v q --nologo 2>/dev/null); then
+    check_pass "dotnet-sample-app builds successfully"
+  else
+    check_fail "dotnet-sample-app build failed"
+  fi
+else
+  check_warn "dotnet SDK not found — Lab 7 (.NET upgrade) will be unavailable"
 fi
 
 echo ""
