@@ -13,6 +13,17 @@ All notable changes to this repository are documented in this file.
   - `validate.sh`: replaced Lab 7's manual-instructions stub with three real automated checks (TFM upgraded to net8.0+, `dotnet build` succeeds, upgrade artifacts present); updated the usage banner to include lab6/lab7; dropped the legacy repo-root plan.md fallback for Lab 2.
   - `templates/pre-workshop-email.md`: recommended VS Code Insiders, added the `modernize` CLI install step, renamed the Java extension to its current marketplace name, and tightened the .NET prerequisites.
 
+### Changed
+- Workshop labs deep review (Phase 3 — Cleanup): the remaining 23 of 75 review findings closed in a single commit. All edits are content/structure refinements; no IDE re-verification was needed because behavior was already confirmed during Lab 1-7 dry-runs.
+  - Lab 1 / 4: small ergonomics fixes (`cd` context for `git checkout`, Pre-Lab `cd ../..` back to repo root, `git log --branches=` instead of glob-on-refspec, Checkpoints Summary table replaces three H2 sub-sections, `Background` H2 merges `Why This Matters` + `The Problem`).
+  - Lab 5: `Phase B` H2 retitled "Phase B (Optional Extension)" with an explicit "continues Steps 8-12" note; removed the duplicate Step 7 IDE/CLI mini-table; clarified that `--no-tty` is for CI/log piping, not a stall fix.
+  - Lab 6: replaced Step 5 Option B pseudo-comment scaffolding with four executable commands (assessment grep → plan create → cat plan/tasks → plan execute); renamed "Instructor Help" to "Troubleshooting (Instructor Help)" and de-duplicated the "CLI may not exit" callout.
+  - Lab 7: `dotnet --version` Pre-Lab now correctly distinguishes SDK 10 (required for `net10.0`) from SDK 8 (insufficient); `Upgrade tool` background row softened from "OpenRewrite + AI" to "Roslyn analyzers + AI-driven transforms" (no OpenRewrite-style recipe engine); `Target framework didn't change` troubleshooting now splits IDE (assessment.md) vs CLI (inline plan.md) guidance; minor table-cell wrapping with `<br>`.
+  - `validate.sh`: `lab1` case grew a check for the `.github/java-upgrade/{yyyyMMddHHmmss}/` artifact dir to validate the Step 9 / Checkpoint 1 claim. Three checks total preserved (1 new, 2 combined).
+
+### Status
+- **All 75 review findings now closed** (Phase 1: 24, Phase 2: 28, Phase 3: 23). `bash workshop/validate.sh lab{2,3,4,5}` → 3/3; `lab1` → 2/3 in pre-IDE-run state (expected); `lab7` → 1/3 in pre-upgrade baseline (expected).
+
 ### Changed (Phase 1 — Quick Wins, 2026-04-25)
 - Workshop labs deep review (Phase 1 — Quick Wins): 24 of 75 review findings addressed across 6 commits.
   - Lab 3 / Lab 5: removed Japanese-language prompt leak and replaced destructive `git clean -fd` reset with safer `git stash --include-untracked` (with documented destructive alternative).
